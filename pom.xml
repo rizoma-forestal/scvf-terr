@@ -14,6 +14,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
+    <!-- Administrador de dependencias de Arquillian -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.1.5.Final</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
     <dependencies>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -43,6 +56,61 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        
+        <!-- Dependencias para Arquillian Provider-->
+        <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-performance-api</artifactId>
+            <version>1.0.0.CR1</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-persistence-api</artifactId>
+            <version>1.0.0.Alpha7</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        
+        <!-- Dependencias para Arquillian Test -->
+        <dependency>
+            <groupId>org.jboss.arquillian</groupId>
+            <artifactId>arquillian-bom</artifactId>
+            <version>1.1.5.Final</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.main.extras</groupId>
+            <artifactId>glassfish-embedded-all</artifactId>
+            <version>3.1.2.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+            <version>1.0.0.CR3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Arquillian Enviroment requirement -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -67,6 +135,17 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+            
+            <!-- Arquillian Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <ejbVersion>3.1</ejbVersion>
+                </configuration>
+            </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -92,6 +171,33 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Plugin para Configuring Static Weaving -->
+            <plugin>
+               <groupId>de.empulse.eclipselink</groupId>
+               <artifactId>staticweave-maven-plugin</artifactId>
+               <version>1.0.0</version>
+               <executions>
+                   <execution>
+                       <phase>process-classes</phase>
+                       <goals>
+                           <goal>weave</goal>
+                       </goals>
+                       <configuration>
+                           <persistenceXMLLocation>META-INF/persistence.xml</persistenceXMLLocation>
+                           <logLevel>FINE</logLevel>
+                       </configuration>
+                   </execution>
+               </executions>
+               <dependencies>
+                   <dependency>
+                       <groupId>org.eclipse.persistence</groupId>
+                       <artifactId>org.eclipse.persistence.jpa</artifactId>
+                       <version>2.5.1</version>
+                   </dependency>
+               </dependencies>
+           </plugin>
+
         </plugins>
     </build>
     <repositories>
@@ -100,6 +206,22 @@
             <id>PrimeFaces-maven-lib</id>
             <layout>default</layout>
             <name>Repository for library PrimeFaces-maven-lib</name>
+        </repository>
+        
+        <!-- Repositorios Arquillian -->
+        <repository>
+            <id>java.net</id>
+            <url>http://download.java.net/maven</url>
+        </repository>
+        <repository>
+            <id>JBOSS_NEXUS</id>
+            <url>http://repository.jboss.org/nexus/content/groups/public</url>
+        </repository>
+        <repository>
+            <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
+            <id>eclipselink</id>
+            <layout>default</layout>
+            <name>Repository for library EclipseLink (JPA 2.0)</name>
         </repository>
     </repositories>
 </project>

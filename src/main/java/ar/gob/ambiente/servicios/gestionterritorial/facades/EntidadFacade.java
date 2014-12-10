@@ -23,25 +23,17 @@ public class EntidadFacade extends AbstractFacade<Entidad> {
     @PersistenceContext(unitName = "ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-
     public EntidadFacade() {
         super(Entidad.class);
     }
     
     public List<Entidad> getEntidadesXString(String stringParam){
+        em = getEntityManager();
         List<Entidad> entidades;
-        entidades = new ArrayList<>();
-        
-        String queryString = "SELECT * FROM entidad WHERE nombre LIKE '%" + stringParam + "%';";
-        
+        String queryString = "SELECT * FROM entidad WHERE nombre LIKE '%" + stringParam + "%'";
         Query q = em.createNativeQuery(queryString, Entidad.class);
-        
         entidades = q.getResultList();
-        
+        em.close();
         return entidades;
     }
 }
