@@ -39,6 +39,30 @@ public class Region implements Serializable {
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad;    
 
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn(name="georef_id")
+    private GeoRef georef;
+
+    public GeoRef getGeoref() {
+        return georef;
+    }
+
+    public void setGeoref(GeoRef georef) {
+        this.georef = georef;
+    }
+    
+    @OneToMany(mappedBy="region")
+    private List<Provincia> provincias;
+
+    public List<Provincia> getProvincias() {
+        return provincias;
+    }
+
+    public void setProvincias(List<Provincia> provincias) {
+        this.provincias = provincias;
+    }
+
+
     public AdminEntidad getAdminentidad() {
         return adminentidad;
     }
