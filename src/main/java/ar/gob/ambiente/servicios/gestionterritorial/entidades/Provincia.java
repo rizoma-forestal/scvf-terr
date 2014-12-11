@@ -7,10 +7,18 @@
 package ar.gob.ambiente.servicios.gestionterritorial.entidades;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -24,7 +32,28 @@ public class Provincia implements Serializable {
     private Long id;
     private String nombre;
 
+    @ManyToMany
+   	@JoinTable(
+            	name = "provinciasXRegiones",
+            	joinColumns = @JoinColumn(name = "provincia_fk"),
+            	inverseJoinColumns = @JoinColumn(name = "region_fk")
+   	)
+    private List<Region> regiones; 
 
+
+    @OneToMany(mappedBy="provincia")
+    private List<Localidad> municipios;     
+
+    @OneToMany(mappedBy="provincia")
+    private List<Localidad> departamentos;     
+    
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn(name="adminentidad_id")
+    private AdminEntidad adminentidad; 
+
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn(name="georef_id")
+    private GeoRef georef; 
 
     public Long getId() {
         return id;
@@ -41,6 +70,47 @@ public class Provincia implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public List<Region> getRegiones() {
+        return regiones;
+    }
+
+    public void setRegiones(List<Region> regiones) {
+        this.regiones = regiones;
+    }
+
+    public List<Localidad> getMunicipios() {
+        return municipios;
+    }
+
+    public void setMunicipios(List<Localidad> municipios) {
+        this.municipios = municipios;
+    }
+
+    public List<Localidad> getDepartamentos() {
+        return departamentos;
+    }
+
+    public void setDepartamentos(List<Localidad> departamentos) {
+        this.departamentos = departamentos;
+    }
+
+    public AdminEntidad getAdminentidad() {
+        return adminentidad;
+    }
+
+    public void setAdminentidad(AdminEntidad adminentidad) {
+        this.adminentidad = adminentidad;
+    }
+
+    public GeoRef getGeoref() {
+        return georef;
+    }
+
+    public void setGeoref(GeoRef georef) {
+        this.georef = georef;
+    }
+    
     
     @Override
     public int hashCode() {
