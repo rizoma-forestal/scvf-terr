@@ -42,10 +42,10 @@ public class Provincia implements Serializable {
 
 
     @OneToMany(mappedBy="provincia")
-    private List<Localidad> municipios;     
+    private List<Municipio> municipios;     
 
     @OneToMany(mappedBy="provincia")
-    private List<Localidad> departamentos;     
+    private List<Departamento> departamentos;     
     
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
@@ -79,19 +79,19 @@ public class Provincia implements Serializable {
         this.regiones = regiones;
     }
 
-    public List<Localidad> getMunicipios() {
+    public List<Municipio> getMunicipios() {
         return municipios;
     }
 
-    public void setMunicipios(List<Localidad> municipios) {
+    public void setMunicipios(List<Municipio> municipios) {
         this.municipios = municipios;
     }
 
-    public List<Localidad> getDepartamentos() {
+    public List<Departamento> getDepartamentos() {
         return departamentos;
     }
 
-    public void setDepartamentos(List<Localidad> departamentos) {
+    public void setDepartamentos(List<Departamento> departamentos) {
         this.departamentos = departamentos;
     }
 

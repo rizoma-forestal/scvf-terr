@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -51,8 +52,8 @@ public class Region implements Serializable {
         this.georef = georef;
     }
     
-    @OneToMany(mappedBy="region")
-    private List<Provincia> provincias;
+    @ManyToMany(mappedBy = "regiones")
+    	private List<Provincia> provincias;
 
     public List<Provincia> getProvincias() {
         return provincias;
