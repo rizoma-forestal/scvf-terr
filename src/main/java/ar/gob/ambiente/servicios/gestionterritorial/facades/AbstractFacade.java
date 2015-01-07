@@ -49,14 +49,16 @@ public abstract class AbstractFacade<T> {
      * @param obj
      */
     public void create(T obj) {
-        em = getEntityManager();
-        EntityTransaction etx = em.getTransaction();
-        etx.begin();
+        getEntityManager().persist(obj);
         
-        em.persist(obj);
+        //em = getEntityManager();
+        //EntityTransaction etx = em.getTransaction();
+        //etx.begin();
         
-        etx.commit();
-        em.clear();
+        //em.persist(obj);
+        
+        //etx.commit();
+        //em.clear();
     }
 
     /**
@@ -97,7 +99,7 @@ public abstract class AbstractFacade<T> {
     public T find(Object id) {
         em = getEntityManager();
         T p = em.find(entityClass, id);
-        em.close();
+        //em.close();
         return p;
     }
 

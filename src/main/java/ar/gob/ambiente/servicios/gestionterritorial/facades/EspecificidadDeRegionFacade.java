@@ -10,6 +10,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.EspecificidadDeReg
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,4 +25,16 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
         super(EspecificidadDeRegion.class);
     }
     
+    public boolean tieneDependencias(Long id){
+        em = getEntityManager();
+        String queryString = "SELECT * FROM region WHERE especificidadderegion_id = " + id;
+        Query q = em.createNativeQuery(queryString, EspecificidadDeRegion.class);
+        return q.getResultList().isEmpty();
+    }
+    
+    public boolean existe(String nombre){
+        em = getEntityManager();
+        EspecificidadDeRegion esp = em.find(EspecificidadDeRegion.class, nombre);
+        return esp.getNombre().isEmpty();
+    }
 }

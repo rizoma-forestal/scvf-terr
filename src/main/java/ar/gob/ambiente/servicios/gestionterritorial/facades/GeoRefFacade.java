@@ -38,7 +38,7 @@ public class GeoRefFacade extends AbstractFacade<GeoRef> {
         String queryString = "SELECT * FROM georef WHERE punto LIKE '%" + stringParam + "%'";
         Query q = em.createNativeQuery(queryString, GeoRef.class);
         result = q.getResultList();
-        em.close();
+        //em.close();
         return result;
     }     
 }
