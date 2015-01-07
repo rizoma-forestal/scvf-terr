@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Tue Dec 16 12:15:25 ART 2014:
- Arrancando Derby versión The Apache Software Foundation - Apache Derby - 10.8.1.2 - (1095077): instancia a816c00e-014a-53ab-09e8-000000f9fc00 
-en el directorio de base de datos C:\Users\rincostante\Documents\NetBeansProjects\gestionTerritorial\target\databases\derby  con el cargador de clases sun.misc.Launcher$AppClassLoader@dd20f6
+Tue Dec 16 13:56:29 ART 2014:
+ Arrancando Derby versión The Apache Software Foundation - Apache Derby - 10.8.1.2 - (1095077): instancia a816c00e-014a-5407-904c-000003a0c1c8 
+en el directorio de base de datos C:\Users\lagarcia\Documents\NetBeansProjects\gestionTerritorial\target\databases\derby  con el cargador de clases sun.misc.Launcher$AppClassLoader@1d262f7c
 
 java.vendor=Oracle Corporation
-java.runtime.version=1.7.0_51-b13
-user.dir=C:\Users\rincostante\Documents\NetBeansProjects\gestionTerritorial
+java.runtime.version=1.7.0_67-b01
+user.dir=C:\Users\lagarcia\Documents\NetBeansProjects\gestionTerritorial
 derby.system.home=null
 Cargador de clases de base de datos iniciado - derby.database.classpath=''

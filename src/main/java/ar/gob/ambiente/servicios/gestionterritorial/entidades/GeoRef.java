@@ -22,7 +22,17 @@ public class GeoRef implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String punto;
 
+    public String getPunto() {
+        return punto;
+    }
+
+    public void setPunto(String punto) {
+        this.punto = punto;
+    }
+
+    
     public Long getId() {
         return id;
     }

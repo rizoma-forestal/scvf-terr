@@ -14,6 +14,8 @@ import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
+import org.junit.Assert;
+import static org.junit.Assert.fail;
 import org.junit.runner.RunWith;
 
 /**
@@ -33,11 +35,34 @@ public class EntidadFacadeTest {
     
     @Test
     @UsingDataSet("entidad.xml")
+    /**
+     * Pruebo el create()
+     */
     public void EntidadFacadeTest001(){
-        int reg;
         Entidad p1 = new Entidad();
         p1.setNombre("Bob");
         
         enitdadFacade.create(p1);
+        
+        p1 = enitdadFacade.find(Long.valueOf(1));
+
+        Assert.assertEquals("Bob", p1.getNombre());
     }
+    
+    @Test
+    @UsingDataSet("entidad.xml")
+    /**
+     * Pruebo el create()
+     */
+    public void EntidadFacadeTest002(){
+        Entidad p1 = enitdadFacade.find(Long.valueOf(1));
+        
+        p1.setNombre("Enrique");
+        
+        enitdadFacade.edit(p1);
+        
+        p1 = enitdadFacade.find(Long.valueOf(1));
+        
+        Assert.assertEquals("Enrique", p1.getNombre());
+    }    
 }

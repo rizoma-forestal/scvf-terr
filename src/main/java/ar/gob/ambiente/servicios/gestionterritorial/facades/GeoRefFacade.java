@@ -7,9 +7,11 @@
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.GeoRef;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,4 +26,19 @@ public class GeoRefFacade extends AbstractFacade<GeoRef> {
         super(GeoRef.class);
     }
     
+    /**
+     * Método que devuelve todos los Organismos que contienen la cadena recibida como parámetro 
+     * dentro de alguno de sus campos string, en este caso el nombre.
+     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @return: El conjunto de resultados provenientes de la búsqueda. 
+     */      
+    public List<GeoRef> getXString(String stringParam){
+        em = getEntityManager();
+        List<GeoRef> result;
+        String queryString = "SELECT * FROM georef WHERE punto LIKE '%" + stringParam + "%'";
+        Query q = em.createNativeQuery(queryString, GeoRef.class);
+        result = q.getResultList();
+        em.close();
+        return result;
+    }     
 }
