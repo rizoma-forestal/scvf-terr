@@ -325,7 +325,7 @@ public class MbEntidad implements Serializable {
     }
     
     private void buscarEdificios(){
-        items = new ListDataModel(getFacade().getEntidadesXString(selectParam)); 
+        items = new ListDataModel(getFacade().getXString(selectParam)); 
     }
     
     

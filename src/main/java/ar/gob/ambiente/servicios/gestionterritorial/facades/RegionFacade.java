@@ -20,6 +20,10 @@ public class RegionFacade extends AbstractFacade<Region> {
     @PersistenceContext(unitName = "ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 
     public RegionFacade() {
         super(Region.class);

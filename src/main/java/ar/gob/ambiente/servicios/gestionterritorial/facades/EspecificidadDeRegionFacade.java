@@ -7,6 +7,7 @@
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.EspecificidadDeRegion;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,10 +21,30 @@ import javax.persistence.Query;
 public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeRegion> {
     @PersistenceContext(unitName = "ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }    
 
     public EspecificidadDeRegionFacade() {
         super(EspecificidadDeRegion.class);
     }
+    
+    /**
+     * Método que devuelve todas las Especificidades de Región que contienen la cadena recibida como parámetro 
+     * dentro de alguno de sus campos string, en este caso el nombre.
+     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @return: El conjunto de resultados provenientes de la búsqueda. 
+     */      
+    public List<EspecificidadDeRegion> getXString(String stringParam){
+        em = getEntityManager();
+        List<EspecificidadDeRegion> result;
+        String queryString = "SELECT * FROM especificidadderegion WHERE nombre LIKE '%" + stringParam + "%'";
+        Query q = em.createNativeQuery(queryString, EspecificidadDeRegion.class);
+        result = q.getResultList();
+        return result;
+    }    
     
     public boolean tieneDependencias(Long id){
         em = getEntityManager();

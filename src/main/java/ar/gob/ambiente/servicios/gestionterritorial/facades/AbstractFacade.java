@@ -21,8 +21,6 @@ import javax.persistence.TemporalType;
  */
 public abstract class AbstractFacade<T> {
     private final Class<T> entityClass;
-    private static EntityManagerFactory emf = null;
-    private EntityManager em;
 
     /**
      *
@@ -36,116 +34,45 @@ public abstract class AbstractFacade<T> {
      *
      * @return
      */
-    protected static EntityManager getEntityManager()
-    {
-        if(emf == null){
-            emf = Persistence.createEntityManagerFactory("ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU");
-        }
-        return emf.createEntityManager();
+    protected abstract EntityManager getEntityManager();
+
+    public void create(T entity) {
+        getEntityManager().persist(entity);
     }
 
-    /**
-     *
-     * @param obj
-     */
-    public void create(T obj) {
-        getEntityManager().persist(obj);
-        
-        //em = getEntityManager();
-        //EntityTransaction etx = em.getTransaction();
-        //etx.begin();
-        
-        //em.persist(obj);
-        
-        //etx.commit();
-        //em.clear();
+    public void edit(T entity) {
+        getEntityManager().merge(entity);
     }
 
-    /**
-     *
-     * @param obj
-     */
-    public void edit(T obj) {
-        em = getEntityManager();
-        EntityTransaction etx = em.getTransaction();
-        etx.begin();
-        
-        em.merge(obj);
-        
-        etx.commit();
-        em.clear();
+    public void remove(T entity) {
+        getEntityManager().remove(getEntityManager().merge(entity));
     }
 
-    /**
-     *
-     * @param obj
-     */
-    public void remove(T obj) {
-        em = getEntityManager();
-        EntityTransaction etx = em.getTransaction();
-        etx.begin();
-        
-        em.remove(obj);
-        
-        etx.commit();
-        em.clear();
-    }
-
-    /**
-     *
-     * @param id
-     * @return
-     */
     public T find(Object id) {
-        em = getEntityManager();
-        T p = em.find(entityClass, id);
-        //em.close();
-        return p;
+        return getEntityManager().find(entityClass, id);
     }
 
-    /**
-     *
-     * @return
-     */
     public List<T> findAll() {
-        em = getEntityManager();
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
-        List<T> resultList = em.createQuery(cq).getResultList();
-        em.close();
-        return resultList;
+        return getEntityManager().createQuery(cq).getResultList();
     }
 
-    /**
-     *
-     * @param range
-     * @return
-     */
     public List<T> findRange(int[] range) {
-        em = getEntityManager();
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);
         q.setFirstResult(range[0]);
-        List<T> resultList = q.getResultList();
-        em.close();
-        return resultList;
+        return q.getResultList();
     }
 
-    /**
-     *
-     * @return
-     */
     public int count() {
-        em = getEntityManager();
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-        cq.select(em.getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = em.createQuery(cq);
-        int regs = ((Long) q.getSingleResult()).intValue();
-        em.close();
-        return regs;
+        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
+        javax.persistence.Query q = getEntityManager().createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
     }
 
     /**
@@ -157,7 +84,6 @@ public abstract class AbstractFacade<T> {
      * @return
      */
     public List<T> findFieldValue(String table, String campo, Object valor, String tipo) {
-        em = getEntityManager();
         List<T> result;
         String queryString = "";
         switch (tipo) {
@@ -169,9 +95,8 @@ public abstract class AbstractFacade<T> {
                 queryString = "SELECT * FROM " + table + " WHERE " + campo + " = " + valor;
                 break;                
         }
-        javax.persistence.Query q = em.createNativeQuery(queryString, entityClass);
+        javax.persistence.Query q = getEntityManager().createNativeQuery(queryString, entityClass);
         result = q.getResultList();
-        em.close();
         return result;
     }
     
@@ -183,13 +108,11 @@ public abstract class AbstractFacade<T> {
      * @return
      */
     public List<T> findXFecha(String campo, Date date, TemporalType temporalType) {
-        em = getEntityManager();
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setParameter(campo, date, temporalType);
         List<T> resultList = q.getResultList();
-        em.close();
         return resultList;
     }     
 }
