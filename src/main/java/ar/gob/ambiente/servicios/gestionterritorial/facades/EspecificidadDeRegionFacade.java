@@ -27,6 +27,9 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
         return em;
     }    
 
+    /**
+     *
+     */
     public EspecificidadDeRegionFacade() {
         super(EspecificidadDeRegion.class);
     }
@@ -44,8 +47,25 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
         Query q = em.createNativeQuery(queryString, EspecificidadDeRegion.class);
         result = q.getResultList();
         return result;
+    }
+
+    /**
+     * Metodo que verifica si ya existe la entidad.
+     * @param nombre: es la cadena que buscara para ver si ya existe en la BDD
+     * @return: devuelve True o False
+     */
+    public boolean existe(String nombre){
+        em = getEntityManager();
+        String queryString = "SELECT * FROM especificidadderegion WHERE nombre = '" + nombre + "'";
+        Query q = em.createNativeQuery(queryString, EspecificidadDeRegion.class);
+        return q.getResultList().isEmpty();
     }    
     
+    /**
+     * Método que verifica si la entidad tiene dependencia (Hijos)
+     * @param id: ID de la entidad
+     * @return: True o False
+     */
     public boolean tieneDependencias(Long id){
         em = getEntityManager();
         String queryString = "SELECT * FROM region WHERE especificidadderegion_id = " + id;
@@ -53,9 +73,6 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
         return q.getResultList().isEmpty();
     }
     
-    public boolean existe(String nombre){
-        em = getEntityManager();
-        EspecificidadDeRegion esp = em.find(EspecificidadDeRegion.class, nombre);
-        return esp.getNombre().isEmpty();
-    }
+
+    
 }

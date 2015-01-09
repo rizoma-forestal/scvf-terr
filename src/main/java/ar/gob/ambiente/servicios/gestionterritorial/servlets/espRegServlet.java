@@ -37,10 +37,10 @@ public class espRegServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            System.out.println(espFcd.existe("Pirulo"));
+            
             
             /* TODO output your page here. You may use following sample code. */
-            /*
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -48,9 +48,30 @@ public class espRegServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet espRegServlet at " + request.getContextPath() + "</h1>");
+            
+            //espFcd.existe("Pirulo");
+            
+            
+            if(espFcd.existe("Pirulo")){
+                out.println("<h1>No Existe</h1>");
+                }
+                else{
+                    out.println("<h1>Ya existe</h1>");
+                        }
+            
+            
+            if(espFcd.tieneDependencias(Long.valueOf(1))){
+                out.println("<h1>No Tiene Dependencias</h1>");
+                }
+                else{
+                    out.println("<h1>Tiene Dependencias</h1>");
+                        }
+            
+            
             out.println("</body>");
+
             out.println("</html>");
-            */
+            
         }
     }
 
