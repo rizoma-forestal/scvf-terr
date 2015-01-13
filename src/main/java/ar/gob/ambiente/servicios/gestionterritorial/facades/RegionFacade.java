@@ -41,12 +41,14 @@ public class RegionFacade extends AbstractFacade<Region> {
     public List<Region> getXString(String stringParam){
         em = getEntityManager();
         List<Region> result;
-        String queryString = "SELECT * FROM region WHERE nombre LIKE '%" + stringParam + "%'";
-        Query q = em.createNativeQuery(queryString, Region.class);
+        String queryString = "SELECT reg.nombre FROM region reg "
+                + "WHERE reg.nombre LIKE :stringParam ";        
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", "%" + stringParam + "%");        
         result = q.getResultList();
         return result;
     }
-
+             
     /**
      * Metodo que verifica si ya existe la entidad.
      * @param nombre: es la cadena que buscara para ver si ya existe en la BDD
