@@ -22,6 +22,7 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
     @PersistenceContext(unitName = "ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU")
     private EntityManager em;
     
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -43,21 +44,26 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
     public List<EspecificidadDeRegion> getXString(String stringParam){
         em = getEntityManager();
         List<EspecificidadDeRegion> result;
-        String queryString = "SELECT * FROM especificidadderegion WHERE nombre LIKE '%" + stringParam + "%'";
-        Query q = em.createNativeQuery(queryString, EspecificidadDeRegion.class);
+        String queryString = "SELECT edr FROM EspecificidadDeRegion edr "
+                + "WHERE edr.nombre LIKE :stringParam";
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", "%" + stringParam + "%");
         result = q.getResultList();
         return result;
     }
-
+    
+    
     /**
      * Metodo que verifica si ya existe la entidad.
      * @param nombre: es la cadena que buscara para ver si ya existe en la BDD
      * @return: devuelve True o False
      */
     public boolean existe(String nombre){
-        em = getEntityManager();
-        String queryString = "SELECT * FROM especificidadderegion WHERE nombre = '" + nombre + "'";
-        Query q = em.createNativeQuery(queryString, EspecificidadDeRegion.class);
+        em = getEntityManager();       
+        String queryString = "SELECT edr.nombre FROM EspecificidadDeRegion edr"
+                + "WHERE edr.nombre = :nombre";
+        Query q = em.createQuery(queryString)
+                .setParameter("nombre", nombre);
         return q.getResultList().isEmpty();
     }    
     
@@ -67,12 +73,13 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
      * @return: True o False
      */
     public boolean tieneDependencias(Long id){
-        em = getEntityManager();
-        String queryString = "SELECT * FROM region WHERE especificidadderegion_id = " + id;
-        Query q = em.createNativeQuery(queryString, EspecificidadDeRegion.class);
+        em = getEntityManager();        
+        String queryString = "SELECT edr.id FROM Region reg " 
+                + "WHERE reg.especificidadderegion.id = :id";        
+        Query q = em.createQuery(queryString)
+                .setParameter("id", id);
         return q.getResultList().isEmpty();
     }
-    
 
     
 }
