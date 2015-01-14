@@ -60,7 +60,7 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
      */
     public boolean existe(String nombre){
         em = getEntityManager();       
-        String queryString = "SELECT edr.nombre FROM EspecificidadDeRegion edr"
+        String queryString = "SELECT edr.nombre FROM EspecificidadDeRegion edr "
                 + "WHERE edr.nombre = :nombre";
         Query q = em.createQuery(queryString)
                 .setParameter("nombre", nombre);
@@ -74,12 +74,21 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
      */
     public boolean tieneDependencias(Long id){
         em = getEntityManager();        
-        String queryString = "SELECT edr.id FROM Region reg " 
+        String queryString = "SELECT reg FROM Region reg " 
                 + "WHERE reg.especificidadderegion.id = :id";        
         Query q = em.createQuery(queryString)
                 .setParameter("id", id);
         return q.getResultList().isEmpty();
     }
 
-    
+    /**
+     * Metodo para el autocompletado de la búsqueda por nombre
+     * @return 
+     */
+    public List<String> getNombres(){
+        em = getEntityManager();
+        String queryString = "SELECT edr.nombre FROM EspecificidadDeRegion edr";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }
 }

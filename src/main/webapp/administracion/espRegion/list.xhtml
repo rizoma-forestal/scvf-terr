@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+      
+    <h:head>
+        <title>#{bundle.EspRegionTitle}</title>
+    </h:head>
+    <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EspRegionTitle}" />
+        </ui:define>
+        <ui:define name="content">
+            <br/> 
+            <h:form>
+                <p:panel id="espRegionForm" header="#{bundle.EspRegionListTitle}" style="margin-bottom:10px;">
+                    <h:panelGrid columns="6">
+                        <p:autoComplete value="#{mbEspRegion.selectParam}" 
+                                        completeMethod="#{mbEspRegion.completeNombres}" />
+                        <p:commandButton icon="ui-icon-close" style="float: right">
+                            <p:ajax update="espRegionForm" resetValues="true" />
+                        </p:commandButton>                        
+                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbEspRegion.prepareSelect}" ajax="false"/>  
+                        <p:outputLabel value="&ensp;&ensp;"/>
+                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbEspRegion.prepareCreate}"/>
+                        <p:commandButton icon="ui-icon-refresh" value="Listar" action="#{mbEspRegion.prepareList}" update="espRegionList"/>
+                    </h:panelGrid>
+                </p:panel>
+
+                <br/>           
+
+                <p:dataTable value="#{mbEspRegion.items}" var="e" id="espRegionList" rows="5"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <f:facet name="header">
+                        Listado de #{bundle.EspRegionListTitle}
+                        <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
+                        <p:columnToggler datasource="espRegionList" trigger="toggler" />
+                    </f:facet>
+                    <p:column headerText="Nombre" sortBy="#{e.nombre}">
+                        <p:outputLabel value="#{e.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Acciones" style="width:135px">
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbEspRegion.prepareView}"/>
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbEspRegion.prepareEdit}"/>
+                        <p:commandButton icon="ui-icon-trash" action="#{mbEspRegion.prepareDestroy}"/>
+                    </p:column>                
+           
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
