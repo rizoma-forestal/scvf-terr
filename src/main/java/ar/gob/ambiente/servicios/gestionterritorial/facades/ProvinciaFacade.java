@@ -34,27 +34,37 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
     /**
      * Método que devuelve todas las Provincias que contienen la cadena recibida como parámetro 
      * dentro de alguno de sus campos string, en este caso el nombre.
-     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @param aBuscar: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
      * @return: El conjunto de resultados provenientes de la búsqueda. 
      */      
-    public List<Provincia> getXString(String stringParam){
+    public List<Provincia> getXString(String aBuscar){
         em = getEntityManager();
         List<Provincia> result;
-        String queryString = "SELECT * FROM provincia WHERE nombre LIKE '%" + stringParam + "%'";
-        Query q = em.createNativeQuery(queryString, Provincia.class);
+        
+        String queryString = "SELECT pro FROM provincia pro"
+                + "WHERE pro.nombre LIKE :stringParam";
+        
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", "%" + aBuscar + "%");    
+        
         result = q.getResultList();
         return result;
     }
 
     /**
      * Metodo que verifica si ya existe la entidad.
-     * @param nombre: es la cadena que buscara para ver si ya existe en la BDD
+     * @param aBuscar: es la cadena que buscara para ver si ya existe en la BDD
      * @return: devuelve True o False
      */
-    public boolean existe(String nombre){
+    public boolean existe(String aBuscar){
         em = getEntityManager();
-        String queryString = "SELECT * FROM provincia WHERE nombre = '" + nombre + "'";
-        Query q = em.createNativeQuery(queryString, Provincia.class);
+
+        String queryString = "SELECT pro FROM provincia pro"
+                + "WHERE pro.nombre = :stringParam";
+        
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", aBuscar);
+        
         return q.getResultList().isEmpty();
     }    
     
@@ -65,10 +75,14 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
      */
     public boolean tieneDependencias(Long id){
         em = getEntityManager();
-        String queryString = "SELECT nombre FROM municipio WHERE provincia_id = " + id;
-        queryString += " UNION ";
-        queryString += "SELECT nombre FROM departamento WHERE provincia_id = " + id;
-        Query q = em.createNativeQuery(queryString, Provincia.class);
+
+
+        String queryString = "SELECT pro FROM Provincia prov" 
+                + "WHERE prov.region.id = :idParam";        
+        
+        Query q = em.createQuery(queryString)
+                .setParameter("idParam", id);        
+        
         return q.getResultList().isEmpty();
     }
 

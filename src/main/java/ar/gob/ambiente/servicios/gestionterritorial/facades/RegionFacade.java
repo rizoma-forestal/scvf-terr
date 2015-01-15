@@ -35,29 +35,31 @@ public class RegionFacade extends AbstractFacade<Region> {
     /**
      * Método que devuelve todas las Regiones que contienen la cadena recibida como parámetro 
      * dentro de alguno de sus campos string, en este caso el nombre.
-     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @param aBuscar: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
      * @return: El conjunto de resultados provenientes de la búsqueda. 
      */      
-    public List<Region> getXString(String stringParam){
+    public List<Region> getXString(String aBuscar){
         em = getEntityManager();
         List<Region> result;
         String queryString = "SELECT reg.nombre FROM region reg "
                 + "WHERE reg.nombre LIKE :stringParam ";        
         Query q = em.createQuery(queryString)
-                .setParameter("stringParam", "%" + stringParam + "%");        
+                .setParameter("stringParam", "%" + aBuscar + "%");        
         result = q.getResultList();
         return result;
     }
              
     /**
      * Metodo que verifica si ya existe la entidad.
-     * @param nombre: es la cadena que buscara para ver si ya existe en la BDD
+     * @param aBuscar: es la cadena que buscara para ver si ya existe en la BDD
      * @return: devuelve True o False
      */
-    public boolean existe(String nombre){
+    public boolean existe(String aBuscar){
         em = getEntityManager();
-        String queryString = "SELECT * FROM region WHERE nombre = '" + nombre + "'";
-        Query q = em.createNativeQuery(queryString, Region.class);
+        String queryString = "SELECT reg FROM region reg"
+                + "WHERE reg.nombre = :stringParam";
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", aBuscar);
         return q.getResultList().isEmpty();
     }    
     
@@ -67,9 +69,14 @@ public class RegionFacade extends AbstractFacade<Region> {
      * @return: True o False
      */
     public boolean tieneDependencias(Long id){
-        em = getEntityManager();
-        String queryString = "SELECT * FROM provincia WHERE region_id = " + id;
-        Query q = em.createNativeQuery(queryString, Region.class);
+        em = getEntityManager();        
+        
+        String queryString = "SELECT reg FROM Provincia prov" 
+                + "WHERE prov.region.id = :idParam";        
+        
+        Query q = em.createQuery(queryString)
+                .setParameter("idParam", id);
+        
         return q.getResultList().isEmpty();
     }
     

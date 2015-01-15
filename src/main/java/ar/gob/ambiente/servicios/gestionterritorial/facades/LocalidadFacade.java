@@ -38,12 +38,16 @@ public class LocalidadFacade extends AbstractFacade<Localidad> {
      * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
      * @return: El conjunto de resultados provenientes de la búsqueda. 
      */      
-    public List<Localidad> getXString(String stringParam){
+    public List<Localidad> getXString(String aBuscar){
         em = getEntityManager();
         List<Localidad> result;
-        String queryString = "SELECT * FROM localidad WHERE nombre LIKE '%" + stringParam + "%'";
-        Query q = em.createNativeQuery(queryString, Localidad.class);
+        
+        String queryString = "SELECT reg.nombre FROM region reg "
+                + "WHERE reg.nombre LIKE :stringParam ";        
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", "%" + aBuscar + "%");        
         result = q.getResultList();
+        
         return result;
     }
 
