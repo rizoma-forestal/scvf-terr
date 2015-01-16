@@ -71,7 +71,7 @@ public class RegionFacade extends AbstractFacade<Region> {
     public boolean tieneDependencias(Long id){
         em = getEntityManager();        
         
-        String queryString = "SELECT reg FROM Provincia prov" 
+        String queryString = "SELECT pro FROM Provincia pro" 
                 + "WHERE prov.region.id = :idParam";        
         
         Query q = em.createQuery(queryString)
@@ -79,13 +79,16 @@ public class RegionFacade extends AbstractFacade<Region> {
         
         return q.getResultList().isEmpty();
     }
+
+    /**
+     * Metodo para el autocompletado de la búsqueda por nombre
+     * @return 
+     */
+    public List<String> getNombres(){
+        em = getEntityManager();
+        String queryString = "SELECT reg.nombre FROM Region reg";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }    
     
-
-
-
-
-
-
-
-
 }

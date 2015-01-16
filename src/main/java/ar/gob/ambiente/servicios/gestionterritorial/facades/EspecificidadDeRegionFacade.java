@@ -61,7 +61,7 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
     public boolean existe(String aBuscar){
         em = getEntityManager();       
         String queryString = "SELECT edr.nombre FROM EspecificidadDeRegion edr "
-                + "WHERE edr.nombre = :nombre";
+                + "WHERE edr.nombre = :stringParam";
         Query q = em.createQuery(queryString)
                 .setParameter("stringParam", aBuscar);
         return q.getResultList().isEmpty();
@@ -75,7 +75,7 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
     public boolean tieneDependencias(Long id){
         em = getEntityManager();        
         String queryString = "SELECT reg FROM Region reg " 
-                + "WHERE reg.especificidadderegion.id = :id";        
+                + "WHERE reg.especificidadderegion.id = :idParam";        
         Query q = em.createQuery(queryString)
                 .setParameter("idParam", id);
         return q.getResultList().isEmpty();

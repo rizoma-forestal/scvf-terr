@@ -11,14 +11,15 @@
     <h:body>
         <div id="layout">     
             <div id="header">
-                <div id="logo" style="position: relative; left: 18%">
-                    <img src= "#{bundle.Servidor}#{bundle.RutaAplicacion}/faces/resources/img/header.png" width="977" height="123" alt="header" style="alignment-adjust: central"/>
+                <div id="logo" style="position: relative; ">
+                    <img src= "#{bundle.Servidor}#{bundle.RutaAplicacion}/faces/resources/img/header.png"  alt="header" style="alignment-adjust: central"/>
                 </div>
                 <h:form>
                     <p:menubar>
                         <p:menuitem value="Inicio" url="#{bundle.Servidor}#{bundle.RutaAplicacion}" />
                         <p:submenu label="Administración">
                             <p:menuitem value="Especificidad de Región" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizEspRegion}/list.xhtml"/>
+                            <p:menuitem value="Región" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizRegion}/list.xhtml"/>
                         </p:submenu>                         
                     </p:menubar>
                 </h:form>
@@ -31,8 +32,9 @@
             </div>
 
             <div id="footer" style="position: relative; left: 18%">
-                <p></p>
-                <img src="#{bundle.Servidor}#{bundle.RutaAplicacion}/faces/resources/img/footer.png" width="962" height="72" alt="footer"/>
+                <p>Secretaría de Ambiente y Desarrollo Sustentable - San Martín 451 • C1004AAI  C. de Buenos Aires • Argentina • Tel (54) (11) 4348 8200 • Fax (54) (11) 4348 8300
+</p>
+                <!--<img src="#{bundle.Servidor}#{bundle.RutaAplicacion}/faces/resources/img/footer.png" width="962" height="72" alt="footer"/>-->
             </div>
         </div>
     </h:body>  
