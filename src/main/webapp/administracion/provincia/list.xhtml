@@ -7,47 +7,53 @@
       xmlns:p="http://primefaces.org/ui">
       
     <h:head>
-        <title>#{bundle.EspRegionTitle}</title>
+        <title>#{bundle.ProvinciaTitle}</title>
     </h:head>
     <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.EspRegionTitle}" />
+            <h:outputText value="#{bundle.ProvinciaTitle}" />
         </ui:define>
         <ui:define name="content">
             <br/> 
             <h:form>
-                <p:panel id="espRegionForm" header="#{bundle.EspRegionListTitle}" style="margin-bottom:10px;">
+                <p:panel id="provinciaForm" header="#{bundle.ProvinciaListTitle}" style="margin-bottom:10px;">
                     <h:panelGrid columns="6">
-                        <p:autoComplete value="#{mbEspRegion.selectParam}" 
-                                        completeMethod="#{mbEspRegion.completeNombres}" />
+                        <p:autoComplete value="#{mbProvincia.selectParam}" 
+                                        completeMethod="#{mbProvincia.completeNombres}" />
                         <p:commandButton icon="ui-icon-close" style="float: right">
-                            <p:ajax update="espRegionForm" resetValues="true" />
+                            <p:ajax update="provinciaForm" resetValues="true" />
                         </p:commandButton>                        
-                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbEspRegion.prepareSelect}" ajax="false"/>  
+                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbProvincia.prepareSelect}" ajax="false"/>  
                         <p:outputLabel value="&ensp;&ensp;"/>
-                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbEspRegion.prepareCreate}"/>
-                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbEspRegion.prepareList}" update="espRegionList"/>
+                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbProvincia.prepareCreate}"/>
+                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbProvincia.prepareList}" update="provinciaList"/>
                     </h:panelGrid>
                 </p:panel>
 
                 <br/>           
 
-                <p:dataTable value="#{mbEspRegion.items}" var="e" id="espRegionList" rows="5"
+                <p:dataTable value="#{mbProvincia.items}" var="e" id="provinciaList" rows="5"
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
                     <f:facet name="header">
-                        Listado de #{bundle.EspRegionListTitle}
+                        Listado de #{bundle.ProvinciaListTitle}
                         <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
-                        <p:columnToggler datasource="espRegionList" trigger="toggler" />
+                        <p:columnToggler datasource="provinciaList" trigger="toggler" />
                     </f:facet>
                     <p:column headerText="Nombre" sortBy="#{e.nombre}">
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
+                    <p:column headerText="Fecha Alta" sortBy="#{e.adminentidad.fechaAlta}">
+                        <p:outputLabel value="#{e.adminentidad.fechaAlta}"/>
+                    </p:column>
+                    <p:column headerText="Usuario Alta" sortBy="#{e.adminentidad.usAlta}">
+                        <p:outputLabel value="#{e.adminentidad.usAlta}"/>
+                    </p:column>
                     <p:column headerText="Acciones" style="width:135px">
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbEspRegion.prepareView}"/>
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbEspRegion.prepareEdit}"/>
-                        <p:commandButton icon="ui-icon-trash" action="#{mbEspRegion.prepareDestroy}"/>
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbProvincia.prepareView}"/>
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbProvincia.prepareEdit}"/>
+                        <p:commandButton icon="ui-icon-trash" action="#{mbProvincia.prepareDestroy}"/>
                     </p:column>                
            
                 </p:dataTable>

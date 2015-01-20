@@ -41,7 +41,7 @@ public class RegionFacade extends AbstractFacade<Region> {
     public List<Region> getXString(String aBuscar){
         em = getEntityManager();
         List<Region> result;
-        String queryString = "SELECT reg.nombre FROM region reg "
+        String queryString = "SELECT reg.nombre FROM Region reg "
                 + "WHERE reg.nombre LIKE :stringParam ";        
         Query q = em.createQuery(queryString)
                 .setParameter("stringParam", "%" + aBuscar + "%");        
@@ -56,7 +56,7 @@ public class RegionFacade extends AbstractFacade<Region> {
      */
     public boolean existe(String aBuscar){
         em = getEntityManager();
-        String queryString = "SELECT reg FROM region reg"
+        String queryString = "SELECT reg FROM Region reg "
                 + "WHERE reg.nombre = :stringParam";
         Query q = em.createQuery(queryString)
                 .setParameter("stringParam", aBuscar);
@@ -71,7 +71,7 @@ public class RegionFacade extends AbstractFacade<Region> {
     public boolean tieneDependencias(Long id){
         em = getEntityManager();        
         
-        String queryString = "SELECT pro FROM Provincia pro" 
+        String queryString = "SELECT pro FROM Provincia pro " 
                 + "WHERE prov.region.id = :idParam";        
         
         Query q = em.createQuery(queryString)
@@ -86,7 +86,7 @@ public class RegionFacade extends AbstractFacade<Region> {
      */
     public List<String> getNombres(){
         em = getEntityManager();
-        String queryString = "SELECT reg.nombre FROM Region reg";
+        String queryString = "SELECT reg.nombre FROM Region reg ";
         Query q = em.createQuery(queryString);
         return q.getResultList();
     }    

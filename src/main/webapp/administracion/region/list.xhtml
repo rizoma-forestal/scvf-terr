@@ -41,9 +41,14 @@
                         <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
                         <p:columnToggler datasource="RegionList" trigger="toggler" />
                     </f:facet>
+                    <p:column headerText="Especificidad" sortBy="#{e.especificidadderegion.nombre}">
+                        <p:outputLabel value="#{e.especificidadderegion.nombre}"/>
+                    </p:column>
+                    
                     <p:column headerText="Nombre" sortBy="#{e.nombre}">
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
+
                     <p:column headerText="Acciones" style="width:135px">
                         <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}"/>
                         <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}"/>

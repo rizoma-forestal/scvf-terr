@@ -41,7 +41,7 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
         em = getEntityManager();
         List<Provincia> result;
         
-        String queryString = "SELECT pro FROM provincia pro"
+        String queryString = "SELECT pro FROM Provincia pro "
                 + "WHERE pro.nombre LIKE :stringParam";
         
         Query q = em.createQuery(queryString)
@@ -59,7 +59,7 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
     public boolean existe(String aBuscar){
         em = getEntityManager();
 
-        String queryString = "SELECT pro FROM provincia pro"
+        String queryString = "SELECT pro FROM Provincia pro "
                 + "WHERE pro.nombre = :stringParam";
         
         Query q = em.createQuery(queryString)
@@ -77,7 +77,7 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
         em = getEntityManager();
 
 
-        String queryString = "SELECT pro FROM Provincia prov" 
+        String queryString = "SELECT pro FROM Provincia prov " 
                 + "WHERE prov.region.id = :idParam";        
         
         Query q = em.createQuery(queryString)
@@ -86,4 +86,15 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
         return q.getResultList().isEmpty();
     }
 
+    /**
+     * Metodo para el autocompletado de la búsqueda por nombre
+     * @return 
+     */
+    public List<String> getNombres(){
+        em = getEntityManager();
+        String queryString = "SELECT pro.nombre FROM Provincia pro";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }    
+    
 }
