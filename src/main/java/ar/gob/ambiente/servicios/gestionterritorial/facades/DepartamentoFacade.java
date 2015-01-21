@@ -72,5 +72,15 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         return q.getResultList().isEmpty();
     }
     
+    /**
+     * Metodo para el autocompletado de la búsqueda por nombre
+     * @return 
+     */
+    public List<String> getNombres(){
+        em = getEntityManager();
+        String queryString = "SELECT dep.nombre FROM Departamento dep ";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    } 
     
 }

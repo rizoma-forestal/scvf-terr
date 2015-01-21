@@ -29,7 +29,7 @@ import javax.faces.validator.ValidatorException;
 
 /**
  *
- * @author lagarcia
+ * @author epassarelli
  */
 public class MbEspRegion implements Serializable{
     
