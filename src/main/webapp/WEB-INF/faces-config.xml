@@ -34,4 +34,14 @@
         <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbDepartamento</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>mbMunicipio</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbMunicipio</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>mbLocalidad</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbLocalidad</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 </faces-config>

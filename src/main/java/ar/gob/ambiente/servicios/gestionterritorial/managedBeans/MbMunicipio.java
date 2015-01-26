@@ -7,13 +7,11 @@
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
-import ar.gob.ambiente.servicios.gestionterritorial.entidades.EspecificidadDeRegion;
-import ar.gob.ambiente.servicios.gestionterritorial.entidades.Region;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Municipio;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
-import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegionFacade;
-import ar.gob.ambiente.servicios.gestionterritorial.facades.RegionFacade;
-
-import java.io.Serializable;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.MunicipioFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -30,40 +28,38 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
+
 /**
  *
  * @author epassarelli
  */
-public class MbRegion implements Serializable{
+public class MbMunicipio {
 
-    private Region current;
+    private Municipio current;
     private DataModel items = null;
     
     
     @EJB
-    private EspecificidadDeRegionFacade espRegionFacade;
+    private ProvinciaFacade pciaFacade;
     
     @EJB
-    private RegionFacade regionFacade;
+    private MunicipioFacade muniFacade;
     //private PaginationHelper pagination;
     private int selectedItemIndex;
     private String selectParam;    
     private List<String> listaNombres; 
     
-    private List<EspecificidadDeRegion> listaEspecificidadesDeRegion;     
-
-
-
-
+    private List<Provincia> listaProvincias;       
+    
     /**
-     * Creates a new instance of MbRegion
+     * Creates a new instance of MbMunicipio
      */
-    public MbRegion() {
+    public MbMunicipio() {
     }
 
    @PostConstruct
    public void init(){
-        
+        listaProvincias = pciaFacade.findAll();
    }
     
     /********************************
@@ -72,9 +68,9 @@ public class MbRegion implements Serializable{
     /**
      * @return La entidad gestionada
      */
-    public Region getSelected() {
+    public Municipio getSelected() {
         if (current == null) {
-            current = new Region();
+            current = new Municipio();
             selectedItemIndex = -1;
         }
         return current;
@@ -108,7 +104,7 @@ public class MbRegion implements Serializable{
         if(selectParam != null){
             redirect = "list";
         }else{
-            redirect = "administracion/region/list";
+            redirect = "administracion/municipio/list";
         }
         recreateModel();
         return redirect;
@@ -118,7 +114,7 @@ public class MbRegion implements Serializable{
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        current = (Region) getItems().getRowData();
+        current = (Municipio) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
@@ -127,8 +123,7 @@ public class MbRegion implements Serializable{
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaEspecificidadesDeRegion = espRegionFacade.findAll();
-        current = new Region();
+        current = new Municipio();
         selectedItemIndex = -1;
         return "new";
     }
@@ -137,7 +132,7 @@ public class MbRegion implements Serializable{
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        current = (Region) getItems().getRowData();
+        current = (Municipio) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         selectedItemIndex = getItems().getRowIndex();
         return "edit";
@@ -154,7 +149,7 @@ public class MbRegion implements Serializable{
      */
     public String prepareSelect(){
         items = null;
-        buscarRegion();
+        buscarMunicipio();
         return "list";
     }
     
@@ -163,7 +158,7 @@ public class MbRegion implements Serializable{
      * @return 
      */
     public String prepareDestroy(){
-        current = (Region) getItems().getRowData();
+        current = (Municipio) getItems().getRowData();
         boolean libre = getFacade().tieneDependencias(current.getId());
 
         if (libre){
@@ -173,7 +168,7 @@ public class MbRegion implements Serializable{
             recreateModel();
         }else{
             //No Elimina 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("RegionNonDeletable"));
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioNonDeletable"));
         }
         return "view";
     }
@@ -203,7 +198,7 @@ public class MbRegion implements Serializable{
     
     private void validarExistente(Object arg2) throws ValidatorException{
         if(!getFacade().existe((String)arg2)){
-            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateRegionExistente")));
+            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateMunicipioExistente")));
         }
     }
     
@@ -233,10 +228,10 @@ public class MbRegion implements Serializable{
         current.setAdminentidad(admEnt);        
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioCreated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RegionCreatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioCreatedErrorOccured"));
             return null;
         }
     }
@@ -247,10 +242,10 @@ public class MbRegion implements Serializable{
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioUpdated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RegionUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioUpdatedErrorOccured"));
             return null;
         }
     }
@@ -259,7 +254,7 @@ public class MbRegion implements Serializable{
      * @return mensaje que notifica el borrado
      */    
     public String destroy() {
-        current = (Region) getItems().getRowData();
+        current = (Municipio) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         selectedItemIndex = getItems().getRowIndex();
         performDestroy();
@@ -293,22 +288,22 @@ public class MbRegion implements Serializable{
      * @return la totalidad de las entidades persistidas formateadas
      */
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(regionFacade.findAll(), false);
+        return JsfUtil.getSelectItems(muniFacade.findAll(), false);
     }
 
     /**
      * @return de a una las entidades persistidas formateadas
      */
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(regionFacade.findAll(), true);
+        return JsfUtil.getSelectItems(muniFacade.findAll(), true);
     }
 
     /**
      * @param id equivalente al id de la entidad persistida
      * @return la entidad correspondiente
      */
-    public Region getRegion(java.lang.Long id) {
-        return regionFacade.find(id);
+    public Municipio getMunicipio(java.lang.Long id) {
+        return muniFacade.find(id);
     }    
     
     /*********************
@@ -317,8 +312,8 @@ public class MbRegion implements Serializable{
     /**
      * @return el Facade
      */
-    private RegionFacade getFacade() {
-        return regionFacade;
+    private MunicipioFacade getFacade() {
+        return muniFacade;
     }
     
     /**
@@ -327,9 +322,9 @@ public class MbRegion implements Serializable{
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioDeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RegionDeletedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioDeletedErrorOccured"));
         }
     }
 
@@ -365,7 +360,7 @@ public class MbRegion implements Serializable{
         this.selectParam = selectParam;
     }
     
-    private void buscarRegion(){
+    private void buscarMunicipio(){
         items = new ListDataModel(getFacade().getXString(selectParam)); 
     }   
     
@@ -391,17 +386,17 @@ public class MbRegion implements Serializable{
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
     *********************************************************************/
-    @FacesConverter(forClass = Region.class)
-    public static class RegionControllerConverter implements Converter {
+    @FacesConverter(forClass = Municipio.class)
+    public static class MunicipioControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            MbRegion controller = (MbRegion) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "mbRegion");
-            return controller.getRegion(getKey(value));
+            MbMunicipio controller = (MbMunicipio) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "mbMunicipio");
+            return controller.getMunicipio(getKey(value));
         }
 
         
@@ -428,22 +423,25 @@ public class MbRegion implements Serializable{
             if (object == null) {
                 return null;
             }
-            if (object instanceof Region) {
-                Region o = (Region) object;
+            if (object instanceof Municipio) {
+                Municipio o = (Municipio) object;
                 return getStringKey(o.getId());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Region.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Municipio.class.getName());
             }
         }
     }        
     
 
-    public List<EspecificidadDeRegion> getListaEspecificidadesDeRegion() {
-        return listaEspecificidadesDeRegion;
+    public List<Provincia> getListaProvincias() {
+        return listaProvincias;
     }
 
-    public void setListaEspecificidadesDeRegion(List<EspecificidadDeRegion> listaEspecificidadesDeRegion) {
-        this.listaEspecificidadesDeRegion = listaEspecificidadesDeRegion;
+    public void setListaProvincias(List<Provincia> listaProvincias) {
+        this.listaProvincias = listaProvincias;
     }
+    
+    
+    
     
 }

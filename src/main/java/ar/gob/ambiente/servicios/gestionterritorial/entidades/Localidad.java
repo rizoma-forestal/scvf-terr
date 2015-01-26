@@ -33,10 +33,12 @@ public class Localidad implements Serializable {
     @JoinColumn(name="municipio_id")
     private Municipio municipio;
 
+/*    
     @ManyToOne
     @JoinColumn(name="departamento_id")
     private Departamento departamento;    
-
+*/
+    
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
@@ -68,7 +70,7 @@ public class Localidad implements Serializable {
     public void setMunicipio(Municipio municipio) {
         this.municipio = municipio;
     }
-
+/*
     public Departamento getDepartamento() {
         return departamento;
     }
@@ -76,7 +78,7 @@ public class Localidad implements Serializable {
     public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
     }
-
+*/
     public AdminEntidad getAdminentidad() {
         return adminentidad;
     }

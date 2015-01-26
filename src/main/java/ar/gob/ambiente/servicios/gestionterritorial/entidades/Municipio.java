@@ -34,7 +34,7 @@ public class Municipio implements Serializable {
     private Long id;
     private String nombre;
 
-    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="provincia_id")
     private Provincia provincia;  
     

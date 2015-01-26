@@ -77,8 +77,8 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
         em = getEntityManager();
 
 
-        String queryString = "SELECT pro FROM Provincia prov " 
-                + "WHERE prov.region.id = :idParam";        
+        String queryString = "SELECT mun FROM Municipio mun " 
+                + "WHERE mun.provincia.id = :idParam";        
         
         Query q = em.createQuery(queryString)
                 .setParameter("idParam", id);        

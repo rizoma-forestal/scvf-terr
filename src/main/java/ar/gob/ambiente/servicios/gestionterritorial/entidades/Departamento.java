@@ -32,14 +32,14 @@ public class Departamento implements Serializable {
     private Long id;
     private String nombre;
 
-
-
     @ManyToOne
     @JoinColumn(name="provincia_id")
     private Provincia provincia;
-        
+
+/*    
     @OneToMany(mappedBy="departamento")
     private List<Localidad> localidades;    
+*/
     
     @OneToMany(mappedBy="departamento")
     private List<Municipio> municipios;     
@@ -53,7 +53,7 @@ public class Departamento implements Serializable {
     private GeoRef georef; 
     
     public Departamento(){
-        localidades = new ArrayList();
+        /*localidades = new ArrayList();*/
         municipios = new ArrayList();
     }
     
@@ -80,7 +80,8 @@ public class Departamento implements Serializable {
     public void setProvincia(Provincia provincia) {
         this.provincia = provincia;
     }
-
+    
+/*
     public List<Localidad> getLocalidades() {
         return localidades;
     }
@@ -88,7 +89,8 @@ public class Departamento implements Serializable {
     public void setLocalidades(List<Localidad> localidades) {
         this.localidades = localidades;
     }
-
+*/
+    
     public List<Municipio> getMunicipios() {
         return municipios;
     }
