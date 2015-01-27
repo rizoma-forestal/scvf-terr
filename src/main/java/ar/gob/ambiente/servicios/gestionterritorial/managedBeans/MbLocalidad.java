@@ -9,9 +9,11 @@ package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Localidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Municipio;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.LocalidadFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.MunicipioFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -24,6 +26,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -37,6 +40,9 @@ public class MbLocalidad {
 
     private Localidad current;
     private DataModel items = null;
+
+    @EJB
+    private ProvinciaFacade provFacade;
     
     @EJB
     private MunicipioFacade munFacade;
@@ -47,7 +53,19 @@ public class MbLocalidad {
     private int selectedItemIndex;
     private String selectParam;    
     private List<String> listaNombres;     
-    private List<Municipio> listaMunicipios;      
+    private List<Municipio> listaMunicipios; 
+    private List<Municipio> comboMunicipios;
+
+
+    private List<Provincia> listaProvincias; 
+    
+    private Provincia selectProvincia; 
+
+
+
+
+
+
     
     /**
      * Creates a new instance of MbLocalidad
@@ -57,9 +75,47 @@ public class MbLocalidad {
 
    @PostConstruct
    public void init(){
-        listaMunicipios = munFacade.findAll();
+        listaProvincias = provFacade.findAll();
    }
+
+
+    /********************************
+     ** Getters y Setters *********** 
+     ********************************/   
+ 
+    public List<Municipio> getListaMunicipios() {
+        return listaMunicipios;
+    }
+
+    public void setListaMunicipios(List<Municipio> listaMunicipios) {
+        this.listaMunicipios = listaMunicipios;
+    }  
     
+    public List<Provincia> getListaProvincias() {
+        return listaProvincias;
+    }
+
+    public void setListaProvincias(List<Provincia> listaProvincias) {
+        this.listaProvincias = listaProvincias;
+    }         
+    
+    public Provincia getSelectProvincia() {
+        return selectProvincia;
+    }
+
+    public void setSelectProvincia(Provincia selectProvincia) {
+        this.selectProvincia = selectProvincia;
+    }
+    
+    public List<Municipio> getComboMunicipios() {
+        return comboMunicipios;
+    }
+
+    public void setComboMunicipios(List<Municipio> comboMunicipios) {
+        this.comboMunicipios = comboMunicipios;
+    }   
+    
+   
     /********************************
      ** Métodos para la navegación **
      ********************************/
@@ -94,6 +150,7 @@ public class MbLocalidad {
      */
     public String prepareList() {
         recreateModel();
+        
         return "list";
     }
     
@@ -431,17 +488,31 @@ public class MbLocalidad {
     }        
     
 
-    public List<Municipio> getListaMunicipios() {
-        return listaMunicipios;
-    }
 
-    public void setListaMunicipios(List<Municipio> listaMunicipios) {
-        this.listaMunicipios = listaMunicipios;
+    
+    
+    
+    /**
+     * 
+     * @param event
+     * Metodo que recibe como parametro una provincia y carga los Municipios relacionados a la misma
+     * 
+     */
+    
+    public void municipioChangeListener(ValueChangeEvent event) {
+        selectProvincia = (Provincia)event.getNewValue();
+        
+        comboMunicipios = new ArrayList();
+        Iterator itRows = listaMunicipios.iterator();
+        
+        // recorro el datamodel
+        while(itRows.hasNext()){
+            Municipio mun = (Municipio)itRows.next();
+            if(mun.getProvincia().equals(selectProvincia)){
+                comboMunicipios.add(mun);
+            }          
+        }        
     }
-    
-    
-    
-    
     
     
 }

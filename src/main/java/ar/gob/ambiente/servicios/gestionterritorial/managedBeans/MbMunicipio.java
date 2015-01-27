@@ -59,7 +59,7 @@ public class MbMunicipio {
 
    @PostConstruct
    public void init(){
-        listaProvincias = pciaFacade.findAll();
+        //listaProvincias = pciaFacade.findAll();
    }
     
     /********************************
@@ -96,6 +96,7 @@ public class MbMunicipio {
      */
     public String prepareList() {
         recreateModel();
+        listaProvincias = pciaFacade.findAll();
         return "list";
     }
     
