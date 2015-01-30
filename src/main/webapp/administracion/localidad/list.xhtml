@@ -35,10 +35,10 @@
 
                 <br/>           
 
-                <p:dataTable value="#{mbLocalidad.items}" var="e" id="LocalidadList" rows="5"
+                <p:dataTable value="#{mbLocalidad.items}" var="e" id="LocalidadList" rows="10"
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,15">
+                             rowsPerPageTemplate="10,25,50">
                     
                     <f:facet name="header">
                         Listado de #{bundle.LocalidadListTitle}
@@ -46,18 +46,18 @@
                         <p:columnToggler datasource="LocalidadList" trigger="toggler" />
                     </f:facet>
 
-                   <p:column headerText="Provincia" sortBy="#{e.municipio.provincia.nombre}">
-                        <p:outputLabel value="#{e.municipio.provincia.nombre}"/>
+                    <p:column headerText="Localidad" sortBy="#{e.nombre}" filterBy="#{e.nombre}">
+                        <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
                     
-                    <p:column headerText="Municipio" sortBy="#{e.municipio.nombre}">
+                    <p:column headerText="Municipio" sortBy="#{e.municipio.nombre}" filterBy="#{e.municipio.nombre}">
                         <p:outputLabel value="#{e.municipio.nombre}"/>
                     </p:column>
                     
-                    <p:column headerText="Localidad" sortBy="#{e.nombre}">
-                        <p:outputLabel value="#{e.nombre}"/>
-                    </p:column>
-
+                   <p:column headerText="Provincia" sortBy="#{e.municipio.provincia.nombre}" filterBy="#{e.municipio.provincia.nombre}">
+                        <p:outputLabel value="#{e.municipio.provincia.nombre}"/>
+                    </p:column>                    
+                    
                     <p:column headerText="Acciones" style="width:135px">
                         <p:commandButton icon="ui-icon-zoomin" action="#{mbLocalidad.prepareView}"/>
                         <p:commandButton icon="ui-icon-pencil" action="#{mbLocalidad.prepareEdit}"/>

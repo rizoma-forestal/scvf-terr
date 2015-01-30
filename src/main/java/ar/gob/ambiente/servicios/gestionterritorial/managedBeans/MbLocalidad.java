@@ -46,6 +46,8 @@ public class MbLocalidad {
     
     @EJB
     private MunicipioFacade munFacade;
+
+
     
     @EJB
     private LocalidadFacade locFacade;
@@ -76,6 +78,7 @@ public class MbLocalidad {
    @PostConstruct
    public void init(){
         listaProvincias = provFacade.findAll();
+        listaMunicipios = munFacade.findAll();
    }
 
 
@@ -114,7 +117,7 @@ public class MbLocalidad {
     public void setComboMunicipios(List<Municipio> comboMunicipios) {
         this.comboMunicipios = comboMunicipios;
     }   
-    
+ 
    
     /********************************
      ** Métodos para la navegación **

@@ -16,36 +16,26 @@
         <ui:define name="content">
             <br/> 
             <h:form>
-                <p:panel id="MunicipioForm" header="#{bundle.MunicipioListTitle}" style="margin-bottom:10px;">
-                    <h:panelGrid columns="6">
-                        <p:autoComplete value="#{mbMunicipio.selectParam}" 
-                                        completeMethod="#{mbMunicipio.completeNombres}" />
-                        <p:commandButton icon="ui-icon-close" style="float: right">
-                            <p:ajax update="MunicipioForm" resetValues="true" />
-                        </p:commandButton>                        
-                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbMunicipio.prepareSelect}" ajax="false"/>  
-                        <p:outputLabel value="&ensp;&ensp;"/>
+                
+                <p:panel id="MunicipioForm" header="#{bundle.MunicipioListTitle}" style="margin-bottom:10px;">                  
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbMunicipio.prepareCreate}"/>
                         <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbMunicipio.prepareList}" update="MunicipioList"/>
-                    </h:panelGrid>
+                        <p:commandButton icon="ui-icon-calculator" value="Columnas" id="toggler" type="button" style="float:right" />
+                        <p:columnToggler datasource="MunicipioList" trigger="toggler"  />              
                 </p:panel>
 
-                <br/>           
+                       
 
                 <p:dataTable value="#{mbMunicipio.items}" var="e" id="MunicipioList" rows="5"
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
-                    <f:facet name="header">
-                        Listado de #{bundle.MunicipioListTitle}
-                        <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
-                        <p:columnToggler datasource="MunicipioList" trigger="toggler" />
-                    </f:facet>
-                    <p:column headerText="Provincia" sortBy="#{e.provincia.nombre}">
+                    
+                    <p:column headerText="Provincia" sortBy="#{e.provincia.nombre}" filterBy="#{e.provincia.nombre}" >
                         <p:outputLabel value="#{e.provincia.nombre}"/>
                     </p:column>
                     
-                    <p:column headerText="Municipio" sortBy="#{e.nombre}">
+                    <p:column headerText="Municipio" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
 

@@ -124,6 +124,7 @@ public class MbMunicipio {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
+        listaProvincias = pciaFacade.findAll();
         current = new Municipio();
         selectedItemIndex = -1;
         return "new";

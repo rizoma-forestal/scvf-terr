@@ -36,18 +36,22 @@
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
+                    
                     <f:facet name="header">
                         Listado de #{bundle.RegionListTitle}
                         <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
                         <p:columnToggler datasource="RegionList" trigger="toggler" />
                     </f:facet>
-                    <p:column headerText="Especificidad" sortBy="#{e.especificidadderegion.nombre}">
+ 
+                    <p:column headerText="Region" sortBy="#{e.nombre}">
+                        <p:outputLabel value="#{e.nombre}"/>
+                    </p:column>                    
+                    
+                    <p:column headerText="Especificidad de Region" sortBy="#{e.especificidadderegion.nombre}">
                         <p:outputLabel value="#{e.especificidadderegion.nombre}"/>
                     </p:column>
                     
-                    <p:column headerText="Nombre" sortBy="#{e.nombre}">
-                        <p:outputLabel value="#{e.nombre}"/>
-                    </p:column>
+
 
                     <p:column headerText="Acciones" style="width:135px">
                         <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}"/>
