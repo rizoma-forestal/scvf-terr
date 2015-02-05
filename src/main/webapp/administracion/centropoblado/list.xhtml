@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+      
+    <h:head>
+        <title>#{bundle.CentroPobladoTitle}</title>
+    </h:head>
+    <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
+        
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CentroPobladoTitle}" />
+        </ui:define>
+        
+        <ui:define name="content">
+            <br/> 
+            <h:form>
+                
+                <p:panel id="CentroPobladoForm" header="#{bundle.CentroPobladoListTitle}" style="margin-bottom:10px;">
+                    <h:panelGrid columns="6">
+                        <p:autoComplete value="#{mbCentroPoblado.selectParam}" 
+                                        completeMethod="#{mbCentroPoblado.completeNombres}" />
+                        <p:commandButton icon="ui-icon-close" style="float: right">
+                            <p:ajax update="CentroPobladoForm" resetValues="true" />
+                        </p:commandButton>                        
+                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbCentroPoblado.prepareSelect}" ajax="false"/>  
+                        <p:outputLabel value="&ensp;&ensp;"/>
+                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbCentroPoblado.prepareCreate}"/>
+                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbCentroPoblado.prepareList}" update="CentroPobladoList"/>
+                    </h:panelGrid>
+                </p:panel>
+
+                <br/>           
+
+                <p:dataTable value="#{mbCentroPoblado.items}" var="e" id="CentroPobladoList" rows="10"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,25,50">
+                    
+                    <f:facet name="header">
+                        Listado de #{bundle.CentroPobladoListTitle}
+                        <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
+                        <p:columnToggler datasource="CentroPobladoList" trigger="toggler" />
+                    </f:facet>
+
+                    <p:column headerText="CentroPoblado" sortBy="#{e.nombre}" filterBy="#{e.nombre}">
+                        <p:outputLabel value="#{e.nombre}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Departamento" sortBy="#{e.departamento.nombre}" filterBy="#{e.departamento.nombre}">
+                        <p:outputLabel value="#{e.departamento.nombre}"/>
+                    </p:column>
+                    
+                   <p:column headerText="Provincia" sortBy="#{e.departamento.provincia.nombre}" filterBy="#{e.departamento.provincia.nombre}">
+                        <p:outputLabel value="#{e.departamento.provincia.nombre}"/>
+                    </p:column>                    
+                    
+                    <p:column headerText="Acciones" style="width:135px">
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbCentroPoblado.prepareView}"/>
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbCentroPoblado.prepareEdit}"/>
+                        <p:commandButton icon="ui-icon-trash" action="#{mbCentroPoblado.prepareDestroy}"/>
+                    </p:column>                
+           
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

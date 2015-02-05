@@ -6,8 +6,7 @@
 
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
-
-import ar.gob.ambiente.servicios.gestionterritorial.entidades.Localidad;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPobladoTipo;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,34 +15,35 @@ import javax.persistence.Query;
 
 /**
  *
- * @author rincostante
+ * @author epassarelli
  */
+
 @Stateless
-public class LocalidadFacade extends AbstractFacade<Localidad> {
+public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> {
     @PersistenceContext(unitName = "ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU")
     private EntityManager em;
-
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
-    public LocalidadFacade() {
-        super(Localidad.class);
+    public CentroPobladoTipoFacade() {
+        super(CentroPobladoTipo.class);
     }
 
     /**
-     * Método que devuelve todas las Localidades que contienen la cadena recibida como parámetro 
-     * dentro de alguno de sus campos string, en este caso el nombre.
+     * Método que devuelve todas las CentroPobladoes que contienen la cadena recibida como parámetro 
+ dentro de alguno de sus campos string, en este caso el nombre.
      * @param aBuscar: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
      * @return: El conjunto de resultados provenientes de la búsqueda. 
      */      
-    public List<Localidad> getXString(String aBuscar){
+    public List<CentroPobladoTipo> getXString(String aBuscar){
         em = getEntityManager();
-        List<Localidad> result;
+        List<CentroPobladoTipo> result;
         
-        String queryString = "SELECT loc.nombre FROM Localidad loc "
-                + "WHERE loc.nombre LIKE :stringParam ";        
+        String queryString = "SELECT cpt.nombre FROM CentroPobladoTipo cpt "
+                + "WHERE cpt.nombre LIKE :stringParam ";        
         Query q = em.createQuery(queryString)
                 .setParameter("stringParam", "%" + aBuscar + "%");        
         result = q.getResultList();
@@ -53,14 +53,14 @@ public class LocalidadFacade extends AbstractFacade<Localidad> {
 
     /**
      * Metodo que verifica si ya existe la entidad.
-     * @param nombre: es la cadena que buscara para ver si ya existe en la BDD
+     * @param aBuscar: es la cadena que buscara para ver si ya existe en la BDD
      * @return: devuelve True o False
      */
     public boolean existe(String aBuscar){
         em = getEntityManager();
         
-        String queryString = "SELECT loc FROM Localidad loc "
-                + "WHERE loc.nombre = :stringParam";
+        String queryString = "SELECT cpt FROM CentroPobladoTipo cpt "
+                + "WHERE cpt.nombre = :stringParam";
         
         Query q = em.createQuery(queryString)
                 .setParameter("stringParam", aBuscar);
@@ -74,23 +74,11 @@ public class LocalidadFacade extends AbstractFacade<Localidad> {
      */
     public List<String> getNombres(){
         em = getEntityManager();
-        String queryString = "SELECT loc.nombre FROM Localidad loc ";
+        String queryString = "SELECT cpt.nombre FROM CentroPobladoTipo cpt ";
         Query q = em.createQuery(queryString);
         return q.getResultList();
     } 
 
-    /**
-     * Método que verifica si la entidad tiene dependencia (Hijos)
-     * @param id: ID de la entidad
-     * @return: True o False
-     */
-    public boolean tieneDependencias(Long id){
-        em = getEntityManager();
-        String queryString = "SELECT geo FROM GeoRef geo " 
-                + "WHERE geo.localidad.id = :idParam";               
-        Query q = em.createQuery(queryString)
-                .setParameter("idParam", id); 
-        return q.getResultList().isEmpty();
-    }     
+ 
     
 }

@@ -7,6 +7,7 @@
 package ar.gob.ambiente.servicios.gestionterritorial.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -22,31 +23,21 @@ import javax.persistence.OneToOne;
  * @author epassarelli
  */
 @Entity
-public class Localidad implements Serializable {
+public class CentroPobladoTipo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
 
-    @ManyToOne
-    @JoinColumn(name="municipio_id")
-    private Municipio municipio;
-
-/*    
-    @ManyToOne
-    @JoinColumn(name="departamento_id")
-    private Departamento departamento;    
-*/
+    @OneToMany(mappedBy="centropobladotipo")
+    private List<CentroPoblado> centrospoblados;
     
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
-    private AdminEntidad adminentidad; 
+    private AdminEntidad adminentidad;    
+        
 
-    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name="georef_id")
-    private GeoRef georef;     
-    
     public Long getId() {
         return id;
     }
@@ -54,31 +45,23 @@ public class Localidad implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }    
-
-    public Municipio getMunicipio() {
-        return municipio;
     }
 
-    public void setMunicipio(Municipio municipio) {
-        this.municipio = municipio;
-    }
-/*
-    public Departamento getDepartamento() {
-        return departamento;
+    public List<CentroPoblado> getCentrospoblados() {
+        return centrospoblados;
     }
 
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
+    public void setCentrospoblados(List<CentroPoblado> centrospoblados) {
+        this.centrospoblados = centrospoblados;
     }
-*/
+
     public AdminEntidad getAdminentidad() {
         return adminentidad;
     }
@@ -87,15 +70,6 @@ public class Localidad implements Serializable {
         this.adminentidad = adminentidad;
     }
 
-    public GeoRef getGeoref() {
-        return georef;
-    }
-
-    public void setGeoref(GeoRef georef) {
-        this.georef = georef;
-    }
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -106,10 +80,10 @@ public class Localidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Localidad)) {
+        if (!(object instanceof CentroPobladoTipo)) {
             return false;
         }
-        Localidad other = (Localidad) object;
+        CentroPobladoTipo other = (CentroPobladoTipo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -118,7 +92,7 @@ public class Localidad implements Serializable {
 
     @Override
     public String toString() {
-        return "ar.gob.ambiente.servicios.gestionterritorial.entidades.Localidad[ id=" + id + " ]";
+        return "ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPobladoTipo[ id=" + id + " ]";
     }
     
 }

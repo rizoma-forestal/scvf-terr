@@ -48,9 +48,7 @@ public class Departamento implements Serializable {
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
 
-    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name="georef_id")
-    private GeoRef georef; 
+
     
     public Departamento(){
         /*localidades = new ArrayList();*/
@@ -106,15 +104,7 @@ public class Departamento implements Serializable {
     public void setAdminentidad(AdminEntidad adminentidad) {
         this.adminentidad = adminentidad;
     }
-
-    public GeoRef getGeoref() {
-        return georef;
-    }
-
-    public void setGeoref(GeoRef georef) {
-        this.georef = georef;
-    }    
-    
+   
     
     
     

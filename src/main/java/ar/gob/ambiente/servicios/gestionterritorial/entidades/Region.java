@@ -17,12 +17,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
  *
- * @author lagarcia
+ * @author epassarelli
  */
 @Entity
 public class Region implements Serializable {
@@ -39,18 +38,6 @@ public class Region implements Serializable {
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad;    
-
-    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name="georef_id")
-    private GeoRef georef;
-
-    public GeoRef getGeoref() {
-        return georef;
-    }
-
-    public void setGeoref(GeoRef georef) {
-        this.georef = georef;
-    }
     
     @ManyToMany(mappedBy = "regiones")
     	private List<Provincia> provincias;

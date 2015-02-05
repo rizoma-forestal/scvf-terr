@@ -7,12 +7,14 @@
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
-import ar.gob.ambiente.servicios.gestionterritorial.entidades.Localidad;
-import ar.gob.ambiente.servicios.gestionterritorial.entidades.Municipio;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPoblado;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPobladoTipo;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
-import ar.gob.ambiente.servicios.gestionterritorial.facades.LocalidadFacade;
-import ar.gob.ambiente.servicios.gestionterritorial.facades.MunicipioFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoTipoFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,27 +38,29 @@ import javax.faces.validator.ValidatorException;
  *
  * @author epassarelli
  */
-public class MbLocalidad {
+public class MbCentroPoblado {
 
-    private Localidad current;
+    private CentroPoblado current;
     private DataModel items = null;
 
     @EJB
     private ProvinciaFacade provFacade;
     
     @EJB
-    private MunicipioFacade munFacade;
+    private DepartamentoFacade munFacade;
 
-
-    
     @EJB
-    private LocalidadFacade locFacade;
-    //private PaginationHelper pagination;
+    private CentroPobladoTipoFacade tipocpFacade;
+        
+    @EJB
+    private CentroPobladoFacade locFacade;
+
     private int selectedItemIndex;
     private String selectParam;    
     private List<String> listaNombres;     
-    private List<Municipio> listaMunicipios; 
-    private List<Municipio> comboMunicipios;
+    private List<Departamento> listaDepartamentos; 
+    private List<Departamento> comboDepartamentos;
+    private List<CentroPobladoTipo> listaTiposCP;
 
 
     private List<Provincia> listaProvincias; 
@@ -70,28 +74,29 @@ public class MbLocalidad {
 
     
     /**
-     * Creates a new instance of MbLocalidad
+     * Creates a new instance of MbCentroPoblado
      */
-    public MbLocalidad() {
+    public MbCentroPoblado() {
     }
 
    @PostConstruct
    public void init(){
         listaProvincias = provFacade.findAll();
-        listaMunicipios = munFacade.findAll();
+        listaDepartamentos = munFacade.findAll();
+        listaTiposCP = tipocpFacade.findAll();
    }
 
 
-    /********************************
+    /*
      ** Getters y Setters *********** 
-     ********************************/   
+    */   
  
-    public List<Municipio> getListaMunicipios() {
-        return listaMunicipios;
+    public List<Departamento> getListaDepartamentos() {
+        return listaDepartamentos;
     }
 
-    public void setListaMunicipios(List<Municipio> listaMunicipios) {
-        this.listaMunicipios = listaMunicipios;
+    public void setListaDepartamentos(List<Departamento> listaDepartamentos) {
+        this.listaDepartamentos = listaDepartamentos;
     }  
     
     public List<Provincia> getListaProvincias() {
@@ -110,13 +115,21 @@ public class MbLocalidad {
         this.selectProvincia = selectProvincia;
     }
     
-    public List<Municipio> getComboMunicipios() {
-        return comboMunicipios;
+    public List<Departamento> getComboDepartamentos() {
+        return comboDepartamentos;
     }
 
-    public void setComboMunicipios(List<Municipio> comboMunicipios) {
-        this.comboMunicipios = comboMunicipios;
+    public void setComboDepartamentos(List<Departamento> comboDepartamentos) {
+        this.comboDepartamentos = comboDepartamentos;
     }   
+
+    public List<CentroPobladoTipo> getListaTiposCP() {
+        return listaTiposCP;
+    }
+
+    public void setListaTiposCP(List<CentroPobladoTipo> listaTiposCP) {
+        this.listaTiposCP = listaTiposCP;
+    }
  
    
     /********************************
@@ -125,9 +138,9 @@ public class MbLocalidad {
     /**
      * @return La entidad gestionada
      */
-    public Localidad getSelected() {
+    public CentroPoblado getSelected() {
         if (current == null) {
-            current = new Localidad();
+            current = new CentroPoblado();
             selectedItemIndex = -1;
         }
         return current;
@@ -152,8 +165,7 @@ public class MbLocalidad {
      * @return acción para el listado de entidades
      */
     public String prepareList() {
-        recreateModel();
-        
+        recreateModel();       
         return "list";
     }
     
@@ -162,7 +174,7 @@ public class MbLocalidad {
         if(selectParam != null){
             redirect = "list";
         }else{
-            redirect = "administracion/localidad/list";
+            redirect = "administracion/centropoblado/list";
         }
         recreateModel();
         return redirect;
@@ -172,7 +184,7 @@ public class MbLocalidad {
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        current = (Localidad) getItems().getRowData();
+        current = (CentroPoblado) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
@@ -181,7 +193,7 @@ public class MbLocalidad {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        current = new Localidad();
+        current = new CentroPoblado();
         selectedItemIndex = -1;
         return "new";
     }
@@ -190,7 +202,7 @@ public class MbLocalidad {
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        current = (Localidad) getItems().getRowData();
+        current = (CentroPoblado) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         selectedItemIndex = getItems().getRowIndex();
         return "edit";
@@ -207,7 +219,7 @@ public class MbLocalidad {
      */
     public String prepareSelect(){
         items = null;
-        buscarLocalidad();
+        buscarCentroPoblado();
         return "list";
     }
     
@@ -216,19 +228,11 @@ public class MbLocalidad {
      * @return 
      */
     public String prepareDestroy(){
-        current = (Localidad) getItems().getRowData();
-        boolean libre = getFacade().tieneDependencias(current.getId());
-
-        if (libre){
-            // Elimina
-            selectedItemIndex = getItems().getRowIndex();
-            performDestroy();
-            recreateModel();
-        }else{
-            //No Elimina 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("LocalidadNonDeletable"));
-        }
-        return "view";
+        current = (CentroPoblado) getItems().getRowData();
+        selectedItemIndex = getItems().getRowIndex();
+        performDestroy();
+        recreateModel();     
+        return "view"; 
     }
     
     /**
@@ -256,7 +260,7 @@ public class MbLocalidad {
     
     private void validarExistente(Object arg2) throws ValidatorException{
         if(!getFacade().existe((String)arg2)){
-            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateLocalidadExistente")));
+            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateCentroPobladoExistente")));
         }
     }
     
@@ -286,10 +290,10 @@ public class MbLocalidad {
         current.setAdminentidad(admEnt);        
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("LocalidadCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("LocalidadCreatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreatedErrorOccured"));
             return null;
         }
     }
@@ -300,10 +304,10 @@ public class MbLocalidad {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("LocalidadUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("LocalidadUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdatedErrorOccured"));
             return null;
         }
     }
@@ -312,7 +316,7 @@ public class MbLocalidad {
      * @return mensaje que notifica el borrado
      */    
     public String destroy() {
-        current = (Localidad) getItems().getRowData();
+        current = (CentroPoblado) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         selectedItemIndex = getItems().getRowIndex();
         performDestroy();
@@ -360,7 +364,7 @@ public class MbLocalidad {
      * @param id equivalente al id de la entidad persistida
      * @return la entidad correspondiente
      */
-    public Localidad getLocalidad(java.lang.Long id) {
+    public CentroPoblado getCentroPoblado(java.lang.Long id) {
         return locFacade.find(id);
     }    
     
@@ -370,7 +374,7 @@ public class MbLocalidad {
     /**
      * @return el Facade
      */
-    private LocalidadFacade getFacade() {
+    private CentroPobladoFacade getFacade() {
         return locFacade;
     }
     
@@ -380,9 +384,9 @@ public class MbLocalidad {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("LocalidadDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("LocalidadDeletedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeletedErrorOccured"));
         }
     }
 
@@ -418,7 +422,7 @@ public class MbLocalidad {
         this.selectParam = selectParam;
     }
     
-    private void buscarLocalidad(){
+    private void buscarCentroPoblado(){
         items = new ListDataModel(getFacade().getXString(selectParam)); 
     }   
     
@@ -444,17 +448,17 @@ public class MbLocalidad {
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
     *********************************************************************/
-    @FacesConverter(forClass = Localidad.class)
-    public static class LocalidadControllerConverter implements Converter {
+    @FacesConverter(forClass = CentroPoblado.class)
+    public static class CentroPobladoControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            MbLocalidad controller = (MbLocalidad) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "mbLocalidad");
-            return controller.getLocalidad(getKey(value));
+            MbCentroPoblado controller = (MbCentroPoblado) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "mbCentroPoblado");
+            return controller.getCentroPoblado(getKey(value));
         }
 
         
@@ -481,11 +485,11 @@ public class MbLocalidad {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Localidad) {
-                Localidad o = (Localidad) object;
+            if (object instanceof CentroPoblado) {
+                CentroPoblado o = (CentroPoblado) object;
                 return getStringKey(o.getId());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Localidad.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + CentroPoblado.class.getName());
             }
         }
     }        
@@ -498,21 +502,21 @@ public class MbLocalidad {
     /**
      * 
      * @param event
-     * Metodo que recibe como parametro una provincia y carga los Municipios relacionados a la misma
+     * Metodo que recibe como parametro una provincia y carga los Departamentos relacionados a la misma
      * 
      */
     
     public void municipioChangeListener(ValueChangeEvent event) {
         selectProvincia = (Provincia)event.getNewValue();
         
-        comboMunicipios = new ArrayList();
-        Iterator itRows = listaMunicipios.iterator();
+        comboDepartamentos = new ArrayList();
+        Iterator itRows = listaDepartamentos.iterator();
         
         // recorro el datamodel
         while(itRows.hasNext()){
-            Municipio mun = (Municipio)itRows.next();
+            Departamento mun = (Departamento)itRows.next();
             if(mun.getProvincia().equals(selectProvincia)){
-                comboMunicipios.add(mun);
+                comboDepartamentos.add(mun);
             }          
         }        
     }
