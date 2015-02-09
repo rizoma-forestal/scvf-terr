@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 /**
  *
  * @author epassarelli
+ * Esta es una prueba de subir un archivo solito al GIT
  */
 @Entity
 public class CentroPoblado implements Serializable {
