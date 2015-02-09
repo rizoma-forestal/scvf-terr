@@ -123,6 +123,7 @@ public class MbDepartamento {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
+        listaProvincias = pciaFacade.findAll();
         current = new Departamento();
         selectedItemIndex = -1;
         return "new";
