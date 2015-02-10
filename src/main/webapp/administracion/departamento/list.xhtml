@@ -41,11 +41,11 @@
                         <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
                         <p:columnToggler datasource="DepartamentoList" trigger="toggler" />
                     </f:facet>
-                    <p:column headerText="Provincia" sortBy="#{e.provincia.nombre}">
+                    <p:column headerText="Provincia" sortBy="#{e.provincia.nombre}" filterBy="#{e.provincia.nombre}" > >
                         <p:outputLabel value="#{e.provincia.nombre}"/>
                     </p:column>
                     
-                    <p:column headerText="Departamento" sortBy="#{e.nombre}">
+                    <p:column headerText="Departamento" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
 
