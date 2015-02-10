@@ -43,11 +43,11 @@
                         <p:columnToggler datasource="RegionList" trigger="toggler" />
                     </f:facet>
  
-                    <p:column headerText="Region" sortBy="#{e.nombre}">
+                    <p:column headerText="Region" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>                    
                     
-                    <p:column headerText="Especificidad de Region" sortBy="#{e.especificidadderegion.nombre}">
+                    <p:column headerText="Especificidad de Region" sortBy="#{e.especificidadderegion.nombre}" filterBy="#{e.especificidadderegion.nombre}" >
                         <p:outputLabel value="#{e.especificidadderegion.nombre}"/>
                     </p:column>
                     
