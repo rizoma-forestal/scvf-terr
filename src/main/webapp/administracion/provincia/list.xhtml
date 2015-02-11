@@ -17,7 +17,7 @@
             <br/> 
             <h:form>
                 <p:panel id="provinciaForm" header="#{bundle.ProvinciaListTitle}" style="margin-bottom:10px;">
-                    <h:panelGrid columns="6">
+                    <h:panelGrid columns="7">
                         <p:autoComplete value="#{mbProvincia.selectParam}" 
                                         completeMethod="#{mbProvincia.completeNombres}" />
                         <p:commandButton icon="ui-icon-close" style="float: right">
@@ -27,6 +27,7 @@
                         <p:outputLabel value="&ensp;&ensp;"/>
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbProvincia.prepareCreate}"/>
                         <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbProvincia.prepareList}" update="provinciaList"/>
+                        <p:commandButton icon="ui-icon-cancel" value="Salir" action="#{mbProvincia.cleanUp}" />
                     </h:panelGrid>
                 </p:panel>
 
@@ -45,9 +46,14 @@
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
                     <p:column headerText="Acciones" style="width:135px">
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbProvincia.prepareView}"/>
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbProvincia.prepareEdit}"/>
-                        <p:commandButton icon="ui-icon-trash" action="#{mbProvincia.prepareDestroy}"/>
+                        <p:growl id="messages" showDetail="true" />
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbProvincia.prepareView}" title="Ver detalle">
+                            <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbProvincia.prepareEdit}" />
+                        <p:commandButton icon="ui-icon-trash" action="#{mbProvincia.prepareDestroy}" update="messages" >
+                            <p:confirm header="Confirmar" message="¿Desea deshabilitar el registro de esta Provincia?" />
+                        </p:commandButton>
                     </p:column>                
            
                 </p:dataTable>

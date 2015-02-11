@@ -26,6 +26,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -48,6 +49,14 @@ public class MbProvincia implements Serializable{
      * Creates a new instance of MbProvincia
      */
     public MbProvincia() {
+    }
+
+    public Provincia getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Provincia current) {
+        this.current = current;
     }
 
     
@@ -103,7 +112,7 @@ public class MbProvincia implements Serializable{
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        current = (Provincia) getItems().getRowData();
+        //current = (Provincia) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
@@ -268,6 +277,16 @@ public class MbProvincia implements Serializable{
         }
     }    
     
+    /**
+     * Método para revocar la sesión del MB
+     * @return 
+     */
+    public String cleanUp(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true);
+        session.removeAttribute("mbProvincia");
+        return "inicio";
+    }     
   
     
     /*************************
