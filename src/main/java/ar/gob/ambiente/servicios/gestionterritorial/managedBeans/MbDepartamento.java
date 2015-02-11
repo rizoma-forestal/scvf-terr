@@ -12,6 +12,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -33,7 +34,7 @@ import javax.faces.validator.ValidatorException;
  *
  * @author epassarelli
  */
-public class MbDepartamento {
+public class MbDepartamento implements Serializable {
 
     private Departamento current;
     private DataModel items = null;

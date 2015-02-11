@@ -16,6 +16,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoTipoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -38,7 +39,7 @@ import javax.faces.validator.ValidatorException;
  *
  * @author epassarelli
  */
-public class MbCentroPoblado {
+public class MbCentroPoblado implements Serializable {
 
     private CentroPoblado current;
     private DataModel items = null;

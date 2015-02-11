@@ -31,7 +31,7 @@ import javax.faces.validator.ValidatorException;
  *
  * @author epassarelli
  */
-public class MbProvincia {
+public class MbProvincia implements Serializable{
 
     private Provincia current;
     private DataModel items = null;
