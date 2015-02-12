@@ -37,14 +37,29 @@
                     
                     <p:column headerText="Municipio" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
-                    </p:column>
+                    </p:column>              
 
                     <p:column headerText="Acciones" style="width:135px">
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbMunicipio.prepareView}"/>
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbMunicipio.prepareEdit}"/>
-                        <p:commandButton icon="ui-icon-trash" action="#{mbMunicipio.prepareDestroy}"/>
-                    </p:column>                
-           
+                        <p:growl id="messages" showDetail="true" />    
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbMunicipio.prepareView}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-pencil" action="#{mbMunicipio.prepareEdit}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-trash" action="#{mbMunicipio.prepareDestroy}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Municipio?" icon="ui-icon-alert" />
+                            </p:commandButton>                
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                           </p:confirmDialog>      
+                    </p:column>
+                    
                 </p:dataTable>
 
             </h:form>

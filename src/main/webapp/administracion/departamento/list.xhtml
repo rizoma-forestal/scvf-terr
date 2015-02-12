@@ -17,14 +17,7 @@
             <br/> 
             <h:form>
                 <p:panel id="DepartamentoForm" header="#{bundle.DepartamentoListTitle}" style="margin-bottom:10px;">
-                    <h:panelGrid columns="6">
-                        <p:autoComplete value="#{mbDepartamento.selectParam}" 
-                                        completeMethod="#{mbDepartamento.completeNombres}" />
-                        <p:commandButton icon="ui-icon-close" style="float: right">
-                            <p:ajax update="DepartamentoForm" resetValues="true" />
-                        </p:commandButton>                        
-                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbDepartamento.prepareSelect}" ajax="false"/>  
-                        <p:outputLabel value="&ensp;&ensp;"/>
+                    <h:panelGrid columns="4">
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbDepartamento.prepareCreate}"/>
                         <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbDepartamento.prepareList}" update="DepartamentoList"/>
                     </h:panelGrid>
@@ -47,14 +40,28 @@
                     
                     <p:column headerText="Departamento" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
-                    </p:column>
+                    </p:column>           
 
                     <p:column headerText="Acciones" style="width:135px">
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbDepartamento.prepareView}"/>
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbDepartamento.prepareEdit}"/>
-                        <p:commandButton icon="ui-icon-trash" action="#{mbDepartamento.prepareDestroy}"/>
-                    </p:column>                
-           
+                        <p:growl id="messages" showDetail="true" />    
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbDepartamento.prepareView}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-pencil" action="#{mbDepartamento.prepareEdit}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-trash" action="#{mbDepartamento.prepareDestroy}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Departamento?" icon="ui-icon-alert" />
+                            </p:commandButton>                
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                           </p:confirmDialog>      
+                    </p:column>                     
                 </p:dataTable>
 
             </h:form>

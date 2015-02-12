@@ -21,14 +21,7 @@
             <h:form>
                 
                 <p:panel id="CentroPobladoForm" header="#{bundle.CentroPobladoListTitle}" style="margin-bottom:10px;">
-                    <h:panelGrid columns="6">
-                        <p:autoComplete value="#{mbCentroPoblado.selectParam}" 
-                                        completeMethod="#{mbCentroPoblado.completeNombres}" />
-                        <p:commandButton icon="ui-icon-close" style="float: right">
-                            <p:ajax update="CentroPobladoForm" resetValues="true" />
-                        </p:commandButton>                        
-                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbCentroPoblado.prepareSelect}" ajax="false"/>  
-                        <p:outputLabel value="&ensp;&ensp;"/>
+                    <h:panelGrid columns="4">
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbCentroPoblado.prepareCreate}"/>
                         <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbCentroPoblado.prepareList}" update="CentroPobladoList"/>
                     </h:panelGrid>
@@ -57,14 +50,29 @@
                     
                    <p:column headerText="Provincia" sortBy="#{e.departamento.provincia.nombre}" filterBy="#{e.departamento.provincia.nombre}">
                         <p:outputLabel value="#{e.departamento.provincia.nombre}"/>
-                    </p:column>                    
-                    
+                    </p:column>                                                     
+
                     <p:column headerText="Acciones" style="width:135px">
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbCentroPoblado.prepareView}"/>
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbCentroPoblado.prepareEdit}"/>
-                        <p:commandButton icon="ui-icon-trash" action="#{mbCentroPoblado.prepareDestroy}"/>
-                    </p:column>                
-           
+                        <p:growl id="messages" showDetail="true" />    
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbCentroPoblado.prepareView}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbCentroPoblado.current}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-pencil" action="#{mbCentroPoblado.prepareEdit}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbCentroPoblado.current}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-trash" action="#{mbCentroPoblado.prepareDestroy}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbCentroPoblado.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Municipio?" icon="ui-icon-alert" />
+                            </p:commandButton>                
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                           </p:confirmDialog>      
+                    </p:column>
+                    
                 </p:dataTable>
 
             </h:form>

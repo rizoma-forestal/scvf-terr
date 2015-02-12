@@ -17,14 +17,7 @@
             <br/> 
             <h:form>
                 <p:panel id="espRegionForm" header="#{bundle.EspRegionListTitle}" style="margin-bottom:10px;">
-                    <h:panelGrid columns="6">
-                        <p:autoComplete value="#{mbEspRegion.selectParam}" 
-                                        completeMethod="#{mbEspRegion.completeNombres}" />
-                        <p:commandButton icon="ui-icon-close" style="float: right">
-                            <p:ajax update="espRegionForm" resetValues="true" />
-                        </p:commandButton>                        
-                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbEspRegion.prepareSelect}" ajax="false"/>  
-                        <p:outputLabel value="&ensp;&ensp;"/>
+                    <h:panelGrid columns="4">
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbEspRegion.prepareCreate}"/>
                         <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbEspRegion.prepareList}" update="espRegionList"/>
                     </h:panelGrid>
@@ -45,15 +38,29 @@
                     
                     <p:column headerText="Nombre" sortBy="#{e.nombre}" filterBy="#{e.nombre}" > 
                         <p:outputLabel value="#{e.nombre}"/>
-                    </p:column>
-                                     
-                    
+                    </p:column>                             
+
                     <p:column headerText="Acciones" style="width:135px">
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbEspRegion.prepareView}"/>
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbEspRegion.prepareEdit}"/>
-                        <p:commandButton icon="ui-icon-trash" action="#{mbEspRegion.prepareDestroy}"/>
-                    </p:column>                
-           
+                        <p:growl id="messages" showDetail="true" />    
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbEspRegion.prepareView}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbEspRegion.current}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-pencil" action="#{mbEspRegion.prepareEdit}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbEspRegion.current}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-trash" action="#{mbEspRegion.prepareDestroy}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbEspRegion.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar la Especificidad?" icon="ui-icon-alert" />
+                            </p:commandButton>                
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                           </p:confirmDialog>      
+                    </p:column> 
+                    
                 </p:dataTable>
 
             </h:form>
