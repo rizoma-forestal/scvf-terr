@@ -437,13 +437,24 @@ public class MbRegion implements Serializable{
         }
     }        
     
-
+    /********************************************************************
+    **   GETTERS Y SETTERS                                                                             **
+    *********************************************************************/
+    
     public List<EspecificidadDeRegion> getListaEspecificidadesDeRegion() {
         return listaEspecificidadesDeRegion;
     }
 
     public void setListaEspecificidadesDeRegion(List<EspecificidadDeRegion> listaEspecificidadesDeRegion) {
         this.listaEspecificidadesDeRegion = listaEspecificidadesDeRegion;
+    }
+
+    public Region getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Region current) {
+        this.current = current;
     }
     
 }

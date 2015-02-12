@@ -18,13 +18,6 @@
             <h:form>
                 <p:panel id="RegionForm" header="#{bundle.RegionListTitle}" style="margin-bottom:10px;">
                     <h:panelGrid columns="6">
-                        <p:autoComplete value="#{mbRegion.selectParam}" 
-                                        completeMethod="#{mbRegion.completeNombres}" />
-                        <p:commandButton icon="ui-icon-close" style="float: right">
-                            <p:ajax update="RegionForm" resetValues="true" />
-                        </p:commandButton>                        
-                        <p:commandButton icon="ui-icon-search" value="Buscar" action="#{mbRegion.prepareSelect}" ajax="false"/>  
-                        <p:outputLabel value="&ensp;&ensp;"/>
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbRegion.prepareCreate}"/>
                         <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbRegion.prepareList}" update="RegionList"/>
                     </h:panelGrid>
@@ -53,11 +46,20 @@
                     
 
 
-                    <p:column headerText="Acciones" style="width:135px">
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}"/>
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}"/>
-                        <p:commandButton icon="ui-icon-trash" action="#{mbRegion.prepareDestroy}"/>
-                    </p:column>                
+    <p:column headerText="Acciones" style="width:135px">
+            <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}">
+                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+            </p:commandButton>
+                            
+            <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}">
+                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+            </p:commandButton>
+            
+            <p:commandButton icon="ui-icon-trash" action="#{mbRegion.prepareDestroy}">
+                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+                <p:confirm header="Confirmar" message="¿Desea deshabilitar el registro de Region?" />
+            </p:commandButton>                
+    </p:column>                
            
                 </p:dataTable>
 
