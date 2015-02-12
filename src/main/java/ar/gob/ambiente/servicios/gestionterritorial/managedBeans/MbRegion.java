@@ -118,8 +118,8 @@ public class MbRegion implements Serializable{
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        current = (Region) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
+        //current = (Region) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
 
@@ -137,7 +137,7 @@ public class MbRegion implements Serializable{
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        current = (Region) getItems().getRowData();
+        //current = (Region) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         selectedItemIndex = getItems().getRowIndex();
         return "edit";
