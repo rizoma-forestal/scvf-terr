@@ -17,7 +17,7 @@
       
         
         <ui:define name="content">
-            <br/> 
+             
             <h:form>
                 
                 <p:panel id="CentroPobladoForm" header="#{bundle.CentroPobladoListTitle}" style="margin-bottom:10px;">
@@ -25,9 +25,7 @@
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbCentroPoblado.prepareCreate}"/>
                         <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbCentroPoblado.prepareList}" update="CentroPobladoList"/>
                     </h:panelGrid>
-                </p:panel>
-
-                <br/>           
+                </p:panel>          
 
                 <p:dataTable value="#{mbCentroPoblado.items}" var="e" id="CentroPobladoList" rows="10"
                              paginator="true"
@@ -54,7 +52,7 @@
 
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbCentroPoblado.prepareView}">
+                            <p:commandButton icon="ui-icon-zoomin" action="#{mbCentroPoblado.prepareView}">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbCentroPoblado.current}" />
                             </p:commandButton>
 
@@ -68,9 +66,9 @@
                             </p:commandButton>                
 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                           </p:confirmDialog>      
+                                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>      
                     </p:column>
                     
                 </p:dataTable>
