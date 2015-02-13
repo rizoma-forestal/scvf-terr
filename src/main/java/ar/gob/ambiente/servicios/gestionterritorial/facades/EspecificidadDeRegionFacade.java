@@ -68,14 +68,15 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
     }    
     
     /**
-     * Método que verifica si la entidad tiene dependencia (Hijos)
+     * Método que verifica si la entidad tiene dependencia (Hijos) en estado HABILITADO
      * @param id: ID de la entidad
      * @return: True o False
      */
     public boolean tieneDependencias(Long id){
         em = getEntityManager();        
         String queryString = "SELECT reg FROM Region reg " 
-                + "WHERE reg.especificidadderegion.id = :idParam";        
+                + "WHERE reg.especificidadderegion.id = :idParam "
+                + "AND reg.adminentidad.habilitado = true";        
         Query q = em.createQuery(queryString)
                 .setParameter("idParam", id);
         return q.getResultList().isEmpty();
