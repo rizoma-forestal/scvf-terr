@@ -68,6 +68,11 @@
                                 <p:confirm header="Confirmar" message="¿Desea deshabilitar la Especificidad?" icon="ui-icon-alert" />
                             </p:commandButton>                
 
+                            <p:commandButton icon="ui-icon-trash" action="#{mbEspRegion.prepareDestroy}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbEspRegion.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar la Especificidad?" icon="ui-icon-alert" />
+                            </p:commandButton>  
+                        
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
