@@ -43,11 +43,22 @@ public class MbEspRegion implements Serializable{
     private String selectParam;    
     private List<String> listaNombres;    
 
-    /**
+    /*
      * Creates a new instance of MbEspRegion
      */
     public MbEspRegion() {
+         
+    }   
+    
+    public EspecificidadDeRegion getCurrent() {
+        return current;
     }
+
+    public void setCurrent(EspecificidadDeRegion current) {
+        this.current = current;
+    }
+
+    
     
     /********************************
      ** Métodos para la navegación **
@@ -101,8 +112,6 @@ public class MbEspRegion implements Serializable{
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        current = (EspecificidadDeRegion) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
 
@@ -111,7 +120,7 @@ public class MbEspRegion implements Serializable{
      */
     public String prepareCreate() {
         current = new EspecificidadDeRegion();
-        selectedItemIndex = -1;
+        //selectedItemIndex = -1;
         return "new";
     }
 
@@ -119,9 +128,6 @@ public class MbEspRegion implements Serializable{
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        current = (EspecificidadDeRegion) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
         return "edit";
     }
     
@@ -135,8 +141,8 @@ public class MbEspRegion implements Serializable{
      * @return la ruta a la vista que muestra los resultados de la consulta en forma de listado
      */
     public String prepareSelect(){
-        items = null;
-        buscarEspecificidadDeRegion();
+        //items = null;
+        //buscarEspecificidadDeRegion();
         return "list";
     }
     
@@ -241,9 +247,9 @@ public class MbEspRegion implements Serializable{
      * @return mensaje que notifica el borrado
      */    
     public String destroy() {
-        current = (EspecificidadDeRegion) getItems().getRowData();
+        //current = (EspecificidadDeRegion) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
+        //selectedItemIndex = getItems().getRowIndex();
         performDestroy();
         //recreatePagination();
         recreateModel();
@@ -268,8 +274,8 @@ public class MbEspRegion implements Serializable{
     
   
     
-    /*************************
-    ** Métodos de selección **
+    /**************************
+    **    Métodos de selección     **
     **************************/
     /**
      * @return la totalidad de las entidades persistidas formateadas
@@ -347,15 +353,19 @@ public class MbEspRegion implements Serializable{
         this.selectParam = selectParam;
     }
     
+    /*
     private void buscarEspecificidadDeRegion(){
         items = new ListDataModel(getFacade().getXString(selectParam)); 
     }   
+    */
     
     /**
      * Método para llegar la lista para el autocompletado de la búsqueda de nombres
      * @param query
      * @return 
      */
+    
+    /*
     public List<String> completeNombres(String query){
         listaNombres = getFacade().getNombres();
         List<String> nombres = new ArrayList();
@@ -368,7 +378,7 @@ public class MbEspRegion implements Serializable{
         }
         return nombres;
     }
-        
+    */    
     
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **

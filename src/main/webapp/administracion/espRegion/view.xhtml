@@ -18,8 +18,6 @@
                     <h:panelGrid columns="2">
                         <h:outputLabel value="#{bundle.CreateEspRegionLabel_nombre}"/>
                         <h:outputText value="#{mbEspRegion.selected.nombre}" title="#{bundle.CreateEspRegionTitle_nombre}"/>
-
-
                         
                         <h:outputLabel value="#{bundle.UsuarioAlta}"/>
                         <h:outputText value="#{mbEspRegion.selected.adminentidad.usAlta}" title="#{bundle.UsuarioAlta}"/>                        
@@ -37,20 +35,18 @@
                         <h:outputText value="#{mbEspRegion.selected.adminentidad.usBaja}" title="#{bundle.UsuarioBaja}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaBaja}"/>
-                        <h:outputText value="#{mbEspRegion.selected.adminentidad.fechaBaja}" title="#{bundle.FechaBaja}"/> 
-                        
+                        <h:outputText value="#{mbEspRegion.selected.adminentidad.fechaBaja}" title="#{bundle.FechaBaja}"/>                   
                     </h:panelGrid>                    
                 </p:panel>
 
                 
                 <p:dataTable value="#{mbEspRegion.selected.regiones}" var="r" id="espRegionList" >
                     <f:facet name="header">
-                        Listado de Regiones asociadas a la misma
+                        Listado de Regiones asociadas a la Especificidad
                     </f:facet>
                     <p:column headerText="Nombre" sortBy="#{r.nombre}">
                         <p:outputLabel value="#{r.nombre}"/>
-                    </p:column>
-                         
+                    </p:column>                        
                 </p:dataTable>
                 
                 

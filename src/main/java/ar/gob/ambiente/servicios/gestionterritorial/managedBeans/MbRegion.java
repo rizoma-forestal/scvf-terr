@@ -45,7 +45,7 @@ public class MbRegion implements Serializable{
     
     @EJB
     private RegionFacade regionFacade;
-    //private PaginationHelper pagination;
+   
     private int selectedItemIndex;
     private String selectParam;    
     private List<String> listaNombres; 
@@ -129,7 +129,7 @@ public class MbRegion implements Serializable{
     public String prepareCreate() {
         listaEspecificidadesDeRegion = espRegionFacade.findAll();
         current = new Region();
-        selectedItemIndex = -1;
+        //selectedItemIndex = -1;
         return "new";
     }
 
@@ -137,9 +137,10 @@ public class MbRegion implements Serializable{
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
+        listaEspecificidadesDeRegion = espRegionFacade.findAll();        
         //current = (Region) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
+        //selectedItemIndex = getItems().getRowIndex();
         return "edit";
     }
     
