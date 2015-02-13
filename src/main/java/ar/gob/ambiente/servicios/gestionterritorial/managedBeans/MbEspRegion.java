@@ -151,13 +151,13 @@ public class MbEspRegion implements Serializable{
      * @return 
      */
     public String prepareDestroy(){
-        current = (EspecificidadDeRegion) getItems().getRowData();
+        //current = (EspecificidadDeRegion) getItems().getRowData();
         boolean libre = getFacade().tieneDependencias(current.getId());
 
         if (libre){
             // Elimina
-            selectedItemIndex = getItems().getRowIndex();
-            performDestroy();
+            //selectedItemIndex = getItems().getRowIndex();
+            destroy();
             recreateModel();
         }else{
             //No Elimina 
@@ -233,7 +233,7 @@ public class MbEspRegion implements Serializable{
      * @return mensaje que notifica la actualización
      */
     public String update() {
-        try {
+        try {            
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionUpdated"));
             return "view";
@@ -250,7 +250,9 @@ public class MbEspRegion implements Serializable{
         //current = (EspecificidadDeRegion) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         //selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
+        current.getAdminentidad().setHabilitado(false);
+        //performDestroy();
+        update();        
         //recreatePagination();
         recreateModel();
         return "view";
@@ -314,7 +316,7 @@ public class MbEspRegion implements Serializable{
      */
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            //getFacade().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionDeletedErrorOccured"));
