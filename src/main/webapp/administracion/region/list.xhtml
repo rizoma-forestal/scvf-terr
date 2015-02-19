@@ -27,7 +27,7 @@
                 <br/>           
 
                 <p:dataTable value="#{mbRegion.items}" var="e" id="RegionList" rows="5"
-                             paginator="true"
+                             paginator="true" widgetVar="regionTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
                     
@@ -44,6 +44,19 @@
                     <p:column headerText="Especificidad de Region" sortBy="#{e.especificidadderegion.nombre}" filterBy="#{e.especificidadderegion.nombre}" >
                         <p:outputLabel value="#{e.especificidadderegion.nombre}"/>
                     </p:column>
+                    
+                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="equals" filterMatchMode="equals">
+                        <f:facet name="filter">
+                            <p:selectOneButton onchange="PF('regionTable').filter()">
+                                <f:converter converterId="javax.faces.Boolean" />
+                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                <f:selectItem itemLabel="Activos" itemValue="true" />
+                                <f:selectItem itemLabel="Inactivos" itemValue="false" />
+                            </p:selectOneButton>
+                        </f:facet>
+                        <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
+                    </p:column>
+                    
                     
 
 

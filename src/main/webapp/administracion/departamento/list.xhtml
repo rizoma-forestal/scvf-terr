@@ -26,7 +26,7 @@
                 <br/>           
 
                 <p:dataTable value="#{mbDepartamento.items}" var="e" id="DepartamentoList" rows="5"
-                             paginator="true"
+                             paginator="true" widgetVar="departamentoTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
                     <f:facet name="header">
@@ -40,7 +40,20 @@
                     
                     <p:column headerText="Departamento" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
-                    </p:column>           
+                    </p:column>
+                    
+                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="equals" filterMatchMode="equals">
+                        <f:facet name="filter">
+                            <p:selectOneButton onchange="PF('departamentoTable').filter()">
+                                <f:converter converterId="javax.faces.Boolean" />
+                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                <f:selectItem itemLabel="Activos" itemValue="true" />
+                                <f:selectItem itemLabel="Inactivos" itemValue="false" />
+                            </p:selectOneButton>
+                        </f:facet>
+                        <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
+                    </p:column>
+                    
 
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
