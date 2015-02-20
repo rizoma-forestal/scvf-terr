@@ -76,9 +76,9 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
     public boolean tieneDependencias(Long id){
         em = getEntityManager();
 
-
-        String queryString = "SELECT mun FROM Municipio mun " 
-                + "WHERE mun.provincia.id = :idParam";        
+        String queryString = "SELECT dep FROM Departamento dep " 
+                + "WHERE dep.provincia.id = :idParam "
+                + "AND dep.adminentidad.habilitado = true";           
         
         Query q = em.createQuery(queryString)
                 .setParameter("idParam", id);        
@@ -95,6 +95,20 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
         String queryString = "SELECT pro.nombre FROM Provincia pro";
         Query q = em.createQuery(queryString);
         return q.getResultList();
+    }    
+
+   /**
+     * Método que devuelve un LIST con las entidades HABILITADAS
+     * @return: True o False
+     */
+    public List<Provincia> getActivos(){
+        em = getEntityManager();        
+        List<Provincia> result;
+        String queryString = "SELECT pro FROM Provincia pro " 
+                + "WHERE pro.adminentidad.habilitado = true";                   
+        Query q = em.createQuery(queryString);
+        result = q.getResultList();
+        return result;
     }    
     
 }

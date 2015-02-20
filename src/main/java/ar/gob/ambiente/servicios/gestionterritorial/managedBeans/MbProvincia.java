@@ -79,7 +79,6 @@ public class MbProvincia implements Serializable{
      */
     public DataModel getItems() {
         if (items == null) {
-            //items = getPagination().createPageDataModel();
             items = new ListDataModel(getFacade().findAll());
         }
         return items;
@@ -112,8 +111,6 @@ public class MbProvincia implements Serializable{
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        //current = (Provincia) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
 
@@ -122,7 +119,6 @@ public class MbProvincia implements Serializable{
      */
     public String prepareCreate() {
         current = new Provincia();
-        selectedItemIndex = -1;
         return "new";
     }
 
@@ -130,9 +126,6 @@ public class MbProvincia implements Serializable{
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        current = (Provincia) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
         return "edit";
     }
     
@@ -156,13 +149,11 @@ public class MbProvincia implements Serializable{
      * @return 
      */
     public String prepareDestroy(){
-        current = (Provincia) getItems().getRowData();
         boolean libre = getFacade().tieneDependencias(current.getId());
 
         if (libre){
             // Elimina
-            selectedItemIndex = getItems().getRowIndex();
-            performDestroy();
+            destroy();
             recreateModel();
         }else{
             //No Elimina 
@@ -252,11 +243,8 @@ public class MbProvincia implements Serializable{
      * @return mensaje que notifica el borrado
      */    
     public String destroy() {
-        current = (Provincia) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        //recreatePagination();
+        current.getAdminentidad().setHabilitado(false);
+        update();   
         recreateModel();
         return "view";
     }
@@ -344,12 +332,6 @@ public class MbProvincia implements Serializable{
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            /*
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-            */
         }
         if (selectedItemIndex >= 0) {
             current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
