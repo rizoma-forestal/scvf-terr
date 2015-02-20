@@ -120,7 +120,6 @@ public class MbEspRegion implements Serializable{
      */
     public String prepareCreate() {
         current = new EspecificidadDeRegion();
-        //selectedItemIndex = -1;
         return "new";
     }
 
@@ -142,7 +141,6 @@ public class MbEspRegion implements Serializable{
      */
     public String prepareSelect(){
         //items = null;
-        //buscarEspecificidadDeRegion();
         return "list";
     }
     
@@ -151,12 +149,10 @@ public class MbEspRegion implements Serializable{
      * @return 
      */
     public String prepareDestroy(){
-        //current = (EspecificidadDeRegion) getItems().getRowData();
         boolean libre = getFacade().tieneDependencias(current.getId());
 
         if (libre){
             // Elimina
-            //selectedItemIndex = getItems().getRowIndex();
             destroy();
             recreateModel();
         }else{
@@ -247,13 +243,8 @@ public class MbEspRegion implements Serializable{
      * @return mensaje que notifica el borrado
      */    
     public String destroy() {
-        //current = (EspecificidadDeRegion) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        //selectedItemIndex = getItems().getRowIndex();
         current.getAdminentidad().setHabilitado(false);
-        //performDestroy();
         update();        
-        //recreatePagination();
         recreateModel();
         return "view";
     }

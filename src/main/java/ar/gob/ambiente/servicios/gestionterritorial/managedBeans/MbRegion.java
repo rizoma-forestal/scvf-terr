@@ -118,8 +118,6 @@ public class MbRegion implements Serializable{
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        //current = (Region) getItems().getRowData();
-        //selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
 
@@ -127,9 +125,8 @@ public class MbRegion implements Serializable{
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaEspecificidadesDeRegion = espRegionFacade.findAll();
+        listaEspecificidadesDeRegion = espRegionFacade.getActivos();
         current = new Region();
-        //selectedItemIndex = -1;
         return "new";
     }
 
@@ -137,10 +134,7 @@ public class MbRegion implements Serializable{
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        listaEspecificidadesDeRegion = espRegionFacade.findAll();        
-        //current = (Region) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        //selectedItemIndex = getItems().getRowIndex();
+        listaEspecificidadesDeRegion = espRegionFacade.getActivos();        
         return "edit";
     }
     
@@ -160,23 +154,13 @@ public class MbRegion implements Serializable{
     }
     
     /**
-     * Método que verifica que el Tipo de Capacitación que se quiere eliminar no esté siento utilizado por otra entidad
+     * Método que deshabilita la entidad
      * @return 
      */
     public String prepareDestroy(){
-        current = (Region) getItems().getRowData();
-        boolean libre = getFacade().tieneDependencias(current.getId());
-
-        if (libre){
-            // Elimina
-            selectedItemIndex = getItems().getRowIndex();
-            performDestroy();
-            recreateModel();
-        }else{
-            //No Elimina 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("RegionNonDeletable"));
-        }
-        return "view";
+       destroy();
+       recreateModel();
+       return "view";
     }
     
     /**
@@ -260,15 +244,14 @@ public class MbRegion implements Serializable{
      * @return mensaje que notifica el borrado
      */    
     public String destroy() {
-        current = (Region) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        //recreatePagination();
+        current.getAdminentidad().setHabilitado(false);
+        update();        
         recreateModel();
-        return "view";
+        return "view";   
     }
 
+ 
+    
     /**
      * @return mensaje que notifica la inserción
      */

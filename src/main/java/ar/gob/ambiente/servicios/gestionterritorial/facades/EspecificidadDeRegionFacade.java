@@ -92,4 +92,20 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
         Query q = em.createQuery(queryString);
         return q.getResultList();
     }
-}
+
+
+   /**
+     * Método que devuelve un LIST con las entidades HABILITADAS
+     * @return: True o False
+     */
+    public List<EspecificidadDeRegion> getActivos(){
+        em = getEntityManager();        
+        List<EspecificidadDeRegion> result;
+        String queryString = "SELECT edr FROM EspecificidadDeRegion edr " 
+                + "WHERE edr.adminentidad.habilitado = true";                   
+        Query q = em.createQuery(queryString);
+        result = q.getResultList();
+        return result;
+    }
+        
+}        
