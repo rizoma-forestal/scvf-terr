@@ -160,17 +160,15 @@ public class MbDepartamento implements Serializable {
      * @return 
      */
     public String prepareDestroy(){
-        current = (Departamento) getItems().getRowData();
         boolean libre = getFacade().tieneDependencias(current.getId());
 
         if (libre){
             // Elimina
-            selectedItemIndex = getItems().getRowIndex();
-            performDestroy();
+            destroy();
             recreateModel();
         }else{
             //No Elimina 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoNonDeletable"));
+             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoNonDeletable"));
         }
         return "view";
     }
