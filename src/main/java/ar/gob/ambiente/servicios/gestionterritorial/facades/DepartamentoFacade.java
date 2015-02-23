@@ -68,14 +68,17 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
      * @param id: ID de la entidad
      * @return: True o False
      */
+    
     public boolean tieneDependencias(Long id){
-        em = getEntityManager();
-        String queryString = "SELECT mun FROM Municipio mun " 
-                + "WHERE mun.departamento.id = :idParam";               
+        em = getEntityManager();        
+        String queryString = "SELECT pob FROM CentroPoblado pob " 
+                + "WHERE pob.centropobladotipo_id = :idParam "
+                + "AND pob.adminentidad.habilitado = true";        
         Query q = em.createQuery(queryString)
-                .setParameter("idParam", id);  
+                .setParameter("idParam", id);
         return q.getResultList().isEmpty();
     }
+    
     
     /**
      * Metodo para el autocompletado de la búsqueda por nombre
