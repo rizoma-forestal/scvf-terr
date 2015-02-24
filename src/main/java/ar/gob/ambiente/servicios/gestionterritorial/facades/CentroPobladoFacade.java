@@ -13,6 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+// ********** prueba 2 Git ******
+
 /**
  *
  * @author epassarelli
