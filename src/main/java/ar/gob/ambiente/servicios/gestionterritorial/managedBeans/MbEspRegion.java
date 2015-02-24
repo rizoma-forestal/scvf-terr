@@ -148,16 +148,44 @@ public class MbEspRegion implements Serializable{
      * Método que verifica que el Tipo de Capacitación que se quiere eliminar no esté siento utilizado por otra entidad
      * @return 
      */
+    /*
     public String prepareDestroy(){
         boolean libre = getFacade().tieneDependencias(current.getId());
 
         if (libre){
             // Elimina
-            destroy();
+            deshabilitar();
             recreateModel();
         }else{
             //No Elimina 
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionNonDeletable"));
+        }
+        return "view";
+    }
+    */
+    /**
+     * @return mensaje que notifica la actualizacion de estado
+     */    
+    public String habilitar() {
+        current.getAdminentidad().setHabilitado(true);
+        update();        
+        recreateModel();
+        return "view";
+    }  
+
+    /**
+     * @return mensaje que notifica la actualizacion de estado
+     */    
+    public String deshabilitar() {
+        //Si esta libre de dependencias deshabilita
+        if (getFacade().tieneDependencias(current.getId())){
+            current.getAdminentidad().setHabilitado(false);
+            update();        
+            recreateModel();
+        }
+        else{
+            //No Deshabilita 
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionNonDeletable"));            
         }
         return "view";
     }
@@ -239,16 +267,10 @@ public class MbEspRegion implements Serializable{
         }
     }
 
-    /**
-     * @return mensaje que notifica el borrado
-     */    
-    public String destroy() {
-        current.getAdminentidad().setHabilitado(false);
-        update();        
-        recreateModel();
-        return "view";
-    }
 
+
+  
+    
     /**
      * @return mensaje que notifica la inserción
      */

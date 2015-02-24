@@ -63,14 +63,14 @@
                                 <f:setPropertyActionListener value="#{e}" target="#{mbEspRegion.current}" />
                             </p:commandButton>
 
-                            <p:commandButton icon="ui-icon-trash" action="#{mbEspRegion.prepareDestroy}">
+                        <p:commandButton icon="ui-icon-close" action="#{mbEspRegion.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbEspRegion.current}" />
                                 <p:confirm header="Confirmar" message="¿Desea deshabilitar la Especificidad?" icon="ui-icon-alert" />
                             </p:commandButton>                
 
-                            <p:commandButton icon="ui-icon-trash" action="#{mbEspRegion.prepareDestroy}">
+                            <p:commandButton icon="ui-icon-check" action="#{mbEspRegion.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbEspRegion.current}" />
-                                <p:confirm header="Confirmar" message="¿Desea deshabilitar la Especificidad?" icon="ui-icon-alert" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar la Especificidad?" icon="ui-icon-alert" />
                             </p:commandButton>  
                         
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
