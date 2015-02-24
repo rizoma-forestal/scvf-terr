@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
       
     <h:head>
-        <title>#{bundle.DepartamentoTitle}</title>
+        <title>#{bundle.DepartamentoTitle} Eduardo</title>
     </h:head>
     <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
         <ui:define name="title">
@@ -26,7 +26,8 @@
                 <br/>           
 
                 <p:dataTable value="#{mbDepartamento.items}" var="e" id="DepartamentoList" rows="5"
-                             paginator="true" widgetVar="departamentoTable"
+                             paginator="true" 
+                             widgetVar="departamentoTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
                     <f:facet name="header">
@@ -34,7 +35,7 @@
                         <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
                         <p:columnToggler datasource="DepartamentoList" trigger="toggler" />
                     </f:facet>
-                    <p:column headerText="Provincia" sortBy="#{e.provincia.nombre}" filterBy="#{e.provincia.nombre}" > >
+                    <p:column headerText="Provincia" sortBy="#{e.provincia.nombre}" filterBy="#{e.provincia.nombre}" >
                         <p:outputLabel value="#{e.provincia.nombre}"/>
                     </p:column>
                     
