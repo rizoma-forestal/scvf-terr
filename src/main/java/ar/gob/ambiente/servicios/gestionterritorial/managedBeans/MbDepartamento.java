@@ -37,6 +37,7 @@ import javax.faces.validator.ValidatorException;
 public class MbDepartamento implements Serializable {
 
     private Departamento current;
+
     private DataModel items = null;
     
     
@@ -48,7 +49,7 @@ public class MbDepartamento implements Serializable {
     //private PaginationHelper pagination;
     private int selectedItemIndex;
     private String selectParam;    
-    private List<String> listaNombres; 
+    //private List<String> listaNombres; 
     
     private List<Provincia> listaProvincias;      
     
@@ -82,7 +83,6 @@ public class MbDepartamento implements Serializable {
      */
     public DataModel getItems() {
         if (items == null) {
-            //items = getPagination().createPageDataModel();
             items = new ListDataModel(getFacade().findAll());
         }
         return items;
@@ -115,8 +115,6 @@ public class MbDepartamento implements Serializable {
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        current = (Departamento) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
 
@@ -124,9 +122,7 @@ public class MbDepartamento implements Serializable {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaProvincias = pciaFacade.findAll();
         current = new Departamento();
-        selectedItemIndex = -1;
         return "new";
     }
 
@@ -134,9 +130,6 @@ public class MbDepartamento implements Serializable {
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        current = (Departamento) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
         return "edit";
     }
     
@@ -151,7 +144,6 @@ public class MbDepartamento implements Serializable {
      */
     public String prepareSelect(){
         items = null;
-        buscarDepartamento();
         return "list";
     }
     
@@ -254,11 +246,8 @@ public class MbDepartamento implements Serializable {
      * @return mensaje que notifica el borrado
      */    
     public String destroy() {
-        current = (Departamento) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        //recreatePagination();
+        current.getAdminentidad().setHabilitado(false);
+        update();        
         recreateModel();
         return "view";
     }
@@ -369,6 +358,7 @@ public class MbDepartamento implements Serializable {
      * @param query
      * @return 
      */
+    /*
     public List<String> completeNombres(String query){
         listaNombres = getFacade().getNombres();
         List<String> nombres = new ArrayList();
@@ -381,7 +371,7 @@ public class MbDepartamento implements Serializable {
         }
         return nombres;
     }
-        
+   */     
     
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
@@ -441,6 +431,12 @@ public class MbDepartamento implements Serializable {
         this.listaProvincias = listaProvincias;
     }
     
-    
+    public Departamento getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Departamento current) {
+        this.current = current;
+    }    
     
 }

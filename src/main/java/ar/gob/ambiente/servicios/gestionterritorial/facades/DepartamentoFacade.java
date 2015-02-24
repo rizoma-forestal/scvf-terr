@@ -73,11 +73,14 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
     
     public boolean tieneDependencias(Long id){
         em = getEntityManager();        
+        
         String queryString = "SELECT pob FROM CentroPoblado pob " 
-                + "WHERE pob.centropobladotipo_id = :idParam "
+                + "WHERE pob.departamento.id = :idParam "
                 + "AND pob.adminentidad.habilitado = true";        
+        
         Query q = em.createQuery(queryString)
                 .setParameter("idParam", id);
+        
         return q.getResultList().isEmpty();
     }
     

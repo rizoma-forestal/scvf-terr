@@ -75,7 +75,6 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
      */
     public boolean tieneDependencias(Long id){
         em = getEntityManager();
-
         String queryString = "SELECT dep FROM Departamento dep " 
                 + "WHERE dep.provincia.id = :idParam "
                 + "AND dep.adminentidad.habilitado = true";           
