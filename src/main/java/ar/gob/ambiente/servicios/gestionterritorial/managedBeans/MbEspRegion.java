@@ -41,7 +41,7 @@ public class MbEspRegion implements Serializable{
     //private PaginationHelper pagination;
     private int selectedItemIndex;
     private String selectParam;    
-    private List<String> listaNombres;    
+    //private List<String> listaNombres;    
 
     /*
      * Creates a new instance of MbEspRegion
@@ -274,6 +274,7 @@ public class MbEspRegion implements Serializable{
     /**
      * @return mensaje que notifica la inserción
      */
+    /*
     public String destroyAndView() {
         performDestroy();
         recreateModel();
@@ -286,7 +287,7 @@ public class MbEspRegion implements Serializable{
             return "list";
         }
     }    
-    
+   */ 
   
     
     /**************************
@@ -327,6 +328,7 @@ public class MbEspRegion implements Serializable{
     /**
      * Opera el borrado de la entidad
      */
+    /*
     private void performDestroy() {
         try {
             //getFacade().remove(current);
@@ -335,27 +337,21 @@ public class MbEspRegion implements Serializable{
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionDeletedErrorOccured"));
         }
     }
-
+    */
     /**
      * Actualiza el detalle de la entidad si la última se eliminó
      */
+    /*
     private void updateCurrentItem() {
         int count = getFacade().count();
         if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            /*
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-            */
         }
         if (selectedItemIndex >= 0) {
             current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
-    
+    */
     
     /*
      * Métodos de búsqueda
@@ -368,32 +364,6 @@ public class MbEspRegion implements Serializable{
         this.selectParam = selectParam;
     }
     
-    /*
-    private void buscarEspecificidadDeRegion(){
-        items = new ListDataModel(getFacade().getXString(selectParam)); 
-    }   
-    */
-    
-    /**
-     * Método para llegar la lista para el autocompletado de la búsqueda de nombres
-     * @param query
-     * @return 
-     */
-    
-    /*
-    public List<String> completeNombres(String query){
-        listaNombres = getFacade().getNombres();
-        List<String> nombres = new ArrayList();
-        Iterator itLista = listaNombres.listIterator();
-        while(itLista.hasNext()){
-            String nom = (String)itLista.next();
-            if(nom.contains(query)){
-                nombres.add(nom);
-            }
-        }
-        return nombres;
-    }
-    */    
     
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
