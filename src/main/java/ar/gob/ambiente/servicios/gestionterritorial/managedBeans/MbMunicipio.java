@@ -88,6 +88,14 @@ public class MbMunicipio implements Serializable {
         return items;
     }
 
+    public Municipio getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Municipio current) {
+        this.current = current;
+    }
+
   
     /*******************************
      ** Métodos de inicialización **
@@ -160,21 +168,21 @@ public class MbMunicipio implements Serializable {
      * Método que verifica que el Tipo de Capacitación que se quiere eliminar no esté siento utilizado por otra entidad
      * @return 
      */
-    public String prepareDestroy(){
-        current = (Municipio) getItems().getRowData();
-        boolean libre = getFacade().tieneDependencias(current.getId());
+    //public String prepareDestroy(){
+    //    current = (Municipio) getItems().getRowData();
+    //    boolean libre = getFacade().tieneDependencias(current.getId());
 
-        if (libre){
+    //    if (libre){
             // Elimina
-            selectedItemIndex = getItems().getRowIndex();
-            performDestroy();
-            recreateModel();
-        }else{
+    //        selectedItemIndex = getItems().getRowIndex();
+    //        performDestroy();
+    //        recreateModel();
+    //    }else{
             //No Elimina 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioNonDeletable"));
-        }
-        return "view";
-    }
+    //        JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioNonDeletable"));
+    //    }
+    //    return "view";
+    //}
     
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
@@ -256,31 +264,31 @@ public class MbMunicipio implements Serializable {
     /**
      * @return mensaje que notifica el borrado
      */    
-    public String destroy() {
-        current = (Municipio) getItems().getRowData();
+    //public String destroy() {
+    //    current = (Municipio) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
+    //    selectedItemIndex = getItems().getRowIndex();
+    //    performDestroy();
         //recreatePagination();
-        recreateModel();
-        return "view";
-    }
+    //    recreateModel();
+    //    return "view";
+    //}
 
     /**
      * @return mensaje que notifica la inserción
      */
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "view";
-        } else {
+    //public String destroyAndView() {
+    //    performDestroy();
+    //    recreateModel();
+    //    updateCurrentItem();
+    //    if (selectedItemIndex >= 0) {
+    //        return "view";
+    //    } else {
             // all items were removed - go back to list
-            recreateModel();
-            return "list";
-        }
-    }    
+    //        recreateModel();
+    //        return "list";
+    //    }
+    //}    
     
   
     
@@ -322,34 +330,34 @@ public class MbMunicipio implements Serializable {
     /**
      * Opera el borrado de la entidad
      */
-    private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioDeletedErrorOccured"));
-        }
-    }
+   // private void performDestroy() {
+   //     try {
+   //         getFacade().remove(current);
+   //         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioDeleted"));
+   //     } catch (Exception e) {
+   //         JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioDeletedErrorOccured"));
+   //     }
+   // }
 
     /**
      * Actualiza el detalle de la entidad si la última se eliminó
      */
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
+    //private void updateCurrentItem() {
+    //    int count = getFacade().count();
+    //    if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
+    //        selectedItemIndex = count - 1;
             // go to previous page if last page disappeared:
             /*
             if (pagination.getPageFirstItem() >= count) {
                 pagination.previousPage();
             }
             */
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
-    }
+     //   }
+    //    if (selectedItemIndex >= 0) {
+    //        current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+    //    }
+    //}
     
     
     /*
@@ -444,6 +452,22 @@ public class MbMunicipio implements Serializable {
         this.listaProvincias = listaProvincias;
     }
     
+    public String habilitar() {
+        current.getAdminentidad().setHabilitado(true);
+        update();        
+        recreateModel();
+        return "view";
+    }  
+
+    /**
+     * @return mensaje que notifica la actualizacion de estado
+     */    
+    public String deshabilitar() {
+           current.getAdminentidad().setHabilitado(false);
+           update();        
+           recreateModel();
+         return "view";
+    }
     
     
     

@@ -60,26 +60,31 @@
                     
 
 
-    <p:column headerText="Acciones" style="width:135px">
-        <p:growl id="messages" showDetail="true" />    
-        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}">
-                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
-            </p:commandButton>
-                            
-            <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}">
-                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
-            </p:commandButton>
-            
-            <p:commandButton icon="ui-icon-trash" action="#{mbRegion.prepareDestroy}">
-                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
-                <p:confirm header="Confirmar" message="¿Desea deshabilitar el registro de Region?" icon="ui-icon-alert" />
-            </p:commandButton>                
+                    <p:column headerText="Acciones" style="width:135px">
+                        <p:growl id="messages" showDetail="true" />    
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+                            </p:commandButton>
 
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-           </p:confirmDialog>      
-    </p:column>                
+                            <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+                            </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-close" action="#{mbRegion.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar la Región?" icon="ui-icon-alert" />
+                            </p:commandButton>                
+
+                            <p:commandButton icon="ui-icon-check" action="#{mbRegion.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar la Región?" icon="ui-icon-alert" />
+                            </p:commandButton>  
+                        
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                           </p:confirmDialog>      
+                    </p:column> 
                  
                     
                 </p:dataTable>

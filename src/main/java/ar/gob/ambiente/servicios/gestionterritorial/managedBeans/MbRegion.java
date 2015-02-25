@@ -157,11 +157,11 @@ public class MbRegion implements Serializable{
      * Método que deshabilita la entidad
      * @return 
      */
-    public String prepareDestroy(){
-       destroy();
-       recreateModel();
-       return "view";
-    }
+    //public String prepareDestroy(){
+    //   destroy();
+    //   recreateModel();
+    //   return "view";
+    //}
     
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
@@ -243,30 +243,30 @@ public class MbRegion implements Serializable{
     /**
      * @return mensaje que notifica el borrado
      */    
-    public String destroy() {
-        current.getAdminentidad().setHabilitado(false);
-        update();        
-        recreateModel();
-        return "view";   
-    }
+    //public String destroy() {
+    //    current.getAdminentidad().setHabilitado(false);
+    //    update();        
+    //    recreateModel();
+    //    return "view";   
+    //}
 
  
     
     /**
      * @return mensaje que notifica la inserción
      */
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "view";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "list";
-        }
-    }    
+    //public String destroyAndView() {
+    //    performDestroy();
+    //    recreateModel();
+    //    updateCurrentItem();
+    //    if (selectedItemIndex >= 0) {
+    //        return "view";
+    //    } else {
+    //        // all items were removed - go back to list
+    //        recreateModel();
+    //        return "list";
+    //    }
+    //}    
     
   
     
@@ -308,34 +308,34 @@ public class MbRegion implements Serializable{
     /**
      * Opera el borrado de la entidad
      */
-    private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RegionDeletedErrorOccured"));
-        }
-    }
+    //private void performDestroy() {
+    //    try {
+    //        getFacade().remove(current);
+    //        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionDeleted"));
+    //    } catch (Exception e) {
+    //        JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RegionDeletedErrorOccured"));
+    //    }
+    //}
 
     /**
      * Actualiza el detalle de la entidad si la última se eliminó
      */
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
+    //private void updateCurrentItem() {
+    //    int count = getFacade().count();
+    //    if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            /*
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-            */
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
-    }
+    //        selectedItemIndex = count - 1;
+    //        // go to previous page if last page disappeared:
+    //        /*
+    //        if (pagination.getPageFirstItem() >= count) {
+    //            pagination.previousPage();
+    //        }
+    //        */
+    //    }
+    //    if (selectedItemIndex >= 0) {
+    //        current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+    //    }
+    //}
     
     
     /*
@@ -440,5 +440,29 @@ public class MbRegion implements Serializable{
     public void setCurrent(Region current) {
         this.current = current;
     }
+    public String habilitar() {
+        current.getAdminentidad().setHabilitado(true);
+        update();        
+        recreateModel();
+        return "view";
+    }  
+
+    /**
+     * @return mensaje que notifica la actualizacion de estado
+     */    
+    public String deshabilitar() {
+        //Si esta libre de dependencias deshabilita
+        if (getFacade().tieneDependencias(current.getId())){
+            current.getAdminentidad().setHabilitado(false);
+            update();        
+            recreateModel();
+        }
+        else{
+            //No Deshabilita 
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("RegionNonDeletable"));            
+        }
+        return "view";
+    }
     
 }
+

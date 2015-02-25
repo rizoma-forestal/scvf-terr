@@ -148,19 +148,19 @@ public class MbProvincia implements Serializable{
      * Método que verifica que el Tipo de Capacitación que se quiere eliminar no esté siento utilizado por otra entidad
      * @return 
      */
-    public String prepareDestroy(){
-        boolean libre = getFacade().tieneDependencias(current.getId());
+    //public String prepareDestroy(){
+    //    boolean libre = getFacade().tieneDependencias(current.getId());
 
-        if (libre){
-            // Elimina
-            destroy();
-            recreateModel();
-        }else{
-            //No Elimina 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("ProvinciaNonDeletable"));
-        }
-        return "view";
-    }
+    //    if (libre){
+    //        // Elimina
+    //        destroy();
+    //        recreateModel();
+    //    }else{
+    //        //No Elimina 
+    //        JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("ProvinciaNonDeletable"));
+    //    }
+    //    return "view";
+    //}
     
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
@@ -242,28 +242,28 @@ public class MbProvincia implements Serializable{
     /**
      * @return mensaje que notifica el borrado
      */    
-    public String destroy() {
-        current.getAdminentidad().setHabilitado(false);
-        update();   
-        recreateModel();
-        return "view";
-    }
+    //public String destroy() {
+    //    current.getAdminentidad().setHabilitado(false);
+    //    update();   
+    //    recreateModel();
+    //    return "view";
+    //}
 
     /**
      * @return mensaje que notifica la inserción
      */
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "view";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "list";
-        }
-    }    
+    //public String destroyAndView() {
+    //    performDestroy();
+    //    recreateModel();
+    //    updateCurrentItem();
+    //    if (selectedItemIndex >= 0) {
+    //        return "view";
+    //    } else {
+    //        // all items were removed - go back to list
+    //        recreateModel();
+    //        return "list";
+    //    }
+    //}    
     
     /**
      * Método para revocar la sesión del MB
@@ -315,28 +315,28 @@ public class MbProvincia implements Serializable{
     /**
      * Opera el borrado de la entidad
      */
-    private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProvinciaDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("ProvinciaDeletedErrorOccured"));
-        }
-    }
+    //private void performDestroy() {
+    //    try {
+    //        getFacade().remove(current);
+    //        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProvinciaDeleted"));
+    //    } catch (Exception e) {
+    //        JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("ProvinciaDeletedErrorOccured"));
+    //    }
+    //}
 
     /**
      * Actualiza el detalle de la entidad si la última se eliminó
      */
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
-    }
+    //private void updateCurrentItem() {
+    //    int count = getFacade().count();
+    //    if (selectedItemIndex >= count) {
+    //        // selected index cannot be bigger than number of items:
+    //        selectedItemIndex = count - 1;
+    //    }
+    //    if (selectedItemIndex >= 0) {
+    //        current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+    //    }
+    //}
     
     
     /*
@@ -421,6 +421,29 @@ public class MbProvincia implements Serializable{
             }
         }
     }        
+    public String habilitar() {
+        current.getAdminentidad().setHabilitado(true);
+        update();        
+        recreateModel();
+        return "view";
+    }  
+
+    /**
+     * @return mensaje que notifica la actualizacion de estado
+     */    
+    public String deshabilitar() {
+        //Si esta libre de dependencias deshabilita
+        if (getFacade().tieneDependencias(current.getId())){
+            current.getAdminentidad().setHabilitado(false);
+            update();        
+            recreateModel();
+        }
+        else{
+            //No Deshabilita 
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("ProvinciaNonDeletable"));            
+        }
+        return "view";
+    }
     
     
     

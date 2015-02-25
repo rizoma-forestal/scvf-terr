@@ -66,16 +66,22 @@
                                 <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
                             </p:commandButton>
 
-                            <p:commandButton icon="ui-icon-trash" action="#{mbDepartamento.prepareDestroy}">
+                        <p:commandButton icon="ui-icon-close" action="#{mbDepartamento.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
                                 <p:confirm header="Confirmar" message="¿Desea deshabilitar el Departamento?" icon="ui-icon-alert" />
                             </p:commandButton>                
 
+                            <p:commandButton icon="ui-icon-check" action="#{mbDepartamento.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar el Departamento?" icon="ui-icon-alert" />
+                            </p:commandButton>  
+                        
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                            </p:confirmDialog>      
-                    </p:column>                     
+                    </p:column> 
+
                 </p:dataTable>
 
             </h:form>
