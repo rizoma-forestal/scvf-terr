@@ -22,6 +22,7 @@
         <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbEspRegion</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>mbRegion</managed-bean-name>
         <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbRegion</managed-bean-class>
@@ -32,19 +33,30 @@
         <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbProvincia</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>mbDepartamento</managed-bean-name>
         <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbDepartamento</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>mbMunicipio</managed-bean-name>
         <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbMunicipio</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+   
     <managed-bean>
         <managed-bean-name>mbCentroPoblado</managed-bean-name>
         <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbCentroPoblado</managed-bean-class>
     
-        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>mbCentroPobladoTipo</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbCentroPobladoTipo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
 </faces-config>

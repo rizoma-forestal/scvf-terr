@@ -48,7 +48,7 @@ public class MbCentroPoblado implements Serializable {
     private ProvinciaFacade provFacade;
     
     @EJB
-    private DepartamentoFacade munFacade;
+    private DepartamentoFacade dptoFacade;
 
     @EJB
     private CentroPobladoTipoFacade tipocpFacade;
@@ -68,11 +68,6 @@ public class MbCentroPoblado implements Serializable {
     
     private Provincia selectProvincia; 
 
-
-
-
-
-
     
     /**
      * Creates a new instance of MbCentroPoblado
@@ -83,7 +78,7 @@ public class MbCentroPoblado implements Serializable {
    @PostConstruct
    public void init(){
         listaProvincias = provFacade.findAll();
-        listaDepartamentos = munFacade.findAll();
+        listaDepartamentos = dptoFacade.findAll();
         listaTiposCP = tipocpFacade.findAll();
    }
 
@@ -507,7 +502,7 @@ public class MbCentroPoblado implements Serializable {
      * 
      */
     
-    public void municipioChangeListener(ValueChangeEvent event) {
+    public void departamentoChangeListener(ValueChangeEvent event) {
         selectProvincia = (Provincia)event.getNewValue();
         
         comboDepartamentos = new ArrayList();

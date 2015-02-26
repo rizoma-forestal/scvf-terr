@@ -7,13 +7,14 @@
       xmlns:p="http://primefaces.org/ui">
       
     <h:head>
-        <title>#{bundle.TipoCentroPobladoTitle}</title>
+        <title>#{bundle.CentroPobladoTipoTitle}</title>
     </h:head>
     <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.TipoCentroPobladoTitle}" />
+            <h:outputText value="#{bundle.CentroPobladoTipoTitle}" />
         </ui:define>
         <ui:define name="content">
+            <p:messages id="messages" />
             <br/> 
             <h:form>
                 <p:panel id="espRegionForm" header="#{bundle.TipoCentroPobladoListTitle}" style="margin-bottom:10px;">
