@@ -64,23 +64,6 @@ public class RegionFacade extends AbstractFacade<Region> {
     }    
     
     /**
-     * Método que verifica si la entidad tiene dependencia (Hijos)
-     * @param id: ID de la entidad
-     * @return: True o False
-     */
-    public boolean tieneDependencias(Long id){
-        em = getEntityManager();        
-        
-        String queryString = "SELECT pro FROM Provincia pro " 
-                + "WHERE prov.region.id = :idParam";        
-        
-        Query q = em.createQuery(queryString)
-                .setParameter("idParam", id);
-        
-        return q.getResultList().isEmpty();
-    }
-
-    /**
      * Metodo para el autocompletado de la búsqueda por nombre
      * @return 
      */

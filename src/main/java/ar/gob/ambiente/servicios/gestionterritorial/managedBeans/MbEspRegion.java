@@ -145,25 +145,6 @@ public class MbEspRegion implements Serializable{
     }
     
     /**
-     * Método que verifica que el Tipo de Capacitación que se quiere eliminar no esté siento utilizado por otra entidad
-     * @return 
-     */
-    /*
-    public String prepareDestroy(){
-        boolean libre = getFacade().tieneDependencias(current.getId());
-
-        if (libre){
-            // Elimina
-            deshabilitar();
-            recreateModel();
-        }else{
-            //No Elimina 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionNonDeletable"));
-        }
-        return "view";
-    }
-    */
-    /**
      * @return mensaje que notifica la actualizacion de estado
      */    
     public String habilitar() {
@@ -267,29 +248,6 @@ public class MbEspRegion implements Serializable{
         }
     }
 
-
-
-  
-    
-    /**
-     * @return mensaje que notifica la inserción
-     */
-    /*
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "view";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "list";
-        }
-    }    
-   */ 
-  
-    
     /**************************
     **    Métodos de selección     **
     **************************/
@@ -324,34 +282,6 @@ public class MbEspRegion implements Serializable{
     private EspecificidadDeRegionFacade getFacade() {
         return espDeRegionFacade;
     }
-    
-    /**
-     * Opera el borrado de la entidad
-     */
-    /*
-    private void performDestroy() {
-        try {
-            //getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionDeletedErrorOccured"));
-        }
-    }
-    */
-    /**
-     * Actualiza el detalle de la entidad si la última se eliminó
-     */
-    /*
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            selectedItemIndex = count - 1;
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
-    }
-    */
     
     /*
      * Métodos de búsqueda

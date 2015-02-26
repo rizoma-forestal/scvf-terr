@@ -146,25 +146,7 @@ public class MbDepartamento implements Serializable {
         items = null;
         return "list";
     }
-    
-    /**
-     * Método que verifica que el Tipo de Capacitación que se quiere eliminar no esté siento utilizado por otra entidad
-     * @return 
-     */
-    //public String prepareDestroy(){
-    //    boolean libre = getFacade().tieneDependencias(current.getId());
-
-      //  if (libre){
-      //      // Elimina
-      //      destroy();
-      //      recreateModel();
-      //  }else{
-            //No Elimina 
-      //       JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoNonDeletable"));
-      //  }
-      //  return "view";
-    //}
-    
+        
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
      * @param arg0: vista jsf que llama al validador
@@ -241,35 +223,7 @@ public class MbDepartamento implements Serializable {
             return null;
         }
     }
-
-    /**
-     * @return mensaje que notifica el borrado
-     */    
-    //public String destroy() {
-    //    current.getAdminentidad().setHabilitado(false);
-    //    update();        
-    //    recreateModel();
-    //    return "view";
-    //}
-
-    /**
-     * @return mensaje que notifica la inserción
-     */
-    //public String destroyAndView() {
-    //    performDestroy();
-    //    recreateModel();
-    //    updateCurrentItem();
-    //    if (selectedItemIndex >= 0) {
-    //        return "view";
-    //    } else {
-    //        // all items were removed - go back to list
-    //        recreateModel();
-    //        return "list";
-    //    }
-    //}    
-    
-  
-    
+          
     /*************************
     ** Métodos de selección **
     **************************/
@@ -304,40 +258,7 @@ public class MbDepartamento implements Serializable {
     private DepartamentoFacade getFacade() {
         return deptoFacade;
     }
-    
-    /**
-     * Opera el borrado de la entidad
-     */
-    //private void performDestroy() {
-    //    try {
-    //        getFacade().remove(current);
-    //        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoDeleted"));
-    //    } catch (Exception e) {
-    //        JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("DepartamentoDeletedErrorOccured"));
-    //    }
-    //}
-
-    /**
-     * Actualiza el detalle de la entidad si la última se eliminó
-     */
-    //private void updateCurrentItem() {
-    //    int count = getFacade().count();
-    //    if (selectedItemIndex >= count) {
-    //        // selected index cannot be bigger than number of items:
-    //        selectedItemIndex = count - 1;
-    //        // go to previous page if last page disappeared:
-    //        /*
-    //        if (pagination.getPageFirstItem() >= count) {
-    //            pagination.previousPage();
-    //        }
-    //        */
-    //    }
-    //    if (selectedItemIndex >= 0) {
-    //        current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-    //    }
-    //}
-    
-    
+            
     /*
      * Métodos de búsqueda
      */
@@ -352,27 +273,7 @@ public class MbDepartamento implements Serializable {
     private void buscarDepartamento(){
         items = new ListDataModel(getFacade().getXString(selectParam)); 
     }   
-    
-    /**
-     * Método para llegar la lista para el autocompletado de la búsqueda de nombres
-     * @param query
-     * @return 
-     */
-    /*
-    public List<String> completeNombres(String query){
-        listaNombres = getFacade().getNombres();
-        List<String> nombres = new ArrayList();
-        Iterator itLista = listaNombres.listIterator();
-        while(itLista.hasNext()){
-            String nom = (String)itLista.next();
-            if(nom.contains(query)){
-                nombres.add(nom);
-            }
-        }
-        return nombres;
-    }
-   */     
-    
+        
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
     *********************************************************************/

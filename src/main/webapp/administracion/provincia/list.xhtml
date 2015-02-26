@@ -40,7 +40,7 @@
                     </p:column>
  
 
-                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="equals" filterMatchMode="equals">
+                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
                             <p:selectOneButton onchange="PF('provinciaTable').filter()">
                                 <f:converter converterId="javax.faces.Boolean" />
