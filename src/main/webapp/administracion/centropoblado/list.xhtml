@@ -29,6 +29,7 @@
 
                 <p:dataTable value="#{mbCentroPoblado.items}" var="e" id="CentroPobladoList" rows="10"
                              paginator="true" 
+                             widgetVar="cpTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="10,25,50">
                     
@@ -50,6 +51,18 @@
                         <p:outputLabel value="#{e.departamento.provincia.nombre}"/>
                     </p:column>                                                     
 
+                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
+                        <f:facet name="filter">
+                            <p:selectOneButton onchange="PF('cpTable').filter()">
+                                <f:converter converterId="javax.faces.Boolean" />
+                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                <f:selectItem itemLabel="Activos" itemValue="true" />
+                                <f:selectItem itemLabel="Inactivos" itemValue="false" />
+                            </p:selectOneButton>
+                        </f:facet>
+                        <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
+                    </p:column>                    
+                    
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
                             <p:commandButton icon="ui-icon-zoomin" action="#{mbCentroPoblado.prepareView}">
@@ -60,10 +73,15 @@
                                 <f:setPropertyActionListener value="#{e}" target="#{mbCentroPoblado.current}" />
                             </p:commandButton>
 
-                            <p:commandButton icon="ui-icon-trash" action="#{mbCentroPoblado.prepareDestroy}">
+                        <p:commandButton icon="ui-icon-close" action="#{mbCentroPoblado.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbCentroPoblado.current}" />
-                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Municipio?" icon="ui-icon-alert" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Centro Poblado?" icon="ui-icon-alert" />
                             </p:commandButton>                
+
+                            <p:commandButton icon="ui-icon-check" action="#{mbCentroPoblado.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbCentroPoblado.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar el Centro Poblado?" icon="ui-icon-alert" />
+                            </p:commandButton>                 
 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
