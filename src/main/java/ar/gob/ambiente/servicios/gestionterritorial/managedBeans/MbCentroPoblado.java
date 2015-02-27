@@ -489,12 +489,15 @@ public class MbCentroPoblado implements Serializable {
             }
         }
     }        
-    
 
+    public CentroPoblado getCurrent() {
+        return current;
+    }
 
-    
-    
-    
+    public void setCurrent(CentroPoblado current) {
+        this.current = current;
+    }
+        
     /**
      * 
      * @param event
@@ -516,6 +519,21 @@ public class MbCentroPoblado implements Serializable {
             }          
         }        
     }
-    
+     public String habilitar() {
+        current.getAdminentidad().setHabilitado(true);
+        update();        
+        recreateModel();
+        return "view";
+    }  
+
+    /**
+     * @return mensaje que notifica la actualizacion de estado
+     */    
+    public String deshabilitar() {
+            current.getAdminentidad().setHabilitado(false);
+            update();        
+            recreateModel();
+        return "view";
+    }     
     
 }

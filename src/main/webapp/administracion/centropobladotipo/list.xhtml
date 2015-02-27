@@ -66,12 +66,12 @@
 
                         <p:commandButton icon="ui-icon-close" action="#{mbCentroPobladoTipo.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
-                                <p:confirm header="Confirmar" message="¿Desea deshabilitar la Especificidad?" icon="ui-icon-alert" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Tipo de Centro Poblado?" icon="ui-icon-alert" />
                             </p:commandButton>                
 
                             <p:commandButton icon="ui-icon-check" action="#{mbCentroPobladoTipo.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
-                                <p:confirm header="Confirmar" message="¿Desea habilitar la Especificidad?" icon="ui-icon-alert" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar el Tipo de Centro Poblado?" icon="ui-icon-alert" />
                             </p:commandButton>  
                         
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
