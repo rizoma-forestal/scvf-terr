@@ -81,18 +81,4 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         return q.getResultList();
     } 
 
-    /**
-     * Método que verifica si la entidad tiene dependencia (Hijos)
-     * @param id: ID de la entidad
-     * @return: True o False
-     */
-/*    public boolean tieneDependencias(Long id){
-        em = getEntityManager();
-        String queryString = "SELECT geo FROM GeoRef geo " 
-                + "WHERE geo.localidad.id = :idParam";               
-        Query q = em.createQuery(queryString)
-                .setParameter("idParam", id); 
-        return q.getResultList().isEmpty();
-    }     
-*/    
 }
