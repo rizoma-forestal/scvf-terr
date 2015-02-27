@@ -189,6 +189,9 @@ public class MbCentroPoblado implements Serializable {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
+        //listaEspecificidadesDeRegion = espRegionFacade.getActivos();
+        listaProvincias = provFacade.getActivos();
+        listaTiposCP = tipocpFacade.getActivos();
         current = new CentroPoblado();
         selectedItemIndex = -1;
         return "new";
@@ -513,9 +516,9 @@ public class MbCentroPoblado implements Serializable {
         
         // recorro el datamodel
         while(itRows.hasNext()){
-            Departamento mun = (Departamento)itRows.next();
-            if(mun.getProvincia().equals(selectProvincia)){
-                comboDepartamentos.add(mun);
+            Departamento dpto = (Departamento)itRows.next();
+            if ( ( dpto.getProvincia().equals(selectProvincia) ) && (dpto.getAdminentidad().isHabilitado()) ){
+                comboDepartamentos.add(dpto);
             }          
         }        
     }

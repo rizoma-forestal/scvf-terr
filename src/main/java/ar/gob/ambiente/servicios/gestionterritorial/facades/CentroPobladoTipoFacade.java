@@ -93,5 +93,20 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
                 .setParameter("idParam", id);
         return q.getResultList().isEmpty();
     } 
+
+    
+   /**
+     * Método que devuelve un LIST con las entidades HABILITADAS
+     * @return: True o False
+     */
+    public List<CentroPobladoTipo> getActivos(){
+        em = getEntityManager();        
+        List<CentroPobladoTipo> result;
+        String queryString = "SELECT cpt FROM CentroPobladoTipo cpt " 
+                + "WHERE cpt.adminentidad.habilitado = true";                   
+        Query q = em.createQuery(queryString);
+        result = q.getResultList();
+        return result;
+    }        
     
 }

@@ -122,6 +122,7 @@ public class MbDepartamento implements Serializable {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
+        listaProvincias = pciaFacade.getActivos();
         current = new Departamento();
         return "new";
     }
