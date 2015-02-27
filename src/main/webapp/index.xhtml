@@ -10,75 +10,81 @@
         <ui:define name="content">
             <h:form>
                 <h1 align="center">Tareas por realizar</h1>
+
+                <p>Especificidad de Region</p>
+                <ul>
+                    <li class="pendiente">---</li>                       
+                </ul>
                 
                 <p>Region</p>
                 <ul>
-                    <li>-- List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
-                    <li>-- Mb: Crear los get y set para Current</li>
-                    <li>-- Mb: Crear los metodos habilitar y deshabilitar</li>
-                    <li>-- Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
-                    <li>Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>--Facade: No tiene dependencia por lo tanto no se controlan</li>
-                    <li>New: Debe permitir asignarle provincias</li>                       
+                    <li class="realizado">List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
+                    <li class="realizado">Mb: Crear los get y set para Current</li>
+                    <li class="realizado">Mb: Crear los metodos habilitar y deshabilitar</li>
+                    <li class="realizado">Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
+                    <li class="pendiente">Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="realizado">Facade: No tiene dependencia por lo tanto no se controlan</li>
+                    <li class="pendiente">New: Debe permitir asignarle provincias que esten DESHABILITADAS (no las tiene que traer el combo)</li>                       
                 </ul>
                 
                 <p>Provincia</p>
                 <ul>
-                    <li>-- List: Hacer que se muestre el boton Habilitar o Deshabilitar, segun corresponda</li>
-                    <li>-- Mb: Crear los get y set para Current</li>
-                    <li>-- Mb: Crear los metodos habilitar y deshabilitar</li>
-                    <li>-- Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
-                    <li>Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Facade: Verificar que ademas de tener hijos esten habilitados</li>
-                    <li>New: Debe permitir asignarle provincias</li>                       
+                    <li class="realizado">List: Hacer que se muestre el boton Habilitar o Deshabilitar, segun corresponda</li>
+                    <li class="realizado">Mb: Crear los get y set para Current</li>
+                    <li class="realizado">Mb: Crear los metodos habilitar y deshabilitar</li>
+                    <li class="realizado">Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
+                    <li class="pendiente">Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Facade: Verificar que ademas de tener hijos esten habilitados</li>
+                    <li class="pendiente">New: Debe permitir asignarle provincias</li>                       
                 </ul>                
                 
                 <p>Departamento</p>
                 <ul>
-                    <li>-- List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
-                    <li>-- Mb: Crear los get y set para Current</li>
-                    <li>-- Mb: Crear los metodos habilitar y deshabilitar</li>
-                    <li>-- Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
-                    <li>Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Facade: Verificar que ademas de tener hijos esten habilitados</li>                  
-                    <li>Validar su existencia previa pero asociado a una provincia</li>
+                    <li class="realizado">List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
+                    <li class="realizado">Mb: Crear los get y set para Current</li>
+                    <li class="realizado">Mb: Crear los metodos habilitar y deshabilitar</li>
+                    <li class="realizado">Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
+                    <li class="pendiente">Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Facade: Verificar que ademas de tener hijos esten habilitados</li>                  
+                    <li class="pendiente">Validar su existencia previa pero asociado a una provincia</li>
                 </ul>                
 
                 <p>Centro Poblado</p>
                 <ul>
-                    <li>List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
-                    <li>Mb: Crear los get y set para Current</li>
-                    <li>Mb: Crear los metodos habilitar y deshabilitar</li>
-                    <li>Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
-                    <li>Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Facade: No tiene dependencia por lo tanto no se controlan</li>   
-                    <li>Validar su existencia previa pero asociado a un departamento y a una provincia</li>
+                    <li class="realizado">List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
+                    <li class="realizado">Mb: Crear los get y set para Current</li>
+                    <li class="realizado">Mb: Crear los metodos habilitar y deshabilitar</li>
+                    <li class="realizado">Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
+                    <li class="pendiente">Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Facade: No tiene dependencia por lo tanto no se controlan</li>   
+                    <li class="pendiente">Validar su existencia previa pero asociado a un departamento y a una provincia</li>
+                    <li class="pendiente">Al crear uno nuevo no debe traer en los combos nada que este DESHABILITADO</li>
                 </ul>
                 
                 <p>Municipio</p>
                 <ul>
-                    <li>-- List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
-                    <li>-- Mb: Crear los get y set para Current</li>
-                    <li>-- Mb: Crear los metodos habilitar y deshabilitar</li>
-                    <li>-- Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
-                    <li>Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Facade: No tiene dependencia por lo tanto no se controlan</li>                     
+                    <li class="realizado">List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
+                    <li class="realizado">Mb: Crear los get y set para Current</li>
+                    <li class="realizado">Mb: Crear los metodos habilitar y deshabilitar</li>
+                    <li class="pendiente">Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
+                    <li class="pendiente">Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Facade: Como el Municipio No tiene dependencias no se deberia controlar</li>                     
                 </ul>                
                 
                 <p>Tipo Centro Poblado (Opcional si nos sobra tiempo)</p>
                 <ul>
-                    <li>List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
-                    <li>Mb: Crear los get y set para Current</li>
-                    <li>Mb: Crear los metodos habilitar y deshabilitar</li>
-                    <li>Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
-                    <li>Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
-                    <li>Facade: Verificar que ademas de tener hijos esten habilitados</li>                      
+                    <li class="realizado">List: Hacer que se muestre el boton Habilitar o Deshabilitas, segun corresponda</li>
+                    <li class="realizado">Mb: Crear los get y set para Current</li>
+                    <li class="realizado">Mb: Crear los metodos habilitar y deshabilitar</li>
+                    <li class="realizado">Mb: Quitar todo el codigo que este de mas (destroy, prepareDestroy)</li>
+                    <li class="pendiente">Mb: Al actualizar una entidad hay que agregar la fecha de modificacion y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Mb: Al Deshabilitar una entidad hay que agregar la fecha de baja y el usuario (ahora lo seteamos harcodeado)</li>
+                    <li class="pendiente">Facade: Verificar que ademas de tener hijos esten habilitados</li>                      
                 </ul>                  
                 
                 
