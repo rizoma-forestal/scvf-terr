@@ -16,15 +16,23 @@
                     
                     <h:panelGrid columns="2">
 
-                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_espRegion}" for="tipocp"/>      
+                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}" for="tipocp"/>      
                         
-                        <p:selectOneMenu id="tipocp" value="#{mbCentroPoblado.selected.nombre}" 
+                        <p:selectOneMenu 
+                                        id="tipocp" 
+                                        value="#{mbCentroPoblado.selected.centropobladotipo}" 
                                          requiredMessage="#{bundle.CreateCentroPobladoTipoCPRequiredMessage}" 
                                          required="true">
-                            <f:selectItem itemLabel="Seleccione el Tipo de Centro Poblado" itemValue="" noSelectionOption="true" />
+                                <f:selectItem 
+                                        itemLabel="Seleccione el Tipo de Centro Poblado" 
+                                        itemValue="" 
+                                        noSelectionOption="true" />
                             
-                            <f:selectItems value="#{mbCentroPoblado.listaTiposCP}" var="tipocp" 
-                                           itemLabel="#{tipocp.nombre}" itemValue="#{tipocp}"/>
+                                <f:selectItems 
+                                        value="#{mbCentroPoblado.listaTiposCP}" 
+                                        var="tipocp" 
+                                           itemLabel="#{tipocp.nombre}" 
+                                           itemValue="#{tipocp}"/>
                         </p:selectOneMenu> 
                         
                         

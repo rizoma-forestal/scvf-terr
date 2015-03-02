@@ -15,15 +15,24 @@
                 <p:panel id="pnNew" header="#{bundle.DepartamentoNewTitle}" style="margin-bottom:10px;">
                     
                     <h:panelGrid columns="2">
+                        
                         <p:outputLabel value="#{bundle.CreateDepartamentoLabel_Provincia}" for="prov"/>      
                         
-                        <p:selectOneMenu id="prov" value="#{mbDepartamento.selected.provincia}" 
+                        <p:selectOneMenu 
+                                    id="prov" 
+                                    value="#{mbDepartamento.selected.provincia}" 
                                          requiredMessage="#{bundle.CreateDepartamentoProvinciaRequiredMessage}" 
                                          required="true">
-                            <f:selectItem itemLabel="Seleccione la Provincia" itemValue="" noSelectionOption="true" />
+                            <f:selectItem 
+                                        itemLabel="Seleccione la Provincia" 
+                                        itemValue="" 
+                                        noSelectionOption="true" />
                             
-                            <f:selectItems value="#{mbDepartamento.listaProvincias}" var="prov" 
-                                           itemLabel="#{prov.nombre}" itemValue="#{prov}"/>
+                            <f:selectItems 
+                                        value="#{mbDepartamento.listaProvincias}" 
+                                        var="prov" 
+                                           itemLabel="#{prov.nombre}" 
+                                           itemValue="#{prov}"/>
                         </p:selectOneMenu>   
                         
                         <p:outputLabel value="#{bundle.CreateDepartamentoLabel_nombre}" for="nombre"/>

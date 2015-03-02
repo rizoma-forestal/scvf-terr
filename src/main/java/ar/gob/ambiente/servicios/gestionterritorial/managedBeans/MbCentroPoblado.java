@@ -189,11 +189,10 @@ public class MbCentroPoblado implements Serializable {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        //listaEspecificidadesDeRegion = espRegionFacade.getActivos();
         listaProvincias = provFacade.getActivos();
         listaTiposCP = tipocpFacade.getActivos();
         current = new CentroPoblado();
-        selectedItemIndex = -1;
+        //selectedItemIndex = -1;
         return "new";
     }
 
@@ -201,9 +200,9 @@ public class MbCentroPoblado implements Serializable {
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        current = (CentroPoblado) getItems().getRowData();
+       // current = (CentroPoblado) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
+        //selectedItemIndex = getItems().getRowIndex();
         return "edit";
     }
     
@@ -222,17 +221,6 @@ public class MbCentroPoblado implements Serializable {
         return "list";
     }
     
-    /**
-     * Método que verifica que el Tipo de Capacitación que se quiere eliminar no esté siento utilizado por otra entidad
-     * @return 
-     */
-    public String prepareDestroy(){
-        current = (CentroPoblado) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();     
-        return "view"; 
-    }
     
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
@@ -310,37 +298,6 @@ public class MbCentroPoblado implements Serializable {
             return null;
         }
     }
-
-    /**
-     * @return mensaje que notifica el borrado
-     */    
-    public String destroy() {
-        current = (CentroPoblado) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        //recreatePagination();
-        recreateModel();
-        return "view";
-    }
-
-    /**
-     * @return mensaje que notifica la inserción
-     */
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "view";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "list";
-        }
-    }    
-    
-  
     
     /*************************
     ** Métodos de selección **
@@ -377,38 +334,6 @@ public class MbCentroPoblado implements Serializable {
         return locFacade;
     }
     
-    /**
-     * Opera el borrado de la entidad
-     */
-    private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeletedErrorOccured"));
-        }
-    }
-
-    /**
-     * Actualiza el detalle de la entidad si la última se eliminó
-     */
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            /*
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-            */
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
-    }
-    
     
     /*
      * Métodos de búsqueda
@@ -422,27 +347,10 @@ public class MbCentroPoblado implements Serializable {
     }
     
     private void buscarCentroPoblado(){
-        items = new ListDataModel(getFacade().getXString(selectParam)); 
+        //items = new ListDataModel(getFacade().getXString(selectParam)); 
     }   
     
-    /**
-     * Método para llegar la lista para el autocompletado de la búsqueda de nombres
-     * @param query
-     * @return 
-     */
-    public List<String> completeNombres(String query){
-        listaNombres = getFacade().getNombres();
-        List<String> nombres = new ArrayList();
-        Iterator itLista = listaNombres.listIterator();
-        while(itLista.hasNext()){
-            String nom = (String)itLista.next();
-            if(nom.contains(query)){
-                nombres.add(nom);
-            }
-        }
-        return nombres;
-    }
-        
+  
     
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
@@ -505,7 +413,7 @@ public class MbCentroPoblado implements Serializable {
      * 
      * @param event
      * Metodo que recibe como parametro una provincia y carga los Departamentos relacionados a la misma
-     * 
+     * Combo Dependiente
      */
     
     public void departamentoChangeListener(ValueChangeEvent event) {
@@ -522,6 +430,7 @@ public class MbCentroPoblado implements Serializable {
             }          
         }        
     }
+    
      public String habilitar() {
         current.getAdminentidad().setHabilitado(true);
         update();        

@@ -16,8 +16,14 @@
                     <p:messages id="messages" />
                     
                     <h:panelGrid columns="2">
+                        
+                        
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_nombre}"/>
                         <h:outputText value="#{mbCentroPoblado.selected.nombre}" title="#{bundle.CreateCentroPobladoTitle_nombre}"/>
+                        
+                        <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}"/>
+                        <h:outputText value="#{mbCentroPoblado.selected.centropobladotipo.nombre}" title="#{bundle.CreateCentroPobladoLabel_Tipo}"/>
+                        
                     </h:panelGrid>                    
                 </p:panel>
                 <p:toolbar>

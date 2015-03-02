@@ -34,7 +34,7 @@
                              rowsPerPageTemplate="10,25,50">
                     
                     <f:facet name="header">
-                        Listado de #{bundle.CentroPobladoListTitle}
+                        #{bundle.CentroPobladoListTitle}
                         <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
                         <p:columnToggler datasource="CentroPobladoList" trigger="toggler" />
                     </f:facet>
@@ -42,6 +42,10 @@
                     <p:column headerText="CentroPoblado" sortBy="#{e.nombre}" filterBy="#{e.nombre}">
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
+
+                    <p:column headerText="Tipo" sortBy="#{e.centropobladotipo.nombre}" filterBy="#{e.centropobladotipo.nombre}">
+                        <p:outputLabel value="#{e.centropobladotipo.nombre}"/>
+                    </p:column>                    
                     
                     <p:column headerText="Departamento" sortBy="#{e.departamento.nombre}" filterBy="#{e.departamento.nombre}">
                         <p:outputLabel value="#{e.departamento.nombre}"/>

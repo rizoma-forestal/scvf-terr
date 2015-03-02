@@ -13,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-// ********** prueba 2 Git ******
 
 /**
  *
@@ -34,28 +33,10 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         super(CentroPoblado.class);
     }
 
-    /**
-     * Método que devuelve todas las CentroPobladoes que contienen la cadena recibida como parámetro 
- dentro de alguno de sus campos string, en este caso el nombre.
-     * @param aBuscar: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
-     * @return: El conjunto de resultados provenientes de la búsqueda. 
-     */      
-    public List<CentroPoblado> getXString(String aBuscar){
-        em = getEntityManager();
-        List<CentroPoblado> result;
-        
-        String queryString = "SELECT cp.nombre FROM CentroPoblado cp "
-                + "WHERE cp.nombre LIKE :stringParam ";        
-        Query q = em.createQuery(queryString)
-                .setParameter("stringParam", "%" + aBuscar + "%");        
-        result = q.getResultList();
-        
-        return result;
-    }
 
     /**
      * Metodo que verifica si ya existe la entidad.
-     * @param nombre: es la cadena que buscara para ver si ya existe en la BDD
+     * @param aBuscar: es la cadena que buscara para ver si ya existe en la BDD
      * @return: devuelve True o False
      */
     public boolean existe(String aBuscar){
@@ -70,15 +51,6 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         return q.getResultList().isEmpty();
     }  
     
-    /**
-     * Metodo para el autocompletado de la búsqueda por nombre
-     * @return 
-     */
-    public List<String> getNombres(){
-        em = getEntityManager();
-        String queryString = "SELECT cp.nombre FROM CentroPoblado cp ";
-        Query q = em.createQuery(queryString);
-        return q.getResultList();
-    } 
+
 
 }
