@@ -63,7 +63,6 @@ public class MbCentroPoblado implements Serializable {
     private List<Departamento> comboDepartamentos;
     private List<CentroPobladoTipo> listaTiposCP;
 
-
     private List<Provincia> listaProvincias; 
     
     private Provincia selectProvincia; 
