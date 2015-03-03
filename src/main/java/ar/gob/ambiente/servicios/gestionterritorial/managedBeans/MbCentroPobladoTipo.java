@@ -10,6 +10,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPobladoTipo;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoTipoFacade;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -27,7 +28,7 @@ import javax.faces.validator.ValidatorException;
  *
  * @author epassarelli
  */
-public class MbCentroPobladoTipo {
+public class MbCentroPobladoTipo  implements Serializable{
     private CentroPobladoTipo current;
     private DataModel items = null;
     

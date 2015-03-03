@@ -95,5 +95,20 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         Query q = em.createQuery(queryString);
         return q.getResultList();
     } 
+
+
+   /**
+     * Método que devuelve un LIST con las entidades HABILITADAS
+     * @return: True o False
+     */
+    public List<Departamento> getActivos(){
+        em = getEntityManager();        
+        List<Departamento> result;
+        String queryString = "SELECT dpto FROM Departamento dpto " 
+                + "WHERE dpto.adminentidad.habilitado = true";                   
+        Query q = em.createQuery(queryString);
+        result = q.getResultList();
+        return result;
+    }      
     
 }

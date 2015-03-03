@@ -32,6 +32,24 @@
                                      value="#{mbRegion.selected.nombre}" 
                                      requiredMessage="#{bundle.CreateRegionRequiredMessage_nombre}" 
                                      required="true"/>
+
+
+                    <h:outputLabel for="prov" value="Provincias:" />
+                    
+                    <p:selectCheckboxMenu 
+                                        id="prov" 
+                                        value="#{mbRegion.selected.provincias}" 
+                                        label="Provincias"
+                                        filter="true" 
+                                        filterMatchMode="startsWith">
+                        
+                            <f:selectItems  
+                                        value="#{mbRegion.listaProvincias}"                                     
+                                        var="prov"                                     
+                                        itemLabel="#{prov.nombre}" 
+                                        itemValue="#{prov}"/>
+                    </p:selectCheckboxMenu>                        
+                        
                         
                         <p:message for="nombre" />                        
                     </h:panelGrid>
@@ -57,4 +75,3 @@
         </ui:define>
     </ui:composition>
 </html>
-

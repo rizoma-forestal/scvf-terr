@@ -58,7 +58,7 @@ public class MbCentroPoblado implements Serializable {
 
     private int selectedItemIndex;
     private String selectParam;    
-    private List<String> listaNombres;     
+    //private List<String> listaNombres;     
     private List<Departamento> listaDepartamentos; 
     private List<Departamento> comboDepartamentos;
     private List<CentroPobladoTipo> listaTiposCP;
@@ -76,9 +76,9 @@ public class MbCentroPoblado implements Serializable {
 
    @PostConstruct
    public void init(){
-        listaProvincias = provFacade.findAll();
-        listaDepartamentos = dptoFacade.findAll();
-        listaTiposCP = tipocpFacade.findAll();
+        //listaProvincias = provFacade.findAll();
+        //listaDepartamentos = dptoFacade.findAll();
+        //listaTiposCP = tipocpFacade.findAll();
    }
 
 
@@ -179,8 +179,6 @@ public class MbCentroPoblado implements Serializable {
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        current = (CentroPoblado) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
 
@@ -188,10 +186,11 @@ public class MbCentroPoblado implements Serializable {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaProvincias = provFacade.getActivos();
         listaTiposCP = tipocpFacade.getActivos();
+        listaProvincias = provFacade.getActivos();        
+        listaDepartamentos = dptoFacade.getActivos();
         current = new CentroPoblado();
-        //selectedItemIndex = -1;
+        selectedItemIndex = -1;
         return "new";
     }
 
@@ -199,9 +198,6 @@ public class MbCentroPoblado implements Serializable {
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-       // current = (CentroPoblado) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        //selectedItemIndex = getItems().getRowIndex();
         return "edit";
     }
     
@@ -275,7 +271,7 @@ public class MbCentroPoblado implements Serializable {
         admEnt.setUsAlta(2);
         current.setAdminentidad(admEnt);        
         try {
-            getFacade().create(current);
+            //getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreated"));
             return "view";
         } catch (Exception e) {
@@ -424,7 +420,7 @@ public class MbCentroPoblado implements Serializable {
         // recorro el datamodel
         while(itRows.hasNext()){
             Departamento dpto = (Departamento)itRows.next();
-            if ( ( dpto.getProvincia().equals(selectProvincia) ) && (dpto.getAdminentidad().isHabilitado()) ){
+            if ( dpto.getProvincia().equals(selectProvincia)  ){
                 comboDepartamentos.add(dpto);
             }          
         }        

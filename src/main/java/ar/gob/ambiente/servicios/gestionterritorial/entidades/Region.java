@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -38,9 +39,19 @@ public class Region implements Serializable {
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad;    
-    
+   
+    /*
     @ManyToMany(mappedBy = "regiones")
-    	private List<Provincia> provincias;
+    */
+    
+    @ManyToMany
+   	@JoinTable(
+            	name = "provinciasXRegiones",
+            	joinColumns = @JoinColumn(name = "region_fk"),
+            	inverseJoinColumns = @JoinColumn(name = "provincia_fk")
+   	)
+       
+    private List<Provincia> provincias;
 
     public List<Provincia> getProvincias() {
         return provincias;

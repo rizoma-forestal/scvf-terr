@@ -8,10 +8,12 @@ package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.EspecificidadDeRegion;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Region;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegionFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.RegionFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,12 +47,18 @@ public class MbRegion implements Serializable{
     
     @EJB
     private RegionFacade regionFacade;
-   
+
+    @EJB
+    private ProvinciaFacade provFacade;  
+    
     private int selectedItemIndex;
     private String selectParam;    
     private List<String> listaNombres; 
     
-    private List<EspecificidadDeRegion> listaEspecificidadesDeRegion;     
+    private List<EspecificidadDeRegion> listaEspecificidadesDeRegion;   
+    
+    private List<Provincia> listaProvincias; 
+    private List<Provincia> listaProvinciasAsociadas;
 
 
 
@@ -63,7 +71,8 @@ public class MbRegion implements Serializable{
 
    @PostConstruct
    public void init(){
-        
+        //listaEspecificidadesDeRegion = espRegionFacade.findAll();
+        //listaProvincias = provFacade.findAll();        
    }
     
     /********************************
@@ -126,6 +135,7 @@ public class MbRegion implements Serializable{
      */
     public String prepareCreate() {
         listaEspecificidadesDeRegion = espRegionFacade.getActivos();
+        listaProvincias = provFacade.getActivos();
         current = new Region();
         return "new";
     }
@@ -200,7 +210,8 @@ public class MbRegion implements Serializable{
         admEnt.setFechaAlta(date);
         admEnt.setHabilitado(true);
         admEnt.setUsAlta(2);
-        current.setAdminentidad(admEnt);        
+        current.setAdminentidad(admEnt);   
+        //current.setProvincias(listaProvinciasSeleccionadas);
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionCreated"));
@@ -363,6 +374,25 @@ public class MbRegion implements Serializable{
         this.current = current;
     }
 
+    public List<Provincia> getListaProvincias() {
+        return listaProvincias;
+    }
+
+    public void setListaProvincias(List<Provincia> listaProvincias) {
+        this.listaProvincias = listaProvincias;
+    }
+
+    public List<Provincia> getListaProvinciasAsociadas() {
+        return listaProvinciasAsociadas;
+    }
+
+    public void setListaProvinciasAsociadas(List<Provincia> listaProvinciasAsociadas) {
+        this.listaProvinciasAsociadas = listaProvinciasAsociadas;
+    }
+
+    
+    
+    
     public String habilitar() {
         current.getAdminentidad().setHabilitado(true);
         update();        
