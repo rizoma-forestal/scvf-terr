@@ -110,5 +110,23 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         result = q.getResultList();
         return result;
     }      
+
+    
+   /**
+     * Método que devuelve un LIST con TODOS los departamentos de la provincia
+     * @return: True o False
+     */
+    public List<Departamento> getPorProvincia(Long id){
+        em = getEntityManager();        
+        List<Departamento> result;
+        String queryString = "SELECT dpto FROM Departamento dpto " 
+                + "WHERE dpto.provincia.id = :idParam ";                   
+
+        Query q = em.createQuery(queryString)
+                .setParameter("idParam", id);        
+        
+        result = q.getResultList();
+        return result;
+    }      
     
 }
