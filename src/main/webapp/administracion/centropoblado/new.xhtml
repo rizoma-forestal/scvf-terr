@@ -16,75 +16,13 @@
                     
                     <h:panelGrid columns="2">
                     
-                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}" for="tipo"/>      
-                  
-                        
-                        <p:selectOneMenu 
-                                    id="tipo" 
-                                    value="#{mbCentroPoblado.selected.centropobladotipo}" 
-                                         requiredMessage="#{bundle.CreateCentroPobladoTipoCPRequiredMessage}" 
-                                         required="true">
-                            <f:selectItem 
-                                        itemLabel="Seleccione el Tipo" 
-                                        itemValue="" 
-                                        noSelectionOption="true" />
-                            
-                            <f:selectItems 
-                                        value="#{mbCentroPoblado.listaTiposCP}" 
-                                        var="tipo" 
+                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}" for="tipo"/>
+                        <p:selectOneMenu id="tipo" value="#{mbCentroPoblado.selected.departamento}">
+                            <f:selectItem itemLabel="Seleccione el Tipo" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{mbCentroPoblado.listaDepartamentos}" var="tipo" 
                                            itemLabel="#{tipo.nombre}" 
                                            itemValue="#{tipo}"/>
-                        </p:selectOneMenu>                         
-                        
-                        
-                        
-                        
-                        
-                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Provincia}" for="prov" />
-                        <p:selectOneMenu 
-                                        id="prov" 
-                                        value="#{mbCentroPoblado.selectProvincia}" 
-                                         required="true" 
-                                         requiredMessage="#{bundle.CreateCentroPobladoProvinciaRequiredMessage}" 
-                                         valueChangeListener="#{mbCentroPoblado.departamentoChangeListener}">
-                            <f:selectItem 
-                                            itemLabel="Seleccione la Provincia" itemValue="" noSelectionOption="true" />
-                            <f:selectItems 
-                                        value="#{mbCentroPoblado.listaProvincias}" 
-                                        var="prov" 
-                                           itemLabel="#{prov.nombre}" 
-                                           itemValue="#{prov}"/>
-                           <p:ajax event="change" update="depto"/>
-                        </p:selectOneMenu> 
-
-
-                        
-                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Departamento}" for="depto"/>                                                      
-                        <p:selectOneMenu 
-                                        id="depto" 
-                                        value="#{mbCentroPoblado.selected.departamento}" 
-                                         requiredMessage="#{bundle.CreateCentroPobladoDepartamentoRequiredMessage}" 
-                                         required="true">                                                      
-                            <f:selectItem 
-                                            itemLabel="Seleccione el Departamento" 
-                                            itemValue="" 
-                                            noSelectionOption="true" />                                                     
-                            <f:selectItems 
-                                            value="#{mbCentroPoblado.comboDepartamentos}" 
-                                            var="depto" 
-                                           itemLabel="#{depto.nombre}" 
-                                           itemValue="#{depto}"/>                           
-                        </p:selectOneMenu>
-                        
-                        
-                        
-                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_nombre}" for="nombre"/>                      
-                        <p:inputText id="nombre" validator="#{mbCentroPoblado.validarInsert}" 
-                                     value="#{mbCentroPoblado.selected.nombre}" 
-                                     requiredMessage="#{bundle.CreateCentroPobladoRequiredMessage_nombre}" 
-                                     required="true"/>
-                        
-                        <p:message for="nombre" />                        
+                        </p:selectOneMenu>                
                     
                     </h:panelGrid>
                 </p:panel>

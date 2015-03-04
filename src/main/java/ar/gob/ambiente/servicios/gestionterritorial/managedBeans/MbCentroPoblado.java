@@ -17,23 +17,18 @@ import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoTipoFac
 import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.SelectItem;
-import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpSession;
+
 
 /**
  *
@@ -42,7 +37,8 @@ import javax.faces.validator.ValidatorException;
 public class MbCentroPoblado implements Serializable {
 
     private CentroPoblado current;
-    private DataModel items = null;
+    private List<CentroPoblado> listado;
+    private List<CentroPoblado> listadoFilter;
 
     @EJB
     private ProvinciaFacade provFacade;
@@ -54,17 +50,12 @@ public class MbCentroPoblado implements Serializable {
     private CentroPobladoTipoFacade tipocpFacade;
         
     @EJB
-    private CentroPobladoFacade locFacade;
+    private CentroPobladoFacade centroPobladoFacade;
 
-    private int selectedItemIndex;
-    private String selectParam;    
-    //private List<String> listaNombres;     
     private List<Departamento> listaDepartamentos; 
-    private List<Departamento> comboDepartamentos;
     private List<CentroPobladoTipo> listaTiposCP;
-
     private List<Provincia> listaProvincias; 
-    
+    private boolean iniciado;
     private Provincia selectProvincia; 
 
     
@@ -74,49 +65,52 @@ public class MbCentroPoblado implements Serializable {
     public MbCentroPoblado() {
     }
 
-   @PostConstruct
-   public void init(){
-        //listaProvincias = provFacade.findAll();
-        //listaDepartamentos = dptoFacade.findAll();
-        //listaTiposCP = tipocpFacade.findAll();
-   }
+    /**
+     *
+     */
+    @PostConstruct
+    private void init(){
+        iniciado = false;
+    }    
+    
+    /********************************
+     ** Getters y Setters ***********
+     ********************************/ 
+    
+    public CentroPoblado getCurrent() {
+        return current;
+    }
 
+    public void setCurrent(CentroPoblado current) {
+        this.current = current;
+    }
 
-    /*
-     ** Getters y Setters *********** 
-    */   
- 
+    public List<CentroPoblado> getListado() {
+        if (listado == null) {
+            listado = getFacade().findAll();
+        }        
+        return listado;
+    }
+
+    public void setListado(List<CentroPoblado> listado) {
+        this.listado = listado;
+    }
+
+    public List<CentroPoblado> getListadoFilter() {
+        return listadoFilter;
+    }
+
+    public void setListadoFilter(List<CentroPoblado> listadoFilter) {
+        this.listadoFilter = listadoFilter;
+    }
+
     public List<Departamento> getListaDepartamentos() {
         return listaDepartamentos;
     }
 
     public void setListaDepartamentos(List<Departamento> listaDepartamentos) {
         this.listaDepartamentos = listaDepartamentos;
-    }  
-    
-    public List<Provincia> getListaProvincias() {
-        return listaProvincias;
     }
-
-    public void setListaProvincias(List<Provincia> listaProvincias) {
-        this.listaProvincias = listaProvincias;
-    }         
-    
-    public Provincia getSelectProvincia() {
-        return selectProvincia;
-    }
-
-    public void setSelectProvincia(Provincia selectProvincia) {
-        this.selectProvincia = selectProvincia;
-    }
-    
-    public List<Departamento> getComboDepartamentos() {
-        return comboDepartamentos;
-    }
-
-    public void setComboDepartamentos(List<Departamento> comboDepartamentos) {
-        this.comboDepartamentos = comboDepartamentos;
-    }   
 
     public List<CentroPobladoTipo> getListaTiposCP() {
         return listaTiposCP;
@@ -125,199 +119,260 @@ public class MbCentroPoblado implements Serializable {
     public void setListaTiposCP(List<CentroPobladoTipo> listaTiposCP) {
         this.listaTiposCP = listaTiposCP;
     }
- 
-   
-    /********************************
-     ** Métodos para la navegación **
-     ********************************/
+
+    public List<Provincia> getListaProvincias() {
+        return listaProvincias;
+    }
+
+    public void setListaProvincias(List<Provincia> listaProvincias) {
+        this.listaProvincias = listaProvincias;
+    }
+
+    public Provincia getSelectProvincia() {
+        return selectProvincia;
+    }
+
+    public void setSelectProvincia(Provincia selectProvincia) {
+        this.selectProvincia = selectProvincia;
+    }
+
+  
+    /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbCentroPoblado")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }    
+    
+
+    /*******************************
+     ** Métodos de inicialización **
+     *******************************/      
+    
     /**
      * @return La entidad gestionada
      */
     public CentroPoblado getSelected() {
         if (current == null) {
             current = new CentroPoblado();
-            selectedItemIndex = -1;
         }
         return current;
-    }   
-    
-    /**
-     * @return el listado de entidades a mostrar en el list
-     */
-    public DataModel getItems() {
-        if (items == null) {
-            //items = getPagination().createPageDataModel();
-            items = new ListDataModel(getFacade().findAll());
-        }
-        return items;
     }
 
-  
     /*******************************
      ** Métodos de inicialización **
      *******************************/
     /**
+     * Método para inicializar el listado de los Participantes autorizados
      * @return acción para el listado de entidades
      */
     public String prepareList() {
-        recreateModel();       
-        return "list";
-    }
-    
-    public String iniciarList(){
-        String redirect = "";
-        if(selectParam != null){
-            redirect = "list";
-        }else{
-            redirect = "administracion/centropoblado/list";
-        }
+        iniciado = true;
         recreateModel();
-        return redirect;
-    }
-
+        return "list";
+    }     
+    
     /**
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
         return "view";
-    }
-
-    /** (Probablemente haya que embeberlo con el listado para una misma vista)
+    }    
+    
+    /**
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
+        //cargo los list para los combos
         listaTiposCP = tipocpFacade.getActivos();
-        listaProvincias = provFacade.getActivos();        
+        listaProvincias = provFacade.getActivos();
         listaDepartamentos = dptoFacade.getActivos();
         current = new CentroPoblado();
-        selectedItemIndex = -1;
         return "new";
-    }
-
+    }    
+    
     /**
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
+        //cargo los list para los combos
+        listaTiposCP = tipocpFacade.getActivos();
+        listaProvincias = provFacade.getActivos();
         return "edit";
-    }
-    
-    public String prepareInicio(){
-        recreateModel();
-        return "/faces/index";
-    }
+    }    
+   
+    /**
+     * Método que verifica que el CentroPoblado que se quiere eliminar no esté siento utilizada por otra entidad
+     * @return 
+     */
+    public String prepareDestroy(){
+            performDestroy();
+            recreateModel();
+        return "view";
+    }  
     
     /**
-     * Método para preparar la búsqueda
-     * @return la ruta a la vista que muestra los resultados de la consulta en forma de listado
+     * 
+     * @return 
      */
-    public String prepareSelect(){
-        items = null;
-        buscarCentroPoblado();
-        return "list";
-    }
-    
-    
-    /**
-     * Método para validar que no exista ya una entidad con este nombre al momento de crearla
-     * @param arg0: vista jsf que llama al validador
-     * @param arg1: objeto de la vista que hace el llamado
-     * @param arg2: contenido del campo de texto a validar 
-     */
-    public void validarInsert(FacesContext arg0, UIComponent arg1, Object arg2){
-        validarExistente(arg2);
-    }
-    
-    /**
-     * Método para validar que no exista una entidad con este nombre, siempre que dicho nombre no sea el que tenía originalmente
-     * @param arg0: vista jsf que llama al validador
-     * @param arg1: objeto de la vista que hace el llamado
-     * @param arg2: contenido del campo de texto a validar 
-     * @throws ValidatorException 
-     */
-    public void validarUpdate(FacesContext arg0, UIComponent arg1, Object arg2){
-        if(!current.getNombre().equals((String)arg2)){
-            validarExistente(arg2);
-        }
-    }
-    
-    private void validarExistente(Object arg2) throws ValidatorException{
-        if(!getFacade().existe((String)arg2)){
-            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateCentroPobladoExistente")));
-        }
-    }
-    
-    /**
-     * Restea la entidad
-     */
-    private void recreateModel() {
-        items = null;
-        if(selectParam != null){
-            selectParam = null;
-        }
-    }
+    public String prepareHabilitar(){
+        try{
+            // Actualización de datos de administración de la entidad
+            Date date = new Date(System.currentTimeMillis());
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(1);
+            current.getAdminentidad().setHabilitado(true);
+            current.getAdminentidad().setUsBaja(0);
+            current.getAdminentidad().setFechaBaja(null);
 
+            // Actualizo
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoHabilitado"));
+            return "view";
+        }catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoHabilitadoErrorOccured"));
+            return null; 
+        }
+    }    
+    
+    
     /*************************
     ** Métodos de operación **
     **************************/
     /**
-     * @return 
+     * Método que inserta un nuevo Centro Poblado en la base de datos, previamente genera una entidad de administración
+     * con los datos necesarios y luego se la asigna a la persona
+     * @return mensaje que notifica la inserción
      */
     public String create() {
-        // Creación de la entidad de administración y asignación
-        Date date = new Date(System.currentTimeMillis());
-        AdminEntidad admEnt = new AdminEntidad();
-        admEnt.setFechaAlta(date);
-        admEnt.setHabilitado(true);
-        admEnt.setUsAlta(2);
-        current.setAdminentidad(admEnt);        
         try {
-            //getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreated"));
-            return "view";
+            if(getFacade().noExiste(current.getNombre(), current.getDepartamento())){
+                // Creación de la entidad de administración y asignación
+                Date date = new Date(System.currentTimeMillis());
+                AdminEntidad admEnt = new AdminEntidad();
+                admEnt.setFechaAlta(date);
+                admEnt.setHabilitado(true);
+                admEnt.setUsAlta(1);
+                current.setAdminentidad(admEnt);
+                
+                List<CentroPobladoTipo> listCp = tipocpFacade.getActivos();
+                CentroPobladoTipo cpt = listCp.get(0);
+                current.getCentropobladotipo(cpt);
+                
+                // Inserción
+                //getFacade().create(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreated"));
+                listaTiposCP.clear();
+                listaProvincias.clear();
+                return "view";
+            }else{
+                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoExistente"));
+                return null;
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreatedErrorOccured"));
             return null;
         }
-    }
-
-    /**
+    }    
+    
+     /**
+     * Método que actualiza un nuevo Centro Poblado en la base de datos.
+     * Previamente actualiza los datos de administración
      * @return mensaje que notifica la actualización
      */
-    public String update() {
+    public String update() {    
+        CentroPoblado cp;
         try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
-            return "view";
+            cp = getFacade().getExistente(current.getNombre(), current.getDepartamento());
+            if(cp == null){
+                // Actualización de datos de administración de la entidad
+                Date date = new Date(System.currentTimeMillis());
+                current.getAdminentidad().setFechaModif(date);
+                current.getAdminentidad().setUsModif(1);
+                
+                // Actualizo
+                getFacade().edit(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
+                listaTiposCP.clear();
+                listaProvincias.clear();
+                return "view";
+            }else{
+                if(cp.getId().equals(current.getId())){
+                    // Actualización de datos de administración de la entidad
+                    Date date = new Date(System.currentTimeMillis());
+                    current.getAdminentidad().setFechaModif(date);
+                    current.getAdminentidad().setUsModif(1);
+
+                    // Actualizo
+                    getFacade().edit(current);
+                    JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
+                    listaTiposCP.clear();
+                    listaProvincias.clear();
+                    return "view";                   
+                }else{
+                    JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoExistente"));
+                    return null;
+                }
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdatedErrorOccured"));
             return null;
         }
-    }
+    }   
     
-    /*************************
-    ** Métodos de selección **
-    **************************/
-    /**
-     * @return la totalidad de las entidades persistidas formateadas
-     */
-    public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(locFacade.findAll(), false);
-    }
-
-    /**
-     * @return de a una las entidades persistidas formateadas
-     */
-    public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(locFacade.findAll(), true);
-    }
-
     /**
      * @param id equivalente al id de la entidad persistida
      * @return la entidad correspondiente
      */
     public CentroPoblado getCentroPoblado(java.lang.Long id) {
-        return locFacade.find(id);
-    }    
+        return getFacade().find(id);
+    } 
+    
+    /**
+     * Método para revocar la sesión del MB
+     * @return 
+     */
+    public String cleanUp(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true);
+        session.removeAttribute("mbCentroPoblado");
+     
+        return "inicio";
+    }     
+
+    
+    /**
+     * Método que deshabilita la entidad
+     */
+    private void performDestroy() {
+        try {
+            // Actualización de datos de administración de la entidad
+            Date date = new Date(System.currentTimeMillis());
+            current.getAdminentidad().setFechaBaja(date);
+            current.getAdminentidad().setUsBaja(1);
+            current.getAdminentidad().setHabilitado(false);
+            
+            // Deshabilito la entidad
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeletedErrorOccured"));
+        }
+    }      
+
     
     /*********************
     ** Métodos privados **
@@ -326,26 +381,17 @@ public class MbCentroPoblado implements Serializable {
      * @return el Facade
      */
     private CentroPobladoFacade getFacade() {
-        return locFacade;
-    }
+        return centroPobladoFacade;
+    }    
     
-    
-    /*
-     * Métodos de búsqueda
+    /**
+     * Restea la entidad
      */
-    public String getSelectParam() {
-        return selectParam;
-    }
-
-    public void setSelectParam(String selectParam) {
-        this.selectParam = selectParam;
-    }
+    private void recreateModel() {
+        listado.clear();
+        listado = null;
+    }        
     
-    private void buscarCentroPoblado(){
-        //items = new ListDataModel(getFacade().getXString(selectParam)); 
-    }   
-    
-  
     
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
@@ -353,6 +399,13 @@ public class MbCentroPoblado implements Serializable {
     @FacesConverter(forClass = CentroPoblado.class)
     public static class CentroPobladoControllerConverter implements Converter {
 
+        /**
+         *
+         * @param facesContext
+         * @param component
+         * @param value
+         * @return
+         */
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
@@ -382,6 +435,13 @@ public class MbCentroPoblado implements Serializable {
             return sb.toString();
         }
 
+        /**
+         *
+         * @param facesContext
+         * @param component
+         * @param object
+         * @return
+         */
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
@@ -394,53 +454,5 @@ public class MbCentroPoblado implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + CentroPoblado.class.getName());
             }
         }
-    }        
-
-    public CentroPoblado getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(CentroPoblado current) {
-        this.current = current;
-    }
-        
-    /**
-     * 
-     * @param event
-     * Metodo que recibe como parametro una provincia y carga los Departamentos relacionados a la misma
-     * Combo Dependiente
-     */
-    
-    public void departamentoChangeListener(ValueChangeEvent event) {
-        selectProvincia = (Provincia)event.getNewValue();
-        
-        comboDepartamentos = new ArrayList();
-        Iterator itRows = listaDepartamentos.iterator();
-        
-        // recorro el datamodel
-        while(itRows.hasNext()){
-            Departamento dpto = (Departamento)itRows.next();
-            if ( dpto.getProvincia().equals(selectProvincia)  ){
-                comboDepartamentos.add(dpto);
-            }          
-        }        
-    }
-    
-     public String habilitar() {
-        current.getAdminentidad().setHabilitado(true);
-        update();        
-        recreateModel();
-        return "view";
-    }  
-
-    /**
-     * @return mensaje que notifica la actualizacion de estado
-     */    
-    public String deshabilitar() {
-            current.getAdminentidad().setHabilitado(false);
-            update();        
-            recreateModel();
-        return "view";
-    }     
-    
+    }             
 }

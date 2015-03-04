@@ -7,6 +7,7 @@
 package ar.gob.ambiente.servicios.gestionterritorial.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -36,7 +37,11 @@ public class CentroPobladoTipo implements Serializable {
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad;    
-        
+    
+    
+    public CentroPobladoTipo(){
+        centrospoblados = new ArrayList();
+    }
 
     public Long getId() {
         return id;

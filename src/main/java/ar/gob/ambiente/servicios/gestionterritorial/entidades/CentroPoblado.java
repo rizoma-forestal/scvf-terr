@@ -30,7 +30,7 @@ public class CentroPoblado implements Serializable {
     private Long id;
     private String nombre;
     
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="centropobladotipo_id")
     private CentroPobladoTipo centropobladotipo;
     
@@ -43,8 +43,15 @@ public class CentroPoblado implements Serializable {
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
+
+    public CentroPobladoTipo getCentropobladotipo() {
+        return centropobladotipo;
+    }
+
+    public void setCentropobladotipo(CentroPobladoTipo centropobladotipo) {
+        this.centropobladotipo = centropobladotipo;
+    }
    
-    
     public Long getId() {
         return id;
     }
@@ -60,14 +67,6 @@ public class CentroPoblado implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     } 
-
-    public CentroPobladoTipo getCentropobladotipo() {
-        return centropobladotipo;
-    }
-
-    public void setCentropobladotipo(CentroPobladoTipo centropobladotipo) {
-        this.centropobladotipo = centropobladotipo;
-    }
 
     public Departamento getDepartamento() {
         return departamento;
@@ -110,6 +109,10 @@ public class CentroPoblado implements Serializable {
     @Override
     public String toString() {
         return "ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPoblado[ id=" + id + " ]";
+    }
+
+    public void getCentropobladotipo(CentroPobladoTipo cpt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

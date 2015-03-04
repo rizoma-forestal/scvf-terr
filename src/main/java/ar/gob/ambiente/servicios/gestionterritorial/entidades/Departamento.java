@@ -36,10 +36,10 @@ public class Departamento implements Serializable {
     @JoinColumn(name="provincia_id")
     private Provincia provincia;
 
-/*    
+
     @OneToMany(mappedBy="departamento")
-    private List<Localidad> localidades;    
-*/
+    private List<CentroPoblado> localidades;    
+
     
     @OneToMany(mappedBy="departamento")
     private List<Municipio> municipios;     
@@ -51,7 +51,7 @@ public class Departamento implements Serializable {
 
     
     public Departamento(){
-        /*localidades = new ArrayList();*/
+        localidades = new ArrayList();
         municipios = new ArrayList();
     }
     
@@ -79,15 +79,13 @@ public class Departamento implements Serializable {
         this.provincia = provincia;
     }
     
-/*
-    public List<Localidad> getLocalidades() {
+    public List<CentroPoblado> getLocalidades() {
         return localidades;
     }
 
-    public void setLocalidades(List<Localidad> localidades) {
+    public void setLocalidades(List<CentroPoblado> localidades) {
         this.localidades = localidades;
     }
-*/
     
     public List<Municipio> getMunicipios() {
         return municipios;

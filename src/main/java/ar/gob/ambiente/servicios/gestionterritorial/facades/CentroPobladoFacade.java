@@ -7,6 +7,7 @@
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPoblado;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -36,21 +37,41 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
 
     /**
      * Metodo que verifica si ya existe la entidad.
-     * @param aBuscar: es la cadena que buscara para ver si ya existe en la BDD
+     * @param nombre
+     * @param depto
      * @return: devuelve True o False
      */
-    public boolean existe(String aBuscar){
+    public boolean noExiste(String nombre, Departamento depto){
         em = getEntityManager();
-        
         String queryString = "SELECT cp FROM CentroPoblado cp "
-                + "WHERE cp.nombre = :stringParam";
-        
+                + "WHERE cp.nombre = :stringParam "
+                + "AND cp.departamento = :depto";
         Query q = em.createQuery(queryString)
-                .setParameter("stringParam", aBuscar);
-        
+                .setParameter("stringParam", nombre)
+                .setParameter("depto", depto);
         return q.getResultList().isEmpty();
     }  
-    
 
-
+    /**
+     * Método que obtiene un Centro Poblado existente según los datos recibidos como parámetro
+     * @param nombre
+     * @param depto
+     * @return 
+     */
+    public CentroPoblado getExistente(String nombre, Departamento depto){
+        List<CentroPoblado> lCp;
+        em = getEntityManager();
+        String queryString = "SELECT cp FROM CentroPoblado cp "
+                + "WHERE cp.nombre = :stringParam "
+                + "AND cp.departamento = :depto";
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", nombre)
+                .setParameter("depto", depto);
+        lCp = q.getResultList();
+        if(!lCp.isEmpty()){
+            return lCp.get(0);
+        }else{
+            return null;
+        }
+    }       
 }
