@@ -27,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.servlet.http.HttpSession;
 
 
@@ -57,6 +58,8 @@ public class MbCentroPoblado implements Serializable {
     private List<Provincia> listaProvincias; 
     private boolean iniciado;
     private Provincia selectProvincia; 
+    private Long idTipo;
+    private Provincia provSelected;
 
     
     /**
@@ -76,6 +79,24 @@ public class MbCentroPoblado implements Serializable {
     /********************************
      ** Getters y Setters ***********
      ********************************/ 
+    
+    public Provincia getProvSelected() {
+        return provSelected;
+    }
+
+    public void setProvSelected(Provincia provSelected) {
+        this.provSelected = provSelected;
+    }
+ 
+    
+    public Long getIdTipo() {
+        return idTipo;
+    }
+
+    public void setIdTipo(Long idTipo) {
+        this.idTipo = idTipo;
+    }
+ 
     
     public CentroPoblado getCurrent() {
         return current;
@@ -199,7 +220,7 @@ public class MbCentroPoblado implements Serializable {
         //cargo los list para los combos
         listaTiposCP = tipocpFacade.getActivos();
         listaProvincias = provFacade.getActivos();
-        listaDepartamentos = dptoFacade.getActivos();
+        //listaDepartamentos = dptoFacade.getActivos();
         current = new CentroPoblado();
         return "new";
     }    
@@ -268,12 +289,11 @@ public class MbCentroPoblado implements Serializable {
                 admEnt.setUsAlta(1);
                 current.setAdminentidad(admEnt);
                 
-                List<CentroPobladoTipo> listCp = tipocpFacade.getActivos();
-                CentroPobladoTipo cpt = listCp.get(0);
-                current.getCentropobladotipo(cpt);
+                CentroPobladoTipo cp = tipocpFacade.find(idTipo);
+                current.setCentropobladotipo(cp);
                 
                 // Inserción
-                //getFacade().create(current);
+                getFacade().create(current);
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreated"));
                 listaTiposCP.clear();
                 listaProvincias.clear();
@@ -372,6 +392,15 @@ public class MbCentroPoblado implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeletedErrorOccured"));
         }
     }      
+    
+    /**
+     * Método que deshabilita la entidad
+     * @param event
+     */    
+    public void provinciaChangeListener(ValueChangeEvent event){
+        provSelected = (Provincia)event.getNewValue();
+        listaDepartamentos = dptoFacade.getPorProvincia(provSelected);
+    }
 
     
     /*********************
@@ -388,8 +417,9 @@ public class MbCentroPoblado implements Serializable {
      * Restea la entidad
      */
     private void recreateModel() {
-        listado.clear();
-        listado = null;
+        idTipo = null;
+        provSelected = null;
+        listaDepartamentos.clear();
     }        
     
     

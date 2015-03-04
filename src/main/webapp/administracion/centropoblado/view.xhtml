@@ -16,11 +16,35 @@
                     <p:messages id="messages" />
                     
                     <h:panelGrid columns="2">
+                        <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Provincia}"/>
+                        <h:outputText value="#{mbCentroPoblado.selected.departamento.provincia.nombre}" />     
+                         
+                        <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Departamento}"/>
+                        <h:outputText value="#{mbCentroPoblado.selected.departamento.nombre}" />  
                         
+                        <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}"/>
+                        <h:outputText value="#{mbCentroPoblado.selected.centropobladotipo.nombre}" />  
                         
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_nombre}"/>
                         <h:outputText value="#{mbCentroPoblado.selected.nombre}" title="#{bundle.CreateCentroPobladoTitle_nombre}"/>
                         
+                        <h:outputLabel value="#{bundle.UsuarioLabel_fechaAlta}"/>
+                        <p:calendar id="fechaAlta" value="#{mbCentroPoblado.selected.adminentidad.fechaAlta}" 
+                                    pattern="dd/MM/yyyy HH:mm" 
+                                    disabled="true"
+                                    locale="es"/>
+
+                        <h:outputLabel value="#{bundle.UsuarioLabel_usAlta}"/>
+                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usAlta}"/>     
+                        
+                        <h:outputLabel value="#{bundle.UsuarioLabel_fachaMod}"/>
+                        <p:calendar id="fechaMod" value="#{mbCentroPoblado.selected.adminentidad.fechaModif}" 
+                                    pattern="dd/MM/yyyy HH:mm" 
+                                    disabled="true"
+                                    locale="es"/>
+                        
+                        <h:outputLabel value="#{bundle.UsuarioLabel_usMod}"/>
+                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usModif}" /> 
                         
                     </h:panelGrid>                    
                 </p:panel>
