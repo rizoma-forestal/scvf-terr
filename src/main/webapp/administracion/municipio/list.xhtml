@@ -23,21 +23,25 @@
                         <p:commandButton icon="ui-icon-calculator" value="Columnas" id="toggler" type="button" style="float:right" />
                         <p:columnToggler datasource="MunicipioList" trigger="toggler"  />              
                 </p:panel>
-
-                       
+                     
 
                 <p:dataTable value="#{mbMunicipio.items}" var="e" id="MunicipioList" rows="5"
-                             paginator="true" widgetVar="municipioTable"
+                             paginator="true" 
+                             widgetVar="municipioTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
-                    
-                    <p:column headerText="Provincia" sortBy="#{e.provincia.nombre}" filterBy="#{e.provincia.nombre}" >
-                        <p:outputLabel value="#{e.provincia.nombre}"/>
-                    </p:column>
-                    
+
                     <p:column headerText="Municipio" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
+                    
+                    <p:column headerText="Departamento" sortBy="#{e.departamento.nombre}" filterBy="#{e.departamento.nombre}" >
+                        <p:outputLabel value="#{e.departamento.nombre}"/>
+                    </p:column>                    
+                    
+                    <p:column headerText="Provincia" sortBy="#{e.departamento.provincia.nombre}" filterBy="#{e.departamento.provincia.nombre}" >
+                        <p:outputLabel value="#{e.departamento.provincia.nombre}"/>
+                    </p:column>               
                     
                     <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">

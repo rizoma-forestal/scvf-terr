@@ -7,9 +7,11 @@
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Municipio;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.MunicipioFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import java.io.Serializable;
@@ -25,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -35,22 +38,24 @@ import javax.faces.validator.ValidatorException;
  * @author epassarelli
  */
 public class MbMunicipio implements Serializable {
-
-    private Municipio current;
-    private DataModel items = null;
-    
     
     @EJB
     private ProvinciaFacade pciaFacade;
+
+    @EJB
+    private DepartamentoFacade dptoFacade;    
     
     @EJB
     private MunicipioFacade muniFacade;
-    //private PaginationHelper pagination;
+   
+    private Municipio current;
+    private DataModel items = null;
     private int selectedItemIndex;
     private String selectParam;    
-    private List<String> listaNombres; 
     
-    private List<Provincia> listaProvincias;       
+    private List<Provincia> listaProvincias;  
+    private List<Departamento> comboDepartamentos;
+    private Provincia selectProvincia;
     
     /**
      * Creates a new instance of MbMunicipio
@@ -82,7 +87,6 @@ public class MbMunicipio implements Serializable {
      */
     public DataModel getItems() {
         if (items == null) {
-            //items = getPagination().createPageDataModel();
             items = new ListDataModel(getFacade().findAll());
         }
         return items;
@@ -124,8 +128,6 @@ public class MbMunicipio implements Serializable {
      * @return acción para el detalle de la entidad
      */
     public String prepareView() {
-        current = (Municipio) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
         return "view";
     }
 
@@ -133,7 +135,7 @@ public class MbMunicipio implements Serializable {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaProvincias = pciaFacade.findAll();
+        listaProvincias = pciaFacade.getActivos();
         current = new Municipio();
         selectedItemIndex = -1;
         return "new";
@@ -143,9 +145,6 @@ public class MbMunicipio implements Serializable {
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        current = (Municipio) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        selectedItemIndex = getItems().getRowIndex();
         return "edit";
     }
     
@@ -160,7 +159,7 @@ public class MbMunicipio implements Serializable {
      */
     public String prepareSelect(){
         items = null;
-        buscarMunicipio();
+        //buscarMunicipio();
         return "list";
     }
         
@@ -286,28 +285,12 @@ public class MbMunicipio implements Serializable {
     public void setSelectParam(String selectParam) {
         this.selectParam = selectParam;
     }
-    
+    /*
     private void buscarMunicipio(){
         items = new ListDataModel(getFacade().getXString(selectParam)); 
     }   
-    
-    /**
-     * Método para llegar la lista para el autocompletado de la búsqueda de nombres
-     * @param query
-     * @return 
-     */
-    public List<String> completeNombres(String query){
-        listaNombres = getFacade().getNombres();
-        List<String> nombres = new ArrayList();
-        Iterator itLista = listaNombres.listIterator();
-        while(itLista.hasNext()){
-            String nom = (String)itLista.next();
-            if(nom.contains(query)){
-                nombres.add(nom);
-            }
-        }
-        return nombres;
-    }
+    */
+
         
     
     /********************************************************************
@@ -367,6 +350,35 @@ public class MbMunicipio implements Serializable {
     public void setListaProvincias(List<Provincia> listaProvincias) {
         this.listaProvincias = listaProvincias;
     }
+
+    public List<Departamento> getComboDepartamentos() {
+        return comboDepartamentos;
+    }
+
+    public void setComboDepartamentos(List<Departamento> comboDepartamentos) {
+        this.comboDepartamentos = comboDepartamentos;
+    }
+
+    public Provincia getSelectProvincia() {
+        return selectProvincia;
+    }
+
+    public void setSelectProvincia(Provincia selectProvincia) {
+        this.selectProvincia = selectProvincia;
+    }
+
+    
+    /**
+     * 
+     * @param event
+     * Metodo que recibe como parametro una provincia y carga los Departamentos relacionados a la misma
+     * Combo Dependiente
+     */
+    
+    public void departamentoChangeListener(ValueChangeEvent event) {      
+        selectProvincia = (Provincia)event.getNewValue();      
+        comboDepartamentos = dptoFacade.getPorProvincia(selectProvincia);      
+    }    
     
     public String habilitar() {
         current.getAdminentidad().setHabilitado(true);

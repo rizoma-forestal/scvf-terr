@@ -7,6 +7,7 @@
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -114,16 +115,17 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
     
    /**
      * Método que devuelve un LIST con TODOS los departamentos de la provincia
+     * @param prov: entidad Provincia
      * @return: True o False
      */
-    public List<Departamento> getPorProvincia(Long id){
+    public List<Departamento> getPorProvincia(Provincia prov){
         em = getEntityManager();        
         List<Departamento> result;
         String queryString = "SELECT dpto FROM Departamento dpto " 
-                + "WHERE dpto.provincia.id = :idParam ";                   
+                + "WHERE dpto.provincia = :objParam ";                   
 
         Query q = em.createQuery(queryString)
-                .setParameter("idParam", id);        
+                .setParameter("objParam", prov);        
         
         result = q.getResultList();
         return result;
