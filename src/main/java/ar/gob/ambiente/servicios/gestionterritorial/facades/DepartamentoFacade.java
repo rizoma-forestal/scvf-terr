@@ -122,7 +122,8 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         em = getEntityManager();        
         List<Departamento> result;
         String queryString = "SELECT dpto FROM Departamento dpto " 
-                + "WHERE dpto.provincia = :objParam ";                   
+                + "WHERE dpto.provincia = :objParam "
+                + "AND dpto.adminentidad.habilitado = true";
 
         Query q = em.createQuery(queryString)
                 .setParameter("objParam", prov);        
