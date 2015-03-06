@@ -12,6 +12,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoTipoFacade;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -23,6 +24,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,7 +40,8 @@ public class MbCentroPobladoTipo  implements Serializable{
     private int selectedItemIndex;
     private String selectParam;    
     //private List<String> listaNombres;    
-
+    private boolean iniciado;
+    
     /*
      * Creates a new instance of MbCentroPobladoTipo
      */
@@ -81,6 +84,25 @@ public class MbCentroPobladoTipo  implements Serializable{
         return items;
     }
 
+    /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbCentroPobladoTipo")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }    
   
     /*******************************
      ** Métodos de inicialización **

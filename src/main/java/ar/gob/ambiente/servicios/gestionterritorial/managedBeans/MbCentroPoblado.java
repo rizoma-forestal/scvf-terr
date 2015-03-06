@@ -297,6 +297,10 @@ public class MbCentroPoblado implements Serializable {
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreated"));
                 listaTiposCP.clear();
                 listaProvincias.clear();
+                
+                listado.clear();
+                listado = null;
+                
                 return "view";
             }else{
                 JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoExistente"));
@@ -328,6 +332,10 @@ public class MbCentroPoblado implements Serializable {
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
                 listaTiposCP.clear();
                 listaProvincias.clear();
+                
+                listado.clear();
+                listado = null;
+                
                 return "view";
             }else{
                 if(cp.getId().equals(current.getId())){

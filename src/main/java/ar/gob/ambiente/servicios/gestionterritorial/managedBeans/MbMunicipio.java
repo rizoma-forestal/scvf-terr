@@ -17,6 +17,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,6 +33,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -56,6 +58,7 @@ public class MbMunicipio implements Serializable {
     private List<Provincia> listaProvincias;  
     private List<Departamento> comboDepartamentos;
     private Provincia selectProvincia;
+    private boolean iniciado;
     
     /**
      * Creates a new instance of MbMunicipio
@@ -100,7 +103,26 @@ public class MbMunicipio implements Serializable {
         this.current = current;
     }
 
-  
+    /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbMunicipio")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }
+    
     /*******************************
      ** Métodos de inicialización **
      *******************************/

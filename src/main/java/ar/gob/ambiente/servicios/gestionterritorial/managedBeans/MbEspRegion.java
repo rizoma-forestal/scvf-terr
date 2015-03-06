@@ -13,6 +13,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegio
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -26,6 +27,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,11 +38,13 @@ public class MbEspRegion implements Serializable{
     private EspecificidadDeRegion current;
     private DataModel items = null;
     
+    
     @EJB
     private EspecificidadDeRegionFacade espDeRegionFacade;
     //private PaginationHelper pagination;
     private int selectedItemIndex;
     private String selectParam;    
+    private boolean iniciado;
     //private List<String> listaNombres;    
 
     /*
@@ -85,6 +89,25 @@ public class MbEspRegion implements Serializable{
         return items;
     }
 
+    /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbEspRegion")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }     
   
     /*******************************
      ** Métodos de inicialización **
