@@ -15,7 +15,9 @@
             <h:outputText value="#{bundle.RegionTitle}" />
         </ui:define>
         <ui:define name="content">
-            
+            <f:metadata>  
+                <f:event listener="#{mbRegion.iniciar}" type="preRenderView"></f:event>  
+            </f:metadata>            
             <h:form>
                 <p:panel id="RegionForm" header="#{bundle.RegionListTitle}" style="margin-bottom:10px;">
                     <h:panelGrid columns="6">
