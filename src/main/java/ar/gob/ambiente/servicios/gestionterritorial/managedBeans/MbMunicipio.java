@@ -58,6 +58,9 @@ public class MbMunicipio implements Serializable {
     private List<Departamento> comboDepartamentos;
     private Provincia selectProvincia;
     private boolean iniciado;
+    private List<Municipio> listado;
+    private List<Municipio> listadoFilter;
+    
     
     /**
      * Creates a new instance of MbMunicipio
@@ -253,7 +256,6 @@ public class MbMunicipio implements Serializable {
     **************************/
     /**
      * @return 
-     */
     public String create() {
         // Creación de la entidad de administración y asignación
         Date date = new Date(System.currentTimeMillis());
@@ -271,10 +273,10 @@ public class MbMunicipio implements Serializable {
             return null;
         }
     }
+     */
 
     /**
      * @return mensaje que notifica la actualización
-     */
     public String update() {
         try {
             getFacade().edit(current);
@@ -285,6 +287,61 @@ public class MbMunicipio implements Serializable {
             return null;
         }
     }
+     */
+
+         /**
+     * Método que actualiza un nuevo Centro Poblado en la base de datos.
+     * Previamente actualiza los datos de administración
+     * @return mensaje que notifica la actualización
+     */
+    public String update() {    
+        Municipio mu;
+        try {
+            mu = getFacade().getExistente(current.getNombre(), current.getDepartamento());
+            if(mu == null){
+                // Actualización de datos de administración de la entidad
+                Date date = new Date(System.currentTimeMillis());
+                current.getAdminentidad().setFechaModif(date);
+                current.getAdminentidad().setUsModif(1);
+                
+                // Actualizo
+                getFacade().edit(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioUpdated"));
+                //listaTiposCP.clear();
+                listaProvincias.clear();
+                
+                //listado.clear();
+                //listado = null;
+                
+                return "view";
+            }else{
+                if(mu.getId().equals(current.getId())){
+                    // Actualización de datos de administración de la entidad
+                    Date date = new Date(System.currentTimeMillis());
+                    current.getAdminentidad().setFechaModif(date);
+                    current.getAdminentidad().setUsModif(1);
+
+                    // Actualizo
+                    getFacade().edit(current);
+                    JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
+                    //listaTiposCP.clear();
+                    listaProvincias.clear();
+                    return "view";                   
+                }else{
+                    JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoExistente"));
+                    return null;
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdatedErrorOccured"));
+            return null;
+        }
+    }   
+
+    
+    
+    
+    
     
     /*************************
     ** Métodos de selección **
@@ -420,4 +477,42 @@ public class MbMunicipio implements Serializable {
            recreateModel();
          return "view";
     }
+    
+    public String create() {
+        try {
+            if(getFacade().noExiste(current.getNombre(), current.getDepartamento())){
+                // Creación de la entidad de administración y asignación
+                Date date = new Date(System.currentTimeMillis());
+                AdminEntidad admEnt = new AdminEntidad();
+                admEnt.setFechaAlta(date);
+                admEnt.setHabilitado(true);
+                admEnt.setUsAlta(1);
+                current.setAdminentidad(admEnt);
+                
+                //CentroPobladoTipo cp = tipocpFacade.find(idTipo);
+                //current.setCentropobladotipo(cp);
+                
+                // Inserción
+                getFacade().create(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioCreated"));
+                //listaTiposCP.clear();
+                listaProvincias.clear();
+                
+                listado.clear();
+                listado = null;
+                
+                return "view";
+            }else{
+                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioExistente"));
+                return null;
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioCreatedErrorOccured"));
+            return null;
+        }
+    }    
+    
+
+    
+    
 }
