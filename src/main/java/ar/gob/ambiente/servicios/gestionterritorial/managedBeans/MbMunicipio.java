@@ -53,8 +53,7 @@ public class MbMunicipio implements Serializable {
     private Municipio current;
     private DataModel items = null;
     private int selectedItemIndex;
-    private String selectParam;    
-    
+    private String selectParam;        
     private List<Provincia> listaProvincias;  
     private List<Departamento> comboDepartamentos;
     private Provincia selectProvincia;
@@ -68,7 +67,7 @@ public class MbMunicipio implements Serializable {
 
    @PostConstruct
    public void init(){
-        //listaProvincias = pciaFacade.findAll();
+       
    }
     
     /********************************
@@ -103,6 +102,30 @@ public class MbMunicipio implements Serializable {
         this.current = current;
     }
 
+    public List<Provincia> getListaProvincias() {
+        return listaProvincias;
+    }
+
+    public void setListaProvincias(List<Provincia> listaProvincias) {
+        this.listaProvincias = listaProvincias;
+    }
+
+    public List<Departamento> getComboDepartamentos() {
+        return comboDepartamentos;
+    }
+
+    public void setComboDepartamentos(List<Departamento> comboDepartamentos) {
+        this.comboDepartamentos = comboDepartamentos;
+    }
+
+    public Provincia getSelectProvincia() {
+        return selectProvincia;
+    }
+
+    public void setSelectProvincia(Provincia selectProvincia) {
+        this.selectProvincia = selectProvincia;
+    }
+    
     /**
      * Método que borra de la memoria los MB innecesarios al cargar el listado 
      */
@@ -365,29 +388,7 @@ public class MbMunicipio implements Serializable {
     }        
     
 
-    public List<Provincia> getListaProvincias() {
-        return listaProvincias;
-    }
 
-    public void setListaProvincias(List<Provincia> listaProvincias) {
-        this.listaProvincias = listaProvincias;
-    }
-
-    public List<Departamento> getComboDepartamentos() {
-        return comboDepartamentos;
-    }
-
-    public void setComboDepartamentos(List<Departamento> comboDepartamentos) {
-        this.comboDepartamentos = comboDepartamentos;
-    }
-
-    public Provincia getSelectProvincia() {
-        return selectProvincia;
-    }
-
-    public void setSelectProvincia(Provincia selectProvincia) {
-        this.selectProvincia = selectProvincia;
-    }
 
     
     /**
