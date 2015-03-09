@@ -6,6 +6,7 @@
 
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Municipio;
 
 import java.util.List;
@@ -88,5 +89,45 @@ public class MunicipioFacade extends AbstractFacade<Municipio> {
         Query q = em.createQuery(queryString);
         return q.getResultList();
     } 
+    
+    /**
+     * Método que obtiene un Centro Poblado existente según los datos recibidos como parámetro
+     * @param nombre
+     * @param depto
+     * @return 
+     */ 
+    
+    public Municipio getExistente(String nombre, Departamento depto){
+        List<Municipio> lCp;
+        em = getEntityManager();
+        String queryString = "SELECT mu FROM Municipio mu "
+                + "WHERE mu.nombre = :stringParam "
+                + "AND mu.departamento = :depto";
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", nombre)
+                .setParameter("depto", depto);
+        lCp = q.getResultList();
+        if(!lCp.isEmpty()){
+            return lCp.get(0);
+        }else{
+            return null;
+        }
+    }       
+    /**
+     * Metodo que verifica si ya existe la entidad.
+     * @param nombre
+     * @param depto
+     * @return: devuelve True o False
+     */
+    public boolean noExiste(String nombre, Departamento depto){
+        em = getEntityManager();
+        String queryString = "SELECT mu FROM Municipio mu "
+                + "WHERE mu.nombre = :stringParam "
+                + "AND mu.departamento = :depto";
+        Query q = em.createQuery(queryString)
+                .setParameter("stringParam", nombre)
+                .setParameter("depto", depto);
+        return q.getResultList().isEmpty();
+    }  
     
 }
