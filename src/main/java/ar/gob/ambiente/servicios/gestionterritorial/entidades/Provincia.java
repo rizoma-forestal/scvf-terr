@@ -31,15 +31,20 @@ public class Provincia implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-
+    /*
     @ManyToMany
    	@JoinTable(
             	name = "provinciasXRegiones",
             	joinColumns = @JoinColumn(name = "provincia_fk"),
             	inverseJoinColumns = @JoinColumn(name = "region_fk")
    	)
+    
     private List<Region> regiones; 
-
+    */
+       
+    
+    @ManyToMany(mappedBy = "provincias")
+    private List<Region> regiones; 
 
     @OneToMany(mappedBy="provincia")
     private List<Municipio> municipios;     
