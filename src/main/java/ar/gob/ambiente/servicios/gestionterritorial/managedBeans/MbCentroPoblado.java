@@ -232,6 +232,7 @@ public class MbCentroPoblado implements Serializable {
         //cargo los list para los combos
         listaTiposCP = tipocpFacade.getActivos();
         listaProvincias = provFacade.getActivos();
+        listaDepartamentos = dptoFacade.getActivos();
         return "edit";
     }    
    
