@@ -190,6 +190,7 @@ public class MbMunicipio implements Serializable {
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
+        listaProvincias = pciaFacade.getActivos();
         return "edit";
     }
     
