@@ -48,8 +48,7 @@
    
     <managed-bean>
         <managed-bean-name>mbCentroPoblado</managed-bean-name>
-        <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbCentroPoblado</managed-bean-class>
-    
+        <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbCentroPoblado</managed-bean-class>    
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
@@ -58,5 +57,17 @@
         <managed-bean-class>ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbCentroPobladoTipo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-    
+
+    <managed-bean>
+        <managed-bean-name>mbLogin</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.servicios.especiesforestales.managedBeans.MbLogin</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>    
+        
+    <managed-bean>
+        <managed-bean-name>mbUsuario</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.servicios.especiesforestales.managedBeans.MbUsuario</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>            
+                    
 </faces-config>

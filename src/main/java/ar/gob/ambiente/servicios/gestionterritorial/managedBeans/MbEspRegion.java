@@ -8,6 +8,7 @@ package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.EspecificidadDeRegion;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegionFacade;
 import java.io.Serializable;
@@ -17,9 +18,11 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -28,6 +31,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
+import static sun.security.jgss.GSSUtil.login;
 
 /**
  *
@@ -46,13 +50,26 @@ public class MbEspRegion implements Serializable{
     private String selectParam;    
     private boolean iniciado;
     //private List<String> listaNombres;    
-
+    private MbLogin login;
+    private Usuario usLogeado;
+    
     /*
      * Creates a new instance of MbEspRegion
      */
     public MbEspRegion() {
          
     }   
+
+    @PostConstruct
+    public void init(){
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        login = (MbLogin)ctx.getSessionMap().get("mbLogin");
+        usLogeado = login.getUsLogeado();
+    }    
+   
+    /********************************
+     ** Getters y Setters ***********
+     ********************************/     
     
     public EspecificidadDeRegion getCurrent() {
         return current;
@@ -245,7 +262,8 @@ public class MbEspRegion implements Serializable{
         AdminEntidad admEnt = new AdminEntidad();
         admEnt.setFechaAlta(date);
         admEnt.setHabilitado(true);
-        admEnt.setUsAlta(1);
+        //admEnt.setUsAlta(1);
+        admEnt.setUsAlta(usLogeado);
         current.setAdminentidad(admEnt);        
         try {
             getFacade().create(current);
