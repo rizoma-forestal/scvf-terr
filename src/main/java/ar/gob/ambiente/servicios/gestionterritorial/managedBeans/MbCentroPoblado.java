@@ -11,6 +11,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPoblado;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPobladoTipo;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoTipoFacade;
@@ -24,6 +25,7 @@ import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -61,6 +63,8 @@ public class MbCentroPoblado implements Serializable {
     private Long idTipo;
     private Provincia provSelected;
 
+    private MbLogin login;
+    private Usuario usLogeado;    
     
     /**
      * Creates a new instance of MbCentroPoblado
@@ -71,11 +75,18 @@ public class MbCentroPoblado implements Serializable {
     /**
      *
      */
+    /*
     @PostConstruct
     private void init(){
         iniciado = false;
-    }    
+    } */
     
+    @PostConstruct
+    public void init(){
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        login = (MbLogin)ctx.getSessionMap().get("mbLogin");
+        usLogeado = login.getUsLogeado();
+    }
     /********************************
      ** Getters y Setters ***********
      ********************************/ 
@@ -255,9 +266,9 @@ public class MbCentroPoblado implements Serializable {
             // Actualización de datos de administración de la entidad
             Date date = new Date(System.currentTimeMillis());
             current.getAdminentidad().setFechaModif(date);
-            current.getAdminentidad().setUsModif(1);
+            current.getAdminentidad().setUsModif(usLogeado);
             current.getAdminentidad().setHabilitado(true);
-            current.getAdminentidad().setUsBaja(0);
+            current.getAdminentidad().setUsBaja(usLogeado);
             current.getAdminentidad().setFechaBaja(null);
 
             // Actualizo
@@ -287,7 +298,7 @@ public class MbCentroPoblado implements Serializable {
                 AdminEntidad admEnt = new AdminEntidad();
                 admEnt.setFechaAlta(date);
                 admEnt.setHabilitado(true);
-                admEnt.setUsAlta(1);
+                admEnt.setUsAlta(usLogeado);
                 current.setAdminentidad(admEnt);
                 
                 CentroPobladoTipo cp = tipocpFacade.find(idTipo);
@@ -326,7 +337,7 @@ public class MbCentroPoblado implements Serializable {
                 // Actualización de datos de administración de la entidad
                 Date date = new Date(System.currentTimeMillis());
                 current.getAdminentidad().setFechaModif(date);
-                current.getAdminentidad().setUsModif(1);
+                current.getAdminentidad().setUsModif(usLogeado);
                 
                 // Actualizo
                 getFacade().edit(current);
@@ -343,7 +354,7 @@ public class MbCentroPoblado implements Serializable {
                     // Actualización de datos de administración de la entidad
                     Date date = new Date(System.currentTimeMillis());
                     current.getAdminentidad().setFechaModif(date);
-                    current.getAdminentidad().setUsModif(1);
+                    current.getAdminentidad().setUsModif(usLogeado);
 
                     // Actualizo
                     getFacade().edit(current);
@@ -391,7 +402,7 @@ public class MbCentroPoblado implements Serializable {
             // Actualización de datos de administración de la entidad
             Date date = new Date(System.currentTimeMillis());
             current.getAdminentidad().setFechaBaja(date);
-            current.getAdminentidad().setUsBaja(1);
+            current.getAdminentidad().setUsBaja(usLogeado);
             current.getAdminentidad().setHabilitado(false);
             
             // Deshabilito la entidad

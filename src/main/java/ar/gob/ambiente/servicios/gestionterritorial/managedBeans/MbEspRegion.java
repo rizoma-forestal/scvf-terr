@@ -41,10 +41,11 @@ public class MbEspRegion implements Serializable{
     
     private EspecificidadDeRegion current;
     private DataModel items = null;
-    
+    private List<EspecificidadDeRegion> listado;
     
     @EJB
     private EspecificidadDeRegionFacade espDeRegionFacade;
+    
     //private PaginationHelper pagination;
     private int selectedItemIndex;
     private String selectParam;    
@@ -79,11 +80,6 @@ public class MbEspRegion implements Serializable{
         this.current = current;
     }
 
-    
-    
-    /********************************
-     ** Métodos para la navegación **
-     ********************************/
     /**
      * @return La entidad gestionada
      */
@@ -98,6 +94,7 @@ public class MbEspRegion implements Serializable{
     /**
      * @return el listado de entidades a mostrar en el list
      */
+    /*
     public DataModel getItems() {
         if (items == null) {
             //items = getPagination().createPageDataModel();
@@ -105,7 +102,7 @@ public class MbEspRegion implements Serializable{
         }
         return items;
     }
-
+    */
     /**
      * Método que borra de la memoria los MB innecesarios al cargar el listado 
      */
@@ -183,33 +180,50 @@ public class MbEspRegion implements Serializable{
         //items = null;
         return "list";
     }
-    
-    /**
-     * @return mensaje que notifica la actualizacion de estado
-     */    
-    public String habilitar() {
-        current.getAdminentidad().setHabilitado(true);
-        update();        
-        recreateModel();
-        return "view";
-    }  
 
     /**
-     * @return mensaje que notifica la actualizacion de estado
-     */    
-    public String deshabilitar() {
-        //Si esta libre de dependencias deshabilita
-        if (getFacade().tieneDependencias(current.getId())){
+     * 
+     * @return 
+     */
+    public String habilitar(){
+        try{
+            // Actualización de datos de administración de la entidad
+            Date date = new Date(System.currentTimeMillis());
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+            current.getAdminentidad().setHabilitado(true);
+            //current.getAdminentidad().setUsBaja();
+            current.getAdminentidad().setFechaBaja(null);
+
+            // Actualizo
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspRegionHabilitado"));
+            return "view";
+        }catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspRegionHabilitadoErrorOccured"));
+            return null; 
+        }
+    }       
+
+    /**
+     * Método que deshabilita la entidad
+     */
+    private void deshabilitar() {
+        try {
+            // Actualización de datos de administración de la entidad
+            Date date = new Date(System.currentTimeMillis());
+            current.getAdminentidad().setFechaBaja(date);
+            current.getAdminentidad().setUsBaja(usLogeado);
             current.getAdminentidad().setHabilitado(false);
-            update();        
-            recreateModel();
+            
+            // Deshabilito la entidad
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspRegionDeshabilitar"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspRegionDeshabilitarErrorOccured"));
         }
-        else{
-            //No Deshabilita 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionNonDeletable"));            
-        }
-        return "view";
-    }
+    }     
+    
     
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
@@ -243,28 +257,33 @@ public class MbEspRegion implements Serializable{
     /**
      * Restea la entidad
      */
+   /*
     private void recreateModel() {
         items = null;
         if(selectParam != null){
             selectParam = null;
         }
     }
-
+*/
     /*************************
     ** Métodos de operación **
     **************************/
     /**
      * @return 
      */
+    
     public String create() {
         // Creación de la entidad de administración y asignación
         Date date = new Date(System.currentTimeMillis());
         AdminEntidad admEnt = new AdminEntidad();
         admEnt.setFechaAlta(date);
         admEnt.setHabilitado(true);
-        //admEnt.setUsAlta(1);
         admEnt.setUsAlta(usLogeado);
-        current.setAdminentidad(admEnt);        
+        current.setAdminentidad(admEnt);     
+
+        listado.clear();
+        listado = null;
+        
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionCreated"));
@@ -275,19 +294,24 @@ public class MbEspRegion implements Serializable{
         }
     }
 
-    /**
-     * @return mensaje que notifica la actualización
-     */
-    public String update() {
-        try {            
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionUpdated"));
-            return "view";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionUpdatedErrorOccured"));
-            return null;
-        }
-    }
+    
+    public String create() {
+        try {
+            if(getFacade().noExiste(current.getNombre(), current.getDepartamento())){
+                // Creación de la entidad de administración y asignación
+                Date date = new Date(System.currentTimeMillis());
+                AdminEntidad admEnt = new AdminEntidad();
+                admEnt.setFechaAlta(date);
+                admEnt.setHabilitado(true);
+                admEnt.setUsAlta(usLogeado);
+                current.setAdminentidad(admEnt);
+                
+                CentroPobladoTipo cp = tipocpFacade.find(idTipo);
+                current.setCentropobladotipo(cp);
+                
+                // Inserción
+                getFacade().create(current);
+           
 
     /**************************
     **    Métodos de selección     **
@@ -295,17 +319,17 @@ public class MbEspRegion implements Serializable{
     /**
      * @return la totalidad de las entidades persistidas formateadas
      */
-    public SelectItem[] getItemsAvailableSelectMany() {
+/*    public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(espDeRegionFacade.findAll(), false);
     }
-
+*/
     /**
      * @return de a una las entidades persistidas formateadas
      */
-    public SelectItem[] getItemsAvailableSelectOne() {
+/*    public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(espDeRegionFacade.findAll(), true);
     }
-
+*/
     /**
      * @param id equivalente al id de la entidad persistida
      * @return la entidad correspondiente
