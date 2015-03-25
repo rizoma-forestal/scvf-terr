@@ -10,6 +10,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.EspecificidadDeRegion;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Region;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegionFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.RegionFacade;
@@ -61,6 +62,7 @@ public class MbRegion implements Serializable{
     
     private List<Provincia> listaProvincias; 
     private List<Provincia> listaProvinciasAsociadas;
+    private Usuario usLogeado;
     private boolean iniciado;
 
 
@@ -231,7 +233,7 @@ public class MbRegion implements Serializable{
         AdminEntidad admEnt = new AdminEntidad();
         admEnt.setFechaAlta(date);
         admEnt.setHabilitado(true);
-        admEnt.setUsAlta(2);
+        admEnt.setUsAlta(usLogeado);
         current.setAdminentidad(admEnt);   
         //current.setProvincias(listaProvinciasSeleccionadas);
         try {

@@ -9,6 +9,7 @@ package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
@@ -53,7 +54,8 @@ public class MbDepartamento implements Serializable {
     private String selectParam;    
     //private List<String> listaNombres; 
     
-    private List<Provincia> listaProvincias;      
+    private List<Provincia> listaProvincias;
+    private Usuario usLogeado;
     private boolean iniciado;
     
     /**
@@ -221,7 +223,7 @@ public class MbDepartamento implements Serializable {
         AdminEntidad admEnt = new AdminEntidad();
         admEnt.setFechaAlta(date);
         admEnt.setHabilitado(true);
-        admEnt.setUsAlta(2);
+        admEnt.setUsAlta(usLogeado);
         current.setAdminentidad(admEnt);        
         try {
             getFacade().create(current);

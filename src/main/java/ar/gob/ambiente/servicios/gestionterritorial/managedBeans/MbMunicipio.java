@@ -10,6 +10,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Municipio;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.MunicipioFacade;
@@ -60,6 +61,7 @@ public class MbMunicipio implements Serializable {
     private boolean iniciado;
     private List<Municipio> listado;
     private List<Municipio> listadoFilter;
+    private Usuario usLogeado;
     
     
     /**
@@ -302,7 +304,7 @@ public class MbMunicipio implements Serializable {
                 // Actualización de datos de administración de la entidad
                 Date date = new Date(System.currentTimeMillis());
                 current.getAdminentidad().setFechaModif(date);
-                current.getAdminentidad().setUsModif(1);
+                current.getAdminentidad().setUsModif(usLogeado);
                 
                 // Actualizo
                 getFacade().edit(current);
@@ -319,7 +321,7 @@ public class MbMunicipio implements Serializable {
                     // Actualización de datos de administración de la entidad
                     Date date = new Date(System.currentTimeMillis());
                     current.getAdminentidad().setFechaModif(date);
-                    current.getAdminentidad().setUsModif(1);
+                    current.getAdminentidad().setUsModif(usLogeado);
 
                     // Actualizo
                     getFacade().edit(current);
@@ -486,7 +488,7 @@ public class MbMunicipio implements Serializable {
                 AdminEntidad admEnt = new AdminEntidad();
                 admEnt.setFechaAlta(date);
                 admEnt.setHabilitado(true);
-                admEnt.setUsAlta(1);
+                admEnt.setUsAlta(usLogeado);
                 current.setAdminentidad(admEnt);
                 
                 //CentroPobladoTipo cp = tipocpFacade.find(idTipo);

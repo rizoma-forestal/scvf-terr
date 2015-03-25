@@ -257,14 +257,14 @@ public class MbEspRegion implements Serializable{
     /**
      * Restea la entidad
      */
-   /*
+   
     private void recreateModel() {
         items = null;
         if(selectParam != null){
             selectParam = null;
         }
     }
-*/
+
     /*************************
     ** Métodos de operación **
     **************************/
@@ -334,7 +334,7 @@ public class MbEspRegion implements Serializable{
      * @param id equivalente al id de la entidad persistida
      * @return la entidad correspondiente
      */
-    public EspecificidadDeRegion getEspecificidadDeRegion(java.lang.Long id) {
+    public EspecificidadDeRegion getEspecificidadDeRegion(java.lang.Long id){
         return espDeRegionFacade.find(id);
     }    
     
