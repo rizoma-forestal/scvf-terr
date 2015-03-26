@@ -27,7 +27,18 @@
                             <p:menuitem value="Centro Poblado" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizCentroPoblado}/list.xhtml"/>
                             <p:menuitem value="Tipo Centro Poblado" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizTipoCentroPoblado}/list.xhtml" />
                         </p:submenu>                         
+                    <p:submenu label="Seguridad">
+                            <p:menuitem value="Usuarios" 
+                                        url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizUsuario}/list.xhtml"/>
+                            <p:menuitem value="Roles" 
+                                        url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizRol}/list.xhtml"/>                             
+                                                                        
+                        </p:submenu> 
+                        
+                        <p:menuitem value="Cerrar Sessión" action="#{mbLogin.logout}" oncomplete="logout(xhr, status, args)"/>
+                        <p:menuitem value="Usuario: #{mbLogin.usLogeado.nombre}" /> 
                     </p:menubar>
+                    
                 </h:form>
             </div>
 

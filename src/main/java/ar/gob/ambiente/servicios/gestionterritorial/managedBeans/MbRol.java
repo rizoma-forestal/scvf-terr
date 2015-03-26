@@ -7,14 +7,14 @@
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
-import ar.gob.ambiente.servicios.gestionterritorial.entidades.EspecificidadDeRegion;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Rol;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
-import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegionFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.RolFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.UsuarioFacade;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
@@ -30,34 +30,35 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
-
-
 /**
  *
- * @author epassarelli
+ * @author rodriguezn
  */
-public class MbEspRegion implements Serializable{
+public class MbRol implements Serializable{
     
-    private EspecificidadDeRegion current;
+    private Rol current;
     private DataModel items = null;
-
     
     @EJB
-    private EspecificidadDeRegionFacade espDeRegionFacade;
+    private RolFacade rolFacade;
+    @EJB
+    private UsuarioFacade usuarioFacade;
     private int selectedItemIndex;
-    private String selectParam;    
-    private boolean iniciado;
-    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar 
+    private String selectParam;
+    private List<String> listaNombres;
+    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
     private MbLogin login;
     private Usuario usLogeado;
+    private boolean iniciado;
+    private List<Usuario> listaUsuario;
     
-    /*
-     * Creates a new instance of MbEspRegion
+    
+    /**
+     * Creates a new instance of MbRol
      */
-    public MbEspRegion() {
-         
-    }   
-
+    public MbRol(){
+    }
+    
     @PostConstruct
     public void init(){
         iniciado = false;
@@ -65,53 +66,8 @@ public class MbEspRegion implements Serializable{
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         login = (MbLogin)ctx.getSessionMap().get("mbLogin");
         usLogeado = login.getUsLogeado();
-    } 
-   
-    /********************************
-     ** Getters y Setters ***********
-     ********************************/     
+    }
     
-    public EspecificidadDeRegion getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(EspecificidadDeRegion current) {
-        this.current = current;
-    }
-
-    /**
-     * @return La entidad gestionada
-     */
-    public EspecificidadDeRegion getSelected() {
-        if (current == null) {
-            current = new EspecificidadDeRegion();
-           // selectedItemIndex = -1;
-        }
-        return current;
-    }   
-    
-    /**
-     * @return el listado de entidades a mostrar en el list
-     */
-   
-    public DataModel getItems() {
-        if (items == null) {
-            //items = getPagination().createPageDataModel();
-            items = new ListDataModel(getFacade().findAll());
-        }
-        return items;
-    }
-   /**
-     * Método para revocar la sesión del MB
-     * @return 
-     */
-    public String cleanUp(){
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(true);
-        session.removeAttribute("mbEspRegion");
-   
-        return "inicio";
-    }       
     /**
      * Método que borra de la memoria los MB innecesarios al cargar el listado 
      */
@@ -130,8 +86,55 @@ public class MbEspRegion implements Serializable{
                 }
             }
         }
-    }     
-  
+    }      
+    
+        public Rol getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Rol current) {
+        this.current = current;
+    }
+    
+    /********************************
+     ** Métodos para la navegación **
+     ********************************/
+    /**
+     * @return La entidad gestionada
+     */
+    public Rol getSelected() {
+        if (current == null) {
+            current = new Rol();
+            //selectedItemIndex = -1;
+        }
+        return current;
+    }   
+    
+    /**
+     * @return el listado de entidades a mostrar en el list
+     */
+    public DataModel getItems() {
+        if (items == null) {
+            //items = getPagination().createPageDataModel();
+            items = new ListDataModel(getFacade().findAll());
+        }
+        return items;
+    }
+    
+    /**
+     * Método para revocar la sesión del MB
+     * @return 
+     */
+    public String cleanUp(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true);
+        session.removeAttribute("mbRol");
+   
+        return "inicio";
+    }      
+    
+    
+    
     /*******************************
      ** Métodos de inicialización **
      *******************************/
@@ -148,7 +151,7 @@ public class MbEspRegion implements Serializable{
         if(selectParam != null){
             redirect = "list";
         }else{
-            redirect = "administracion/espRegion/list";
+            redirect = "seguridad/rol/list";
         }
         recreateModel();
         return redirect;
@@ -165,7 +168,8 @@ public class MbEspRegion implements Serializable{
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        current = new EspecificidadDeRegion();
+        listaUsuario = usuarioFacade.findAll();
+        current = new Rol();
         return "new";
     }
 
@@ -187,34 +191,24 @@ public class MbEspRegion implements Serializable{
      */
     public String prepareSelect(){
         //items = null;
+        //buscarRol();
         return "list";
     }
-
+    
     /**
-     * 
-     * @return 
-     */
+     */    
     public void habilitar() {
         update = 2;
         update();        
         recreateModel();
-    }       
-
-    /**
-     * Método que deshabilita la entidad
-     */
+    }  
+     /**
+     */    
     public void deshabilitar() {
-       if (getFacade().tieneDependencias(current.getId())){
-          update = 1;
-          update();        
-          recreateModel();
-       } 
-        else{
-            //No Deshabilita 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionNonDeletable"));            
-        }
-    }     
-    
+        update = 1;
+        update();        
+        recreateModel();
+    }    
     
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
@@ -238,25 +232,25 @@ public class MbEspRegion implements Serializable{
             validarExistente(arg2);
         }
     }
+        
     
     private void validarExistente(Object arg2) throws ValidatorException{
         if(!getFacade().existe((String)arg2)){
-            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateEspRegionExistente")));
+            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateRolExistente")));
         }
     }
     
     /**
      * Restea la entidad
      */
-   
     private void recreateModel() {
         items = null;
         if(selectParam != null){
             selectParam = null;
         }
     }
+    
 
- 
     /*************************
     ** Métodos de operación **
     **************************/
@@ -273,15 +267,15 @@ public class MbEspRegion implements Serializable{
         current.setAdminentidad(admEnt);        
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RolCreated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionCreatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RolCreatedErrorOccured"));
             return null;
         }
     }
 
-        /**
+    /**
      * @return mensaje que notifica la actualización
      */
     public String update() {
@@ -309,38 +303,37 @@ public class MbEspRegion implements Serializable{
         // acualizo
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RolUpdated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RolUpdatedErrorOccured"));
             return null;
         }
     }
 
-
-    /**************************
-    **    Métodos de selección     **
+    /*************************
+    ** Métodos de selección **
     **************************/
     /**
      * @return la totalidad de las entidades persistidas formateadas
      */
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(espDeRegionFacade.findAll(), false);
+        return JsfUtil.getSelectItems(rolFacade.findAll(), false);
     }
 
     /**
      * @return de a una las entidades persistidas formateadas
      */
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(espDeRegionFacade.findAll(), true);
+        return JsfUtil.getSelectItems(rolFacade.findAll(), true);
     }
 
     /**
      * @param id equivalente al id de la entidad persistida
      * @return la entidad correspondiente
      */
-    public EspecificidadDeRegion getEspecificidadDeRegion(java.lang.Long id){
-        return espDeRegionFacade.find(id);
+    public Rol getRol(java.lang.Long id) {
+        return rolFacade.find(id);
     }    
     
     /*********************
@@ -349,35 +342,22 @@ public class MbEspRegion implements Serializable{
     /**
      * @return el Facade
      */
-    private EspecificidadDeRegionFacade getFacade() {
-        return espDeRegionFacade;
+    private RolFacade getFacade() {
+        return rolFacade;
     }
-
     
-    /*
-     * Métodos de búsqueda
-     */
-    public String getSelectParam() {
-        return selectParam;
-    }
-
-    public void setSelectParam(String selectParam) {
-        this.selectParam = selectParam;
-    }
-
- 
     /**
      * Opera el borrado de la entidad
      */
     private void performDestroy() {
         try {
             //getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RolDeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("EspecificidadDeRegionDeletedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RolDeletedErrorOccured"));
         }
     }
-    
+
     /**
      * Actualiza el detalle de la entidad si la última se eliminó
      */
@@ -399,20 +379,54 @@ public class MbEspRegion implements Serializable{
     }
     
     
+    /*
+     * Métodos de búsqueda
+     */
+    public String getSelectParam() {
+        return selectParam;
+    }
+
+    public void setSelectParam(String selectParam) {
+        this.selectParam = selectParam;
+    }
+    
+   /* private void buscarRol(){
+        items = new ListDataModel(getFacade().getXString(selectParam)); 
+    }   */
+    
+    /**
+     * Método para llegar la lista para el autocompletado de la búsqueda de nombres
+     * @param query
+     * @return 
+     *//*
+    public List<String> completeNombres(String query){
+        listaNombres = getFacade().getNombres();
+        List<String> nombres = new ArrayList();
+        Iterator itLista = listaNombres.listIterator();
+        while(itLista.hasNext()){
+            String nom = (String)itLista.next();
+            if(nom.contains(query)){
+                nombres.add(nom);
+            }
+        }
+        return nombres;
+    }
+        */
+    
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
     *********************************************************************/
-    @FacesConverter(forClass = EspecificidadDeRegion.class)
-    public static class EspecificidadDeRegionControllerConverter implements Converter {
+@FacesConverter(forClass = Rol.class)
+public static class RolControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            MbEspRegion controller = (MbEspRegion) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "mbEspRegion");
-            return controller.getEspecificidadDeRegion(getKey(value));
+            MbRol controller = (MbRol) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "mbRol");
+            return controller.getRol(getKey(value));
         }
 
         
@@ -439,11 +453,11 @@ public class MbEspRegion implements Serializable{
             if (object == null) {
                 return null;
             }
-            if (object instanceof EspecificidadDeRegion) {
-                EspecificidadDeRegion o = (EspecificidadDeRegion) object;
+            if (object instanceof Rol) {
+                Rol o = (Rol) object;
                 return getStringKey(o.getId());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + EspecificidadDeRegion.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Rol.class.getName());
             }
         }
     }        

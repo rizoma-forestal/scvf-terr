@@ -6,6 +6,7 @@
 
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
+
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -14,15 +15,10 @@ import javax.persistence.TemporalType;
 /**
  *
  * @author Administrador
- * @param <T>
  */
 public abstract class AbstractFacade<T> {
     private final Class<T> entityClass;
 
-    /**
-     *
-     * @param entityClass
-     */
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
@@ -36,15 +32,14 @@ public abstract class AbstractFacade<T> {
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
-
     public void edit(T entity) {
         getEntityManager().merge(entity);
     }
-
+   
     public void remove(T entity) {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
-    
+
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
     }
