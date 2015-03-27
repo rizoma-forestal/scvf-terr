@@ -73,5 +73,9 @@ public class RegionFacade extends AbstractFacade<Region> {
         Query q = em.createQuery(queryString);
         return q.getResultList();
     }    
+
+    public boolean tieneDependencias(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

@@ -158,7 +158,7 @@ public class MbUsuario implements Serializable{
         if(selectParam != null){
             redirect = "list";
         }else{
-            redirect = "administracion/usuario/list";
+            redirect = "seguridad/usuario/list";
         }
         recreateModel();
         return redirect;
@@ -478,3 +478,4 @@ public class MbUsuario implements Serializable{
         }
     }               
 }
+

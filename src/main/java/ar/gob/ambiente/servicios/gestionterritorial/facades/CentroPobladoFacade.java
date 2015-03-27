@@ -74,4 +74,8 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
             return null;
         }
     }       
+
+    public boolean tieneDependencias(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
