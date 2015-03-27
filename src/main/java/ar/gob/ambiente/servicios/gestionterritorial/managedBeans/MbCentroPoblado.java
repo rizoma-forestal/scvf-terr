@@ -62,7 +62,7 @@ public class MbCentroPoblado implements Serializable {
     private Provincia selectProvincia; 
     private Long idTipo;
     private Provincia provSelected;
-
+    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar 
     private MbLogin login;
     private Usuario usLogeado;    
     
@@ -291,87 +291,77 @@ public class MbCentroPoblado implements Serializable {
      * @return mensaje que notifica la inserción
      */
     public String create() {
+        // Creación de la entidad de administración y asignación
+        Date date = new Date(System.currentTimeMillis());
+        AdminEntidad admEnt = new AdminEntidad();
+        admEnt.setFechaAlta(date);
+        admEnt.setHabilitado(true);
+        admEnt.setUsAlta(usLogeado);
+        current.setAdminentidad(admEnt);        
         try {
-            if(getFacade().noExiste(current.getNombre(), current.getDepartamento())){
-                // Creación de la entidad de administración y asignación
-                Date date = new Date(System.currentTimeMillis());
-                AdminEntidad admEnt = new AdminEntidad();
-                admEnt.setFechaAlta(date);
-                admEnt.setHabilitado(true);
-                admEnt.setUsAlta(usLogeado);
-                current.setAdminentidad(admEnt);
-                
-                CentroPobladoTipo cp = tipocpFacade.find(idTipo);
-                current.setCentropobladotipo(cp);
-                
-                // Inserción
-                getFacade().create(current);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreated"));
-                listaTiposCP.clear();
-                listaProvincias.clear();
-                
-                listado.clear();
-                listado = null;
-                
-                return "view";
-            }else{
-                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoExistente"));
-                return null;
-            }
+            getFacade().create(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreated"));
+            return "view";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoCreatedErrorOccured"));
             return null;
         }
-    }    
+    }
     
-     /**
-     * Método que actualiza un nuevo Centro Poblado en la base de datos.
-     * Previamente actualiza los datos de administración
+    /**
      * @return mensaje que notifica la actualización
      */
-    public String update() {    
-        CentroPoblado cp;
-        try {
-            cp = getFacade().getExistente(current.getNombre(), current.getDepartamento());
-            if(cp == null){
-                // Actualización de datos de administración de la entidad
-                Date date = new Date(System.currentTimeMillis());
-                current.getAdminentidad().setFechaModif(date);
-                current.getAdminentidad().setUsModif(usLogeado);
-                
-                // Actualizo
-                getFacade().edit(current);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
-                listaTiposCP.clear();
-                listaProvincias.clear();
-                
-                listado.clear();
-                listado = null;
-                
-                return "view";
-            }else{
-                if(cp.getId().equals(current.getId())){
-                    // Actualización de datos de administración de la entidad
-                    Date date = new Date(System.currentTimeMillis());
-                    current.getAdminentidad().setFechaModif(date);
-                    current.getAdminentidad().setUsModif(usLogeado);
+    public String update() {
+        Date date = new Date(System.currentTimeMillis());
+        //Date dateBaja = new Date();
+        
+        // actualizamos según el valor de update
+        if(update == 1){
+            current.getAdminentidad().setFechaBaja(date);
+            current.getAdminentidad().setUsBaja(usLogeado);
+            current.getAdminentidad().setHabilitado(false);
+        }
+        if(update == 2){
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+            current.getAdminentidad().setHabilitado(true);
+            current.getAdminentidad().setFechaBaja(null);
+            current.getAdminentidad().setUsBaja(usLogeado);
+        }
+        if(update == 0){
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+        }
 
-                    // Actualizo
-                    getFacade().edit(current);
-                    JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
-                    listaTiposCP.clear();
-                    listaProvincias.clear();
-                    return "view";                   
-                }else{
-                    JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoExistente"));
-                    return null;
-                }
-            }
+        // acualizo
+        try {
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdated"));
+            return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdatedErrorOccured"));
             return null;
         }
-    }   
+    }
+    
+        public void habilitar() {
+        update = 2;
+        update();        
+        recreateModel();
+    }  
+     /**
+     */    
+    public void deshabilitar() {
+       if (getFacade().tieneDependencias(current.getId())){
+          update = 1;
+          update();        
+          recreateModel();
+       } 
+        else{
+            //No Deshabilita 
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("GeneroNonDeletable"));            
+        }
+    } 
     
     /**
      * @param id equivalente al id de la entidad persistida

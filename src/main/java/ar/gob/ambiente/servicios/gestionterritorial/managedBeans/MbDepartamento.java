@@ -53,7 +53,7 @@ public class MbDepartamento implements Serializable {
     private int selectedItemIndex;
     private String selectParam;    
     //private List<String> listaNombres; 
-    
+    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
     private List<Provincia> listaProvincias;
     private Usuario usLogeado;
     private boolean iniciado;
@@ -239,12 +239,34 @@ public class MbDepartamento implements Serializable {
      * @return mensaje que notifica la actualización
      */
     public String update() {
+        Date date = new Date(System.currentTimeMillis());
+        //Date dateBaja = new Date();
+        
+        // actualizamos según el valor de update
+        if(update == 1){
+            current.getAdminentidad().setFechaBaja(date);
+            current.getAdminentidad().setUsBaja(usLogeado);
+            current.getAdminentidad().setHabilitado(false);
+        }
+        if(update == 2){
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+            current.getAdminentidad().setHabilitado(true);
+            current.getAdminentidad().setFechaBaja(null);
+            current.getAdminentidad().setUsBaja(usLogeado);
+        }
+        if(update == 0){
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+        }
+
+        // acualizo
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("DepartamentoUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdatedErrorOccured"));
             return null;
         }
     }

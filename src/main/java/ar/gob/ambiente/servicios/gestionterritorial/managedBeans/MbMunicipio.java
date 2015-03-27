@@ -62,6 +62,8 @@ public class MbMunicipio implements Serializable {
     private List<Municipio> listado;
     private List<Municipio> listadoFilter;
     private Usuario usLogeado;
+    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar 
+    
     
     
     /**
@@ -258,13 +260,14 @@ public class MbMunicipio implements Serializable {
     **************************/
     /**
      * @return 
+     */
     public String create() {
         // Creación de la entidad de administración y asignación
         Date date = new Date(System.currentTimeMillis());
         AdminEntidad admEnt = new AdminEntidad();
         admEnt.setFechaAlta(date);
         admEnt.setHabilitado(true);
-        admEnt.setUsAlta(2);
+        admEnt.setUsAlta(usLogeado);
         current.setAdminentidad(admEnt);        
         try {
             getFacade().create(current);
@@ -275,21 +278,6 @@ public class MbMunicipio implements Serializable {
             return null;
         }
     }
-     */
-
-    /**
-     * @return mensaje que notifica la actualización
-    public String update() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioUpdated"));
-            return "view";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioUpdatedErrorOccured"));
-            return null;
-        }
-    }
-     */
 
          /**
      * Método que actualiza un nuevo Centro Poblado en la base de datos.
@@ -463,56 +451,25 @@ public class MbMunicipio implements Serializable {
         comboDepartamentos = dptoFacade.getPorProvincia(selectProvincia);      
     }    
     
-    public String habilitar() {
-        current.getAdminentidad().setHabilitado(true);
+       public void habilitar() {
+        update = 2;
         update();        
         recreateModel();
-        return "view";
     }  
-
-    /**
-     * @return mensaje que notifica la actualizacion de estado
+     /**
      */    
-    public String deshabilitar() {
-           current.getAdminentidad().setHabilitado(false);
-           update();        
-           recreateModel();
-         return "view";
-    }
-    
-    public String create() {
-        try {
-            if(getFacade().noExiste(current.getNombre(), current.getDepartamento())){
-                // Creación de la entidad de administración y asignación
-                Date date = new Date(System.currentTimeMillis());
-                AdminEntidad admEnt = new AdminEntidad();
-                admEnt.setFechaAlta(date);
-                admEnt.setHabilitado(true);
-                admEnt.setUsAlta(usLogeado);
-                current.setAdminentidad(admEnt);
-                
-                //CentroPobladoTipo cp = tipocpFacade.find(idTipo);
-                //current.setCentropobladotipo(cp);
-                
-                // Inserción
-                getFacade().create(current);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioCreated"));
-                //listaTiposCP.clear();
-                listaProvincias.clear();
-                
-                listado.clear();
-                listado = null;
-                
-                return "view";
-            }else{
-                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioExistente"));
-                return null;
-            }
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioCreatedErrorOccured"));
-            return null;
+    public void deshabilitar() {
+       if (getFacade().tieneDependencias(current.getId())){
+          update = 1;
+          update();        
+          recreateModel();
+       } 
+        else{
+            //No Deshabilita 
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("GeneroNonDeletable"));            
         }
-    }    
+    } 
+        
     
 
     

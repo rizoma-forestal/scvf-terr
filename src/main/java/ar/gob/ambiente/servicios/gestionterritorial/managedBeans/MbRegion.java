@@ -64,6 +64,7 @@ public class MbRegion implements Serializable{
     private List<Provincia> listaProvinciasAsociadas;
     private Usuario usLogeado;
     private boolean iniciado;
+    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
 
 
 
@@ -250,12 +251,34 @@ public class MbRegion implements Serializable{
      * @return mensaje que notifica la actualización
      */
     public String update() {
+        Date date = new Date(System.currentTimeMillis());
+        //Date dateBaja = new Date();
+        
+        // actualizamos según el valor de update
+        if(update == 1){
+            current.getAdminentidad().setFechaBaja(date);
+            current.getAdminentidad().setUsBaja(usLogeado);
+            current.getAdminentidad().setHabilitado(false);
+        }
+        if(update == 2){
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+            current.getAdminentidad().setHabilitado(true);
+            current.getAdminentidad().setFechaBaja(null);
+            current.getAdminentidad().setUsBaja(usLogeado);
+        }
+        if(update == 0){
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+        }
+
+        // acualizo
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RegionUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdatedErrorOccured"));
             return null;
         }
     }
@@ -417,22 +440,24 @@ public class MbRegion implements Serializable{
     
     
     
-    public String habilitar() {
-        current.getAdminentidad().setHabilitado(true);
+        public void habilitar() {
+        update = 2;
         update();        
         recreateModel();
-        return "view";
     }  
-
-    /**
-     * @return mensaje que notifica la actualizacion de estado
+     /**
      */    
-    public String deshabilitar() {
-            current.getAdminentidad().setHabilitado(false);
-            update();        
-            recreateModel();
-        return "view";
-    }
+    public void deshabilitar() {
+       if (getFacade().tieneDependencias(current.getId())){
+          update = 1;
+          update();        
+          recreateModel();
+       } 
+        else{
+            //No Deshabilita 
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("GeneroNonDeletable"));            
+        }
+    } 
     
 }
 
