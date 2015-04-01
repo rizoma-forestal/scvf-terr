@@ -23,6 +23,7 @@ public class RegionFacade extends AbstractFacade<Region> {
     @PersistenceContext(unitName = "ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -35,16 +36,20 @@ public class RegionFacade extends AbstractFacade<Region> {
     /**
      * Método que devuelve todas las Regiones que contienen la cadena recibida como parámetro 
      * dentro de alguno de sus campos string, en este caso el nombre.
-     * @param aBuscar: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
      * @return: El conjunto de resultados provenientes de la búsqueda. 
      */      
-    public List<Region> getXString(String aBuscar){
+    public List<Region> getXString(String stringParam){
         em = getEntityManager();
         List<Region> result;
-        String queryString = "SELECT reg.nombre FROM Region reg "
-                + "WHERE reg.nombre LIKE :stringParam ";        
+        
+        String queryString = "SELECT reg FROM Region reg "
+                + "WHERE reg.nombre LIKE :stringParam "
+                + "AND reg.adminentidad.habilitado =true";
+        
         Query q = em.createQuery(queryString)
-                .setParameter("stringParam", "%" + aBuscar + "%");        
+                .setParameter("stringParam", "%" + stringParam + "%");  
+        
         result = q.getResultList();
         return result;
     }
@@ -56,12 +61,31 @@ public class RegionFacade extends AbstractFacade<Region> {
      */
     public boolean existe(String aBuscar){
         em = getEntityManager();
-        String queryString = "SELECT reg FROM Region reg "
-                + "WHERE reg.nombre = :stringParam";
+        String queryString = "SELECT reg.nombre FROM Region reg "
+                + "WHERE reg.nombre = :stringParam "
+                +  "AND reg.adminentidad.habilitado = true";
+        
         Query q = em.createQuery(queryString)
                 .setParameter("stringParam", aBuscar);
         return q.getResultList().isEmpty();
     }    
+    
+    /**
+     * Método que verifica si la entidad tiene dependencia (Hijos)
+     * @param id: ID de la entidad
+     * @return: True o False
+     */
+    public boolean tieneDependencias(Long id){
+        em = getEntityManager();        
+        
+        String queryString = "SELECT pro FROM Provincia pro " 
+                + "WHERE pro.region.id = :idParam ";        
+        
+        Query q = em.createQuery(queryString)
+                .setParameter("idParam", id);
+        
+        return q.getResultList().isEmpty();
+    }
     
     /**
      * Metodo para el autocompletado de la búsqueda por nombre
@@ -69,13 +93,22 @@ public class RegionFacade extends AbstractFacade<Region> {
      */
     public List<String> getNombres(){
         em = getEntityManager();
-        String queryString = "SELECT reg.nombre FROM Region reg ";
+        String queryString = "SELECT reg.nombre FROM Region reg "
+                + "AND reg.adminentidad.habilitado = true";
         Query q = em.createQuery(queryString);
         return q.getResultList();
     }    
-
-    public boolean tieneDependencias(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+/**
+     * Método que devuelve un LIST con las entidades HABILITADAS
+     * @return: True o False
+     */
+    public List<Region> getActivos(){
+        em = getEntityManager();        
+        List<Region> result;
+        String queryString = "SELECT reg FROM Region reg " 
+                + "WHERE reg.adminentidad.habilitado = true";                   
+        Query q = em.createQuery(queryString);
+        result = q.getResultList();
+        return result;
+    }        
 }

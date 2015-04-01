@@ -10,70 +10,73 @@
             <h:outputText value="#{bundle.RegionTitle}" />
         </ui:define>
         <ui:define name="content">
+            
         <br/>
+        
             <h:form id="frmEdit">
-                <p:panel id="pnEdit" header="#{bundle.RegionEditTitle}" style="margin-bottom:10px;">
-                    <h:panelGrid columns="2">
+                <p:panel id="pnEdit" 
+                         header="#{bundle.RegionEditTitle}" 
+                         style="margin-bottom:10px;">
+                    <h:panelGrid columns="4">
                         
                         
-                        <p:outputLabel value="#{bundle.CreateRegionLabel_espRegion}" for="espReg"/> 
-                        <p:selectOneMenu id="espReg" value="#{mbRegion.selected.especificidadderegion}" 
+                        <p:outputLabel value="#{bundle.CreateRegionLabel_espRegion}" 
+                                       for="espReg"/> 
+                        <p:selectOneMenu id="espReg" 
+                                         value="#{mbRegion.selected.especificidadderegion}" 
                                          requiredMessage="#{bundle.CreateRegionEspecifRegionRequiredMessage}" 
                                          required="true">
-                            <f:selectItem itemLabel="Seleccione la Esp de Region" itemValue="" noSelectionOption="true" />
                             
-                            <f:selectItems value="#{mbRegion.listaEspecificidadesDeRegion}" var="espReg" 
-                                           itemLabel="#{espReg.nombre}" itemValue="#{espReg}"/>
+                            <f:selectItem itemLabel="Seleccione la Esp de Region" 
+                                          itemValue="" 
+                                          noSelectionOption="true" />
+                            
+                            <f:selectItems value="#{mbRegion.listaEspecificidadDeRegion}" 
+                                           var="espReg" 
+                                           itemLabel="#{espReg.nombre}" 
+                                           itemValue="#{espReg}"/>
                         </p:selectOneMenu>                         
                         
-                        <p:outputLabel value="#{bundle.CreateRegionLabel_nombre}" for="nombre"/>
+                        <p:outputLabel value="" />
                         
-                        <p:inputText id="nombre" validator="#{mbRegion.validarUpdate}" 
+                        <h:inputHidden id="id"
+                                       value="#{mbRegion.selected.id}"/>                        
+                                                
+                        <p:outputLabel value="#{bundle.CreateRegionLabel_nombre}" 
+                                       for="nombre"/>
+                        
+                        <p:inputText id="nombre" 
+                                     validator="#{mbRegion.validarUpdate}" 
                                      value="#{mbRegion.selected.nombre}" 
                                      requiredMessage="#{bundle.CreateRegionRequiredMessage_nombre}" 
                                      required="true"/>
-                        
-
-
-                    <h:outputLabel for="prov" value="Provincias:" />
-                    
-                    <p:selectCheckboxMenu 
-                                        id="prov" 
-                                        value="#{mbRegion.listaProvincias}" 
-                                        label="Provincias"
-                                        filter="true" 
-                                        filterMatchMode="startsWith">
-                        
-                            <f:selectItems 
-                                        value="#{mbRegion.listaProvincias}"                                     
-                                        var="prov"  
-                                        itemLabel="#{prov.nombre}" 
-                                        itemValue="#{prov}"/>
-                    </p:selectCheckboxMenu>                        
-                        
-                        <h:inputHidden id="id" value="#{mbRegion.selected.id}" />
                         <p:message for="nombre" />
                     </h:panelGrid>
-                </p:panel>
-                
-                <p:toolbar>
+                </p:panel>                        
+
+               <p:toolbar>
+                    
                     <f:facet name="left">
                         <p:commandButton icon="ui-icon-pencil" 
                                          action="#{mbRegion.update}" 
                                          value="Guardar" 
-                                         style="margin-right:10px;" 
+                                         style="float: next"
                                          update="pnEdit"/>
-                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: right">
-                            <p:ajax update="pnEdit" resetValues="true" />
-                        </p:commandButton>
-                    </f:facet>
-                    <f:facet name="right">
+                        
+                        <p:commandButton icon="ui-icon-cancel" 
+                                         value="Limpiar" 
+                                         style="float: next"
+                                         update="pnEdit" 
+                                         resetValues="true" />
+
                         <p:commandButton icon="ui-icon-arrowreturnthick-1-w" 
                                          action="#{mbRegion.prepareList}" 
+                                         style="float: next"                                         
                                          value="Volver" 
                                          immediate="true"/>
-                    </f:facet>                    
+                    </f:facet> 
                 </p:toolbar>
+                
             </h:form>
         </ui:define>
     </ui:composition>

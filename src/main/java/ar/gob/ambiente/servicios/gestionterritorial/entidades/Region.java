@@ -7,6 +7,7 @@
 package ar.gob.ambiente.servicios.gestionterritorial.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -52,7 +53,11 @@ public class Region implements Serializable {
    	)
        
     private List<Provincia> provincias;
-
+        
+    public Region(){
+        provincias = new ArrayList<>();
+    }
+    
     public List<Provincia> getProvincias() {
         return provincias;
     }
@@ -119,5 +124,8 @@ public class Region implements Serializable {
     public String toString() {
         return "ar.gob.ambiente.servicios.gestionterritorial.entidades.Region[ id=" + id + " ]";
     }
-    
+ 
+    public AdminEntidad getAdminentidad(AdminEntidad admEnt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }   
 }

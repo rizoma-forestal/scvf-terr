@@ -10,47 +10,84 @@
             <h:outputText value="#{bundle.RegionTitle}" />
         </ui:define>
         <ui:define name="content">
+            
             <br/>
+            
             <h:form id="frmRegionView">
-                <p:panel id="pnView" header="#{bundle.RegionViewTitle}" style="margin-bottom:10px;">
+                <p:panel id="pnView" 
+                         header="#{bundle.RegionViewTitle}" 
+                         style="margin-bottom:10px;">
                     <p:messages id="messages" />
                     
                     <h:panelGrid columns="2">
                         
                         <h:outputLabel value="#{bundle.CreateRegionLabel_nombre}"/>
-                        <h:outputText value="#{mbRegion.selected.nombre}" title="#{bundle.CreateRegionTitle_nombre}"/>
+                        <h:outputText value="#{mbRegion.selected.nombre}" 
+                                      title="#{bundle.CreateRegionTitle_nombre}"/>
                         
                         <h:outputLabel value="#{bundle.ViewEspRegion}"/>
-                        <h:outputText value="#{mbRegion.selected.especificidadderegion.nombre}" title="#{bundle.ViewEspRegion}"/>                       
-                        
-                                             
-                        
+                        <h:outputText value="#{mbRegion.selected.especificidadderegion.nombre}" 
+                                      title="#{bundle.ViewEspRegion}"/>                       
                         
                         <h:outputLabel value="#{bundle.UsuarioAlta}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usAlta}" title="#{bundle.UsuarioAlta}"/>                        
+                        <h:outputText value="#{mbRegion.selected.adminentidad.usAlta}" 
+                                      title="#{bundle.UsuarioAlta}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaAlta}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.fechaAlta}" title="#{bundle.FechaAlta}"/>                         
+                        <h:outputText value="#{mbRegion.selected.adminentidad.fechaAlta}" 
+                                      title="#{bundle.FechaAlta}"/>                         
 
                         <h:outputLabel value="#{bundle.UsuarioModifica}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usModif}" title="#{bundle.UsuarioModifica}"/>                        
+                        <h:outputText value="#{mbRegion.selected.adminentidad.usModif}" 
+                                      title="#{bundle.UsuarioModifica}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaModifica}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.fechaModif}" title="#{bundle.FechaModifica}"/>                          
+                        <h:outputText value="#{mbRegion.selected.adminentidad.fechaModif}" 
+                                      title="#{bundle.FechaModifica}"/>                          
 
                         <h:outputLabel value="#{bundle.UsuarioBaja}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usBaja}" title="#{bundle.UsuarioBaja}"/>                        
+                        <h:outputText value="#{mbRegion.selected.adminentidad.usBaja}" 
+                                      title="#{bundle.UsuarioBaja}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaBaja}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.fechaBaja}" title="#{bundle.FechaBaja}"/>                         
+                        <h:outputText value="#{mbRegion.selected.adminentidad.fechaBaja}" 
+                                      title="#{bundle.FechaBaja}"/>                         
                         
-                        
-                        
-                    </h:panelGrid>                    
-                </p:panel>
+                        <h:outputLabel value="#{bundle.ProvinciasAsociadas}" />
+                        <p:commandButton value="Ver" 
+                                         type="button" 
+                                         onclick="PF('Provincias').show();" 
+                                         actionListener="#{mbRegion.selected.provincias}" />      
+                    </h:panelGrid>   
+
+                        <p:dialog style="font-size: 80%"
+                                  header="Listado de provincias asociadas"
+                                  widgetVar="Provincias"
+                                  showEffect="explode"
+                                  hideEffect="bounce"
+                                  height="100"
+                                  width="30%">
+                            <p:dataTable value="#{mbRegion.selected.provincias}" 
+                                         var="e" 
+                                         id="regionList" >
+                                <p:column headerText="Provincia" 
+                                          filterMatchMode="contains"
+                                          filterBy="#{e.nombre}"
+                                          sortBy="#{e.nombre}"
+                                          rendered="#{e.adminentidad.habilitado == 'true'}" >
+                                    <p:outputLabel value="#{e.nombre}"/> 
+                                </p:column>                        
+                            </p:dataTable>
+                        </p:dialog>   
+
+                    </p:panel>
+                
                 <p:toolbar>
-                    <f:facet name="right">
-                        <p:commandButton icon="ui-icon-refresh" action="#{mbRegion.prepareList}" value="Volver" ajax="false"/>
+                    <f:facet name="left">
+                        <p:commandButton icon="ui-icon-refresh" 
+                                         action="#{mbRegion.prepareList()}" 
+                                         value="Volver" 
+                                         ajax="false"/>
                     </f:facet>
                 </p:toolbar>
 
@@ -58,4 +95,5 @@
         </ui:define>
     </ui:composition>
 </html>
+
 

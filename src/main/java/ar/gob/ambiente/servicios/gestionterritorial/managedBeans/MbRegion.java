@@ -14,8 +14,6 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegionFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.RegionFacade;
-import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +25,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -50,23 +49,18 @@ public class MbRegion implements Serializable{
     
     @EJB
     private RegionFacade regionFacade;
-
-    @EJB
-    private ProvinciaFacade provFacade;  
-    
     private int selectedItemIndex;
     private String selectParam;    
-    private List<String> listaNombres; 
+  //  private List<String> listaNombres; 
     
-    private List<EspecificidadDeRegion> listaEspecificidadesDeRegion;   
+    private List<EspecificidadDeRegion> listaEspecificidadDeRegion;   
     
-    private List<Provincia> listaProvincias; 
-    private List<Provincia> listaProvinciasAsociadas;
+   // private List<Provincia> listaProvincias; 
     private Usuario usLogeado;
     private boolean iniciado;
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
-
-
+    private MbLogin login;
+    private List<Provincia> listaProvincia;
 
 
     /**
@@ -75,12 +69,56 @@ public class MbRegion implements Serializable{
     public MbRegion() {
     }
 
-   @PostConstruct
-   public void init(){
-        //listaEspecificidadesDeRegion = espRegionFacade.findAll();
-        //listaProvincias = provFacade.findAll();        
-   }
-    
+    @PostConstruct
+    public void init(){
+        iniciado = false;
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        login = (MbLogin)ctx.getSessionMap().get("mbLogin");
+        usLogeado = login.getUsLogeado();
+    }
+     /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbUsuario") && !s.equals("mbLogin")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }
+   public Region getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Region current) {
+        this.current = current;
+    }
+
+    public List<EspecificidadDeRegion> getListaEspecificidadDeRegion() {
+        return listaEspecificidadDeRegion;
+    }
+
+    public void setListaEspecificidadDeRegion(List<EspecificidadDeRegion> listaEspecificidadDeRegion) {
+        this.listaEspecificidadDeRegion = listaEspecificidadDeRegion;
+    }
+
+    public List<Provincia> getListaProvincia() {
+        return listaProvincia;
+    }
+
+    public void setListaProvincia(List<Provincia> listaProvincia) {
+        this.listaProvincia = listaProvincia;
+    }
+   
     /********************************
      ** Métodos para la navegación **
      ********************************/
@@ -106,25 +144,6 @@ public class MbRegion implements Serializable{
         return items;
     }
 
-    /**
-     * Método que borra de la memoria los MB innecesarios al cargar el listado 
-     */
-    public void iniciar(){
-        if(!iniciado){
-            String s;
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-            .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbRegion")){
-                        session.removeAttribute(s);
-                    }
-                }
-            }
-        }
-    }
     
     /*******************************
      ** Métodos de inicialización **
@@ -159,8 +178,7 @@ public class MbRegion implements Serializable{
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaEspecificidadesDeRegion = espRegionFacade.getActivos();
-        listaProvincias = provFacade.getActivos();
+        listaEspecificidadDeRegion = espRegionFacade.getActivos();
         current = new Region();
         return "new";
     }
@@ -169,7 +187,7 @@ public class MbRegion implements Serializable{
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        listaEspecificidadesDeRegion = espRegionFacade.getActivos();        
+        listaEspecificidadDeRegion = espRegionFacade.getActivos();        
         return "edit";
     }
     
@@ -183,11 +201,38 @@ public class MbRegion implements Serializable{
      * @return la ruta a la vista que muestra los resultados de la consulta en forma de listado
      */
     public String prepareSelect(){
-        items = null;
-        buscarRegion();
+       // items = null;
+      //  buscarRegion();
         return "list";
     }
-    
+        /**
+     * @return mensaje que notifica la actualizacion de estado
+     */    
+   public void habilitar() {
+        update = 2;
+        update();        
+        recreateModel();
+    }  
+     /**
+     */    
+    public void deshabilitar() {
+       if (getFacade().tieneDependencias(current.getId())){
+          update = 1;
+          update();        
+          recreateModel();
+       } 
+        else{
+            //No Deshabilita 
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("RegionNonDeletable"));            
+        }
+    } 
+       
+     /**
+     * Método para validar que no exista ya una entidad con este nombre al momento de crearla
+     * @param arg0: vista jsf que llama al validador
+     * @param arg1: objeto de la vista que hace el llamado
+     * @param arg2: contenido del campo de texto a validar 
+     */
 
     public void validarInsert(FacesContext arg0, UIComponent arg1, Object arg2){
         validarExistente(arg2);
@@ -199,7 +244,7 @@ public class MbRegion implements Serializable{
      * @param arg1: objeto de la vista que hace el llamado
      * @param arg2: contenido del campo de texto a validar 
      * @throws ValidatorException 
-     */
+     */   
     public void validarUpdate(FacesContext arg0, UIComponent arg1, Object arg2){
         if(!current.getNombre().equals((String)arg2)){
             validarExistente(arg2);
@@ -236,7 +281,6 @@ public class MbRegion implements Serializable{
         admEnt.setHabilitado(true);
         admEnt.setUsAlta(usLogeado);
         current.setAdminentidad(admEnt);   
-        //current.setProvincias(listaProvinciasSeleccionadas);
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionCreated"));
@@ -275,10 +319,10 @@ public class MbRegion implements Serializable{
         // acualizo
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionUpdated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RegionUpdatedErrorOccured"));
             return null;
         }
     }
@@ -317,7 +361,52 @@ public class MbRegion implements Serializable{
     private RegionFacade getFacade() {
         return regionFacade;
     }
+  
+    /**
+     * Opera el borrado de la entidad
+     */
+    private void performDestroy() {
+        try {
+            //getFacade().remove(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RegionDeleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RegionDeletedErrorOccured"));
+        }
+    }
+
+
+    /**
+     * Actualiza el detalle de la entidad si la última se eliminó
+     */
+    private void updateCurrentItem() {
+        int count = getFacade().count();
+        if (selectedItemIndex >= count) {
+            // selected index cannot be bigger than number of items:
+            selectedItemIndex = count - 1;
+            // go to previous page if last page disappeared:
+            /*
+            if (pagination.getPageFirstItem() >= count) {
+                pagination.previousPage();
+            }
+            */
+        }
+        if (selectedItemIndex >= 0) {
+            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+        }
+    }
     
+    /**
+     * Método para revocar la sesión del MB
+     * @return 
+     */
+    public String cleanUp(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true);
+        session.removeAttribute("mbRegion");
+   
+        return "inicio";
+    }      
+        
     /*
      * Métodos de búsqueda
      */
@@ -329,16 +418,13 @@ public class MbRegion implements Serializable{
         this.selectParam = selectParam;
     }
     
-    private void buscarRegion(){
-        items = new ListDataModel(getFacade().getXString(selectParam)); 
-    }   
-    
+ 
     /**
      * Método para llegar la lista para el autocompletado de la búsqueda de nombres
      * @param query
      * @return 
      */
-    public List<String> completeNombres(String query){
+    /*public List<String> completeNombres(String query){
         listaNombres = getFacade().getNombres();
         List<String> nombres = new ArrayList();
         Iterator itLista = listaNombres.listIterator();
@@ -349,7 +435,7 @@ public class MbRegion implements Serializable{
             }
         }
         return nombres;
-    }
+    }*/
         
     
     /********************************************************************
@@ -401,63 +487,4 @@ public class MbRegion implements Serializable{
         }
     }        
     
-    /********************************************************************
-    **   GETTERS Y SETTERS                                                                             **
-    *********************************************************************/
-    
-    public List<EspecificidadDeRegion> getListaEspecificidadesDeRegion() {
-        return listaEspecificidadesDeRegion;
-    }
-
-    public void setListaEspecificidadesDeRegion(List<EspecificidadDeRegion> listaEspecificidadesDeRegion) {
-        this.listaEspecificidadesDeRegion = listaEspecificidadesDeRegion;
-    }
-
-    public Region getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Region current) {
-        this.current = current;
-    }
-
-    public List<Provincia> getListaProvincias() {
-        return listaProvincias;
-    }
-
-    public void setListaProvincias(List<Provincia> listaProvincias) {
-        this.listaProvincias = listaProvincias;
-    }
-
-    public List<Provincia> getListaProvinciasAsociadas() {
-        return listaProvinciasAsociadas;
-    }
-
-    public void setListaProvinciasAsociadas(List<Provincia> listaProvinciasAsociadas) {
-        this.listaProvinciasAsociadas = listaProvinciasAsociadas;
-    }
-
-    
-    
-    
-        public void habilitar() {
-        update = 2;
-        update();        
-        recreateModel();
-    }  
-     /**
-     */    
-    public void deshabilitar() {
-       if (getFacade().tieneDependencias(current.getId())){
-          update = 1;
-          update();        
-          recreateModel();
-       } 
-        else{
-            //No Deshabilita 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("GeneroNonDeletable"));            
-        }
-    } 
-    
-}
-
+} 

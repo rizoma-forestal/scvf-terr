@@ -168,7 +168,7 @@ public class MbRol implements Serializable{
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaUsuario = usuarioFacade.findAll();
+        //listaUsuario = usuarioFacade.findAll();
         current = new Rol();
         return "new";
     }

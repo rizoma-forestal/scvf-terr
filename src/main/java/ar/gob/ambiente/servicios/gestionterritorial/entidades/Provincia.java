@@ -7,6 +7,7 @@
 package ar.gob.ambiente.servicios.gestionterritorial.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -31,20 +32,9 @@ public class Provincia implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    /*
-    @ManyToMany
-   	@JoinTable(
-            	name = "provinciasXRegiones",
-            	joinColumns = @JoinColumn(name = "provincia_fk"),
-            	inverseJoinColumns = @JoinColumn(name = "region_fk")
-   	)
     
-    private List<Region> regiones; 
-    */
-       
-    
-    @ManyToMany(mappedBy = "provincias")
-    private List<Region> regiones; 
+ //   @ManyToMany(mappedBy = "provincias")
+//    private List<Region> regiones; 
 
     @OneToMany(mappedBy="provincia")
     private List<Municipio> municipios;     
@@ -56,7 +46,19 @@ public class Provincia implements Serializable {
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
 
-
+    @ManyToMany
+   	@JoinTable(
+            	name = "provinciasXRegiones",
+            	joinColumns = @JoinColumn(name = "provincia_fk"),
+            	inverseJoinColumns = @JoinColumn(name = "region_fk")
+   	)
+    
+    private List<Region> regiones; 
+    
+    public Provincia(){
+        regiones = new ArrayList<>();
+    }   
+    
     public Long getId() {
         return id;
     }

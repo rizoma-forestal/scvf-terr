@@ -11,6 +11,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.RegionFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,9 +19,11 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -29,6 +32,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
+import static sun.security.jgss.GSSUtil.login;
 
 /**
  *
@@ -40,6 +44,9 @@ public class MbProvincia implements Serializable{
     private DataModel items = null;
     
     @EJB
+    private RegionFacade regFacade;
+    
+    @EJB
     private ProvinciaFacade provinciaFacade;
     //private PaginationHelper pagination;
     private int selectedItemIndex;
@@ -48,6 +55,7 @@ public class MbProvincia implements Serializable{
     private Usuario usLogeado;
     private boolean iniciado;  
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
+    private MbLogin login;
     
     /**
      * Creates a new instance of MbProvincia
@@ -55,14 +63,42 @@ public class MbProvincia implements Serializable{
     public MbProvincia() {
     }
 
+
+    @PostConstruct
+    public void init(){
+        iniciado = false;
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        login = (MbLogin)ctx.getSessionMap().get("mbLogin");
+        usLogeado = login.getUsLogeado();
+    }
+     /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbUsuario") && !s.equals("mbLogin")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }   
+    
     public Provincia getCurrent() {
         return current;
     }
 
     public void setCurrent(Provincia current) {
         this.current = current;
-    }
-
+    }   
+    
     
     /********************************
      ** Métodos para la navegación **
@@ -87,26 +123,8 @@ public class MbProvincia implements Serializable{
         }
         return items;
     }
+ 
 
-    /**
-     * Método que borra de la memoria los MB innecesarios al cargar el listado 
-     */
-    public void iniciar(){
-        if(!iniciado){
-            String s;
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-            .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbProvincia")){
-                        session.removeAttribute(s);
-                    }
-                }
-            }
-        }
-    }
     
     /*******************************
      ** Métodos de inicialización **
