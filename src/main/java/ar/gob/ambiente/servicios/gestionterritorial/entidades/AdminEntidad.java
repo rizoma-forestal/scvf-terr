@@ -34,7 +34,7 @@ public class AdminEntidad implements Serializable {
     
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="usalta_id", nullable=false)
-    @NotNull(message = "Debe haber un usuario de alta")
+    @NotNull(message = "Debe haber un usuario dealta")
     private Usuario usAlta;
 
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -65,12 +65,21 @@ public class AdminEntidad implements Serializable {
      * Campo que muestra la fecha de baja como string
      */
     @Transient
+    String strFechaModif;
+    
+    /**
+     * Campo que muestra la fecha de baja como string
+     */
+    @Transient
     String strFechaBaja;
     
     public String getStrFechaBaja() {
-        SimpleDateFormat formateador = new SimpleDateFormat("dd'/'MM'/'yyyy", new Locale("es_ES"));
-        strFechaBaja = formateador.format(fechaBaja);   
-        return strFechaBaja;
+        if(fechaBaja != null){
+            SimpleDateFormat formateador = new SimpleDateFormat("dd'/'MM'/'yyyy", new Locale("es_ES"));
+            strFechaBaja = formateador.format(fechaBaja);
+            return strFechaBaja;
+        }
+        return "";
     }
 
     public void setStrFechaBaja(String strFechaBaja) {
@@ -91,6 +100,19 @@ public class AdminEntidad implements Serializable {
         this.strFechaAlta = strFechaAlta;
     }    
     
+    public String getStrFechaModif(){
+        if(fechaModif != null){
+            SimpleDateFormat formateador = new SimpleDateFormat("dd'/'MM'/'yyyy", new Locale("es_ES"));
+            strFechaModif = formateador.format(fechaModif);
+            return strFechaModif;
+        }
+        return "";
+    }
+    
+    public void setStrFechaModif(String strFechaModif){
+        this.strFechaModif = strFechaModif;
+    }
+            
     public Usuario getUsAlta() {
         return usAlta;
     }
@@ -147,9 +169,6 @@ public class AdminEntidad implements Serializable {
         this.habilitado = habilitado;
     }
     
-
-    
-    
     public Long getId() {
         return id;
     }
@@ -177,7 +196,7 @@ public class AdminEntidad implements Serializable {
 
     @Override
     public String toString() {
-        return "ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad[ id=" + id + " ]";
+        return "ar.gob.ambiente.servicios.especiesforestales.entidades.AdminEntidad[ id=" + id + " ]";
     }
     
 }

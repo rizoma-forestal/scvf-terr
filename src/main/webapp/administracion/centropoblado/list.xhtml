@@ -58,9 +58,12 @@
                         <p:outputLabel value="#{e.departamento.provincia.nombre}"/>
                     </p:column>                                                     
 
-                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
+                    <p:column filterBy="#{e.adminentidad.habilitado}" 
+                              headerText="Estado" 
+                              footerText="" 
+                              filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('cpTable').filter()">
+                            <p:selectOneMenu onchange="PF('famTable').filter()">
                                 <f:converter converterId="javax.faces.Boolean" />
                                 <f:selectItem itemLabel="Todos" itemValue="" />
                                 <f:selectItem itemLabel="Activos" itemValue="true" />
