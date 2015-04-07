@@ -41,12 +41,12 @@
                         <h:outputText value="#{mbRol.selected.adminentidad.strFechaModif}" 
                                       title="#{bundle.FechaModifica}"/>                          
 
-                        <h:outputLabel value="#{bundle.UsuarioBaja}"/>
-                        <h:outputText value="#{mbRol.selected.adminentidad.usBaja}" 
+                        <h:outputLabel value="#{bundle.UsuarioBaja}" rendered="#{not mbRol.selected.adminentidad.habilitado}"/>
+                        <h:outputText value="#{mbRol.selected.adminentidad.usBaja}" rendered="#{not mbRol.selected.adminentidad.habilitado}" 
                                       title="#{bundle.UsuarioBaja}"/>                        
 
-                        <h:outputLabel value="#{bundle.FechaBaja}"/>
-                        <h:outputText value="#{mbRol.selected.adminentidad.strFechaBaja}"
+                        <h:outputLabel value="#{bundle.FechaBaja}" rendered="#{not mbRol.selected.adminentidad.habilitado}"/>
+                        <h:outputText value="#{mbRol.selected.adminentidad.strFechaBaja}" rendered="#{not mbRol.selected.adminentidad.habilitado}"
                                       title="#{bundle.FechaBaja}"/>  
                         
                         <h:outputLabel value="#{bundle.UsuariosAsociados}" />
