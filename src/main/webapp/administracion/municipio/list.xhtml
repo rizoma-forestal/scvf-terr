@@ -48,12 +48,12 @@
                     
                     <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneButton onchange="PF('municipioTable').filter()">
+                            <p:selectOneMenu onchange="PF('municipioTable').filter()">
                                 <f:converter converterId="javax.faces.Boolean" />
                                 <f:selectItem itemLabel="Todos" itemValue="" />
                                 <f:selectItem itemLabel="Activos" itemValue="true" />
                                 <f:selectItem itemLabel="Inactivos" itemValue="false" />
-                            </p:selectOneButton>
+                            </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
                     </p:column>
