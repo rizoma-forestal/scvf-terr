@@ -66,14 +66,28 @@
                                 <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
                             </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-close" action="#{mbProvincia.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar">
-                                <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
-                                <p:confirm header="Confirmar" message="¿Desea deshabilitar la Provincia?" icon="ui-icon-alert" />
-                            </p:commandButton>                
+                        <p:commandButton icon="ui-icon-close" 
+                                         action="#{mbProvincia.deshabilitar}" 
+                                         rendered="#{e.adminentidad.habilitado == 'true'}" 
+                                         title="Deshabilitar"
+                                         update="provinciaList">
+                                <f:setPropertyActionListener value="#{e}" 
+                                                             target="#{mbProvincia.current}" />
+                                <p:confirm header="Confirmar" 
+                                           message="¿Desea deshabilitar la Provincia?" 
+                                           icon="ui-icon-alert" />
+                       </p:commandButton>                
 
-                            <p:commandButton icon="ui-icon-check" action="#{mbProvincia.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar">
-                                <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
-                                <p:confirm header="Confirmar" message="¿Desea habilitar la Provincia?" icon="ui-icon-alert" />
+                            <p:commandButton icon="ui-icon-check" 
+                                             action="#{mbProvincia.habilitar}" 
+                                             rendered="#{e.adminentidad.habilitado == 'false'}" 
+                                             title="Habilitar"
+                                             update="provinciaList">
+                                <f:setPropertyActionListener value="#{e}" 
+                                                             target="#{mbProvincia.current}" />
+                                <p:confirm header="Confirmar" 
+                                           message="¿Desea habilitar la Provincia?" 
+                                           icon="ui-icon-alert" />
                             </p:commandButton>  
                         
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

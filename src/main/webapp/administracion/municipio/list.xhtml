@@ -69,14 +69,28 @@
                                 <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
                             </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-close" action="#{mbMunicipio.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar">
-                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
-                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Municipio?" icon="ui-icon-alert" />
+                        <p:commandButton icon="ui-icon-close" 
+                                         action="#{mbMunicipio.deshabilitar}" 
+                                         rendered="#{e.adminentidad.habilitado == 'true'}" 
+                                         title="Deshabilitar"
+                                         update="municipioList">
+                                <f:setPropertyActionListener value="#{e}" 
+                                                             target="#{mbMunicipio.current}" />
+                                <p:confirm header="Confirmar" 
+                                           message="¿Desea deshabilitar el Municipio?" 
+                                           icon="ui-icon-alert" />
                             </p:commandButton>                
 
-                            <p:commandButton icon="ui-icon-check" action="#{mbMunicipio.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar">
-                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
-                                <p:confirm header="Confirmar" message="¿Desea habilitar el Municipio?" icon="ui-icon-alert" />
+                            <p:commandButton icon="ui-icon-check" 
+                                             action="#{mbMunicipio.habilitar}" 
+                                             rendered="#{e.adminentidad.habilitado == 'false'}" 
+                                             title="Habilitar"
+                                             update="municipioList">
+                                <f:setPropertyActionListener value="#{e}" 
+                                                             target="#{mbMunicipio.current}" />
+                                <p:confirm header="Confirmar" 
+                                           message="¿Desea habilitar el Municipio?" 
+                                           icon="ui-icon-alert" />
                             </p:commandButton>  
                         
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
