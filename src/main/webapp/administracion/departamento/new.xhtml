@@ -10,34 +10,41 @@
             <h:outputText value="#{bundle.DepartamentoTitle}" />
         </ui:define>
         <ui:define name="content">
+            
             <br/>
+            
             <h:form id="frmNew">
-                <p:panel id="pnNew" header="#{bundle.DepartamentoNewTitle}" style="margin-bottom:10px;">
+                <p:panel id="pnNew" 
+                         header="#{bundle.DepartamentoNewTitle}" 
+                         style="margin-bottom:10px;">
                     
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="3">
                         
-                        <p:outputLabel value="#{bundle.CreateDepartamentoLabel_Provincia}" for="prov"/>      
+                        <p:outputLabel value="#{bundle.CreateDepartamentoLabel_Provincia}" 
+                                       for="provincia"/>      
                         
                         <p:selectOneMenu 
-                                    id="prov" 
+                                    id="provincia" 
                                     value="#{mbDepartamento.selected.provincia}" 
-                                         requiredMessage="#{bundle.CreateDepartamentoProvinciaRequiredMessage}" 
-                                         required="true">
+                                    requiredMessage="#{bundle.CreateDepartamentoProvinciaRequiredMessage}" 
+                                    required="true">
                             <f:selectItem 
                                         itemLabel="Seleccione la Provincia" 
                                         itemValue="" 
                                         noSelectionOption="true" />
                             
-                            <f:selectItems 
-                                        value="#{mbDepartamento.listaProvincias}" 
-                                        var="prov" 
-                                           itemLabel="#{prov.nombre}" 
-                                           itemValue="#{prov}"/>
-                        </p:selectOneMenu>   
+                            <f:selectItems value="#{mbDepartamento.listaProvincias}" 
+                                           var="provincia" 
+                                           itemLabel="#{provincia.nombre}" 
+                                           itemValue="#{provincia}"/>
+                        </p:selectOneMenu>  
+                        <p:outputLabel value="" />                        
                         
-                        <p:outputLabel value="#{bundle.CreateDepartamentoLabel_nombre}" for="nombre"/>
+                        <p:outputLabel value="#{bundle.CreateDepartamentoLabel_nombre}" 
+                                       for="nombre"/>
                         
-                        <p:inputText id="nombre" validator="#{mbDepartamento.validarInsert}" 
+                        <p:inputText id="nombre" 
+                                     validator="#{mbDepartamento.validarInsert}" 
                                      value="#{mbDepartamento.selected.nombre}" 
                                      requiredMessage="#{bundle.CreateDepartamentoRequiredMessage_nombre}" 
                                      required="true"/>
@@ -49,18 +56,23 @@
                 <p:toolbar>
                     
                     <f:facet name="left">
-                        <p:commandButton icon="ui-icon-check" value="Guardar" action="#{mbDepartamento.create}" update="pnNew"/>
-                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: right">
-                            <p:ajax update="pnNew" resetValues="true" />
+                        <p:commandButton icon="ui-icon-check" 
+                                         value="Guardar" 
+                                         action="#{mbDepartamento.create}" 
+                                         update="pnNew"/>
+                        <p:commandButton icon="ui-icon-cancel" 
+                                         value="Limpiar" 
+                                         style="float: next">
+                            <p:ajax update="pnNew" 
+                                    resetValues="true" />
                         </p:commandButton>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" 
+                                         action="#{mbDepartamento.prepareList()}" 
+                                         value="Volver" 
+                                         immediate="true"/>                        
                     </f:facet>
                     
-                    <f:facet name="right">
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" 
-                                         action="#{mbDepartamento.prepareList}" 
-                                         value="Volver" 
-                                         immediate="true"/>
-                    </f:facet>
                 </p:toolbar>
             </h:form>
         </ui:define>

@@ -14,16 +14,15 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -33,6 +32,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
 
+
 /**
  *
  * @author epassarelli
@@ -40,7 +40,6 @@ import javax.servlet.http.HttpSession;
 public class MbDepartamento implements Serializable {
 
     private Departamento current;
-
     private DataModel items = null;
     
     
@@ -49,12 +48,12 @@ public class MbDepartamento implements Serializable {
     
     @EJB
     private DepartamentoFacade deptoFacade;
-    //private PaginationHelper pagination;
     private int selectedItemIndex;
     private String selectParam;    
-    //private List<String> listaNombres; 
+    private List<String> listaNombres;  
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
     private List<Provincia> listaProvincias;
+    private MbLogin login;
     private Usuario usLogeado;
     private boolean iniciado;
     
@@ -66,9 +65,48 @@ public class MbDepartamento implements Serializable {
 
    @PostConstruct
    public void init(){
-        listaProvincias = pciaFacade.findAll();
-   }
+        iniciado = false;
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        login = (MbLogin)ctx.getSessionMap().get("mbLogin");
+        usLogeado = login.getUsLogeado();
+    }
+       /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbUsuario") && !s.equals("mbLogin")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }
+    public Departamento getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Departamento current) {
+        this.current = current;
+    }
+
     
+    public List<Provincia> getListaProvincias() {
+        return listaProvincias;
+    }
+
+    public void setListaProvincias(List<Provincia> listaProvincias) {
+        this.listaProvincias = listaProvincias;
+    }
+   
+        
     /********************************
      ** Métodos para la navegación **
      ********************************/
@@ -93,31 +131,13 @@ public class MbDepartamento implements Serializable {
         return items;
     }
 
-    /**
-     * Método que borra de la memoria los MB innecesarios al cargar el listado 
-     */
-    public void iniciar(){
-        if(!iniciado){
-            String s;
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-            .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbDepartamento")){
-                        session.removeAttribute(s);
-                    }
-                }
-            }
-        }
-    }
+
     
     /*******************************
      ** Métodos de inicialización **
      *******************************/
     /**
-     * @return acción para el listado de entidades
+     * @return acción para el listado de entidades a mostrar en el list
      */
     public String prepareList() {
         recreateModel();
@@ -155,6 +175,7 @@ public class MbDepartamento implements Serializable {
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
+        listaProvincias = pciaFacade.getActivos();
         return "edit";
     }
     
@@ -168,9 +189,33 @@ public class MbDepartamento implements Serializable {
      * @return la ruta a la vista que muestra los resultados de la consulta en forma de listado
      */
     public String prepareSelect(){
-        items = null;
+        //items = null;
         return "list";
     }
+        /**
+     * @return mensaje que notifica la actualizacion de estado
+     */       
+    public void habilitar() {
+        update = 2;
+        update();
+        recreateModel();
+    }  
+
+    /**
+     * @return mensaje que notifica la actualizacion de estado
+     */    
+    public void deshabilitar() {
+        if (getFacade().tieneDependencias(current.getId())){
+            update = 1;
+            update();        
+            recreateModel();
+        }
+        else{
+            //No Deshabilita 
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoNonDeletable"));            
+        }
+    }
+    
         
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
@@ -263,10 +308,10 @@ public class MbDepartamento implements Serializable {
         // acualizo
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoUpdated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("DepartamentoUpdatedErrorOccured"));
             return null;
         }
     }
@@ -305,21 +350,65 @@ public class MbDepartamento implements Serializable {
     private DepartamentoFacade getFacade() {
         return deptoFacade;
     }
-            
+    
+    /**
+     * Opera el borrado de la entidad
+     */
+    private void performDestroy() {
+        try {
+            //getFacade().remove(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoDeleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("DepartamentoDeletedErrorOccured"));
+        }
+    }
+
+
+    /**
+     * Actualiza el detalle de la entidad si la última se eliminó
+     */
+    private void updateCurrentItem() {
+        int count = getFacade().count();
+        if (selectedItemIndex >= count) {
+            // selected index cannot be bigger than number of items:
+            selectedItemIndex = count - 1;
+            // go to previous page if last page disappeared:
+            /*
+            if (pagination.getPageFirstItem() >= count) {
+                pagination.previousPage();
+            }
+            */
+        }
+        if (selectedItemIndex >= 0) {
+            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+        }
+    }
+    
+    /**
+     * Método para revocar la sesión del MB
+     * @return 
+     */  
+    public String cleanUp(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true);
+        session.removeAttribute("mbDepartamento");
+   
+        return "inicio";
+    }  
+    
     /*
      * Métodos de búsqueda
      */
     public String getSelectParam() {
         return selectParam;
     }
-
+    
+ 
     public void setSelectParam(String selectParam) {
         this.selectParam = selectParam;
     }
     
-    private void buscarDepartamento(){
-        items = new ListDataModel(getFacade().getXString(selectParam)); 
-    }   
+ 
         
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **
@@ -371,42 +460,5 @@ public class MbDepartamento implements Serializable {
     }        
     
 
-    public List<Provincia> getListaProvincias() {
-        return listaProvincias;
-    }
-
-    public void setListaProvincias(List<Provincia> listaProvincias) {
-        this.listaProvincias = listaProvincias;
-    }
-    
-    public Departamento getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Departamento current) {
-        this.current = current;
-    }    
-    public String habilitar() {
-        current.getAdminentidad().setHabilitado(true);
-        update();        
-        recreateModel();
-        return "view";
-    }  
-
-    /**
-     * @return mensaje que notifica la actualizacion de estado
-     */    
-    public String deshabilitar() {
-        //Si esta libre de dependencias deshabilita
-        if (getFacade().tieneDependencias(current.getId())){
-            current.getAdminentidad().setHabilitado(false);
-            update();        
-            recreateModel();
-        }
-        else{
-            //No Deshabilita 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoNonDeletable"));            
-        }
-        return "view";
-    }    
+     
 }

@@ -15,20 +15,32 @@
         </ui:define>
         <ui:define name="content">
             <f:metadata>  
-                <f:event listener="#{mbMunicipio.iniciar}" type="preRenderView"></f:event>  
+                <f:event listener="#{mbMunicipio.iniciar}" 
+                         type="preRenderView"></f:event>  
             </f:metadata>
             <br/> 
             <h:form>
                 
-                <p:panel id="MunicipioForm" header="#{bundle.MunicipioListTitle}" style="margin-bottom:10px;">                  
-                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbMunicipio.prepareCreate}"/>
-                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbMunicipio.prepareList}" update="MunicipioList"/>
-                        <p:commandButton icon="ui-icon-calculator" value="Columnas" id="toggler" type="button" style="float:right" />
-                        <p:columnToggler datasource="MunicipioList" trigger="toggler"  />              
+                <p:panel id="MunicipioForm" 
+                         header="#{bundle.MunicipioListTitle}" 
+                         style="margin-bottom:10px;">                  
+                        <p:commandButton icon="ui-icon-newwin" 
+                                         value="Agregar Nuevo" 
+                                         action="#{mbMunicipio.prepareCreate}"/>
+                        <p:commandButton icon="ui-icon-refresh" 
+                                         value="Refrescar Listado" 
+                                         action="#{mbMunicipio.prepareList}" 
+                                         update="municipioList"/>
+                        <p:commandButton icon="ui-icon-calculator" 
+                                         value="Columnas" id="toggler" 
+                                         type="button" 
+                                         style="float:right" />
+                        <p:columnToggler datasource="municipioList" 
+                                         trigger="toggler"  />              
                 </p:panel>
                      
 
-                <p:dataTable value="#{mbMunicipio.items}" var="e" id="MunicipioList" rows="5"
+                <p:dataTable value="#{mbMunicipio.items}" var="e" id="municipioList" rows="5"
                              paginator="true" 
                              widgetVar="municipioTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -55,18 +67,22 @@
                                 <f:selectItem itemLabel="Inactivos" itemValue="false" />
                             </p:selectOneMenu>
                         </f:facet>
-                        <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
+                       <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
                     </p:column>
                     
 
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbMunicipio.prepareView}">
-                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
+                        <p:commandButton icon="ui-icon-zoomin" 
+                                         action="#{mbMunicipio.prepareView}">
+                                <f:setPropertyActionListener value="#{e}" 
+                                                             target="#{mbMunicipio.current}" />
                             </p:commandButton>
 
-                            <p:commandButton icon="ui-icon-pencil" action="#{mbMunicipio.prepareEdit}">
-                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
+                            <p:commandButton icon="ui-icon-pencil" 
+                                             action="#{mbMunicipio.prepareEdit}">
+                                <f:setPropertyActionListener value="#{e}" 
+                                                             target="#{mbMunicipio.current}" />
                             </p:commandButton>
 
                         <p:commandButton icon="ui-icon-close" 

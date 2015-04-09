@@ -10,19 +10,84 @@
             <h:outputText value="#{bundle.DepartamentoTitle}" />
         </ui:define>
         <ui:define name="content">
+            
             <br/>
+            
             <h:form id="frmDepartamentoView">
-                <p:panel id="pnView" header="#{bundle.DepartamentoViewTitle}" style="margin-bottom:10px;">
+                <p:panel id="pnView" 
+                         header="#{bundle.DepartamentoViewTitle}" 
+                         style="margin-bottom:10px;">
                     <p:messages id="messages" />
                     
                     <h:panelGrid columns="2">
+
+                        <h:outputLabel value="#{bundle.ViewProvincia}"/>
+                        <h:outputText value="#{mbDepartamento.selected.provincia.nombre}" 
+                                      title="#{bundle.ViewProvincia}"/>  
+
                         <h:outputLabel value="#{bundle.CreateDepartamentoLabel_nombre}"/>
-                        <h:outputText value="#{mbDepartamento.selected.nombre}" title="#{bundle.CreateDepartamentoTitle_nombre}"/>
-                    </h:panelGrid>                    
-                </p:panel>
+                        <h:outputText value="#{mbDepartamento.selected.nombre}" 
+                                      title="#{bundle.CreateDepartamentoTitle_nombre}"/>
+                        
+                        <h:outputLabel value="#{bundle.UsuarioAlta}"/>
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usAlta}" 
+                                      title="#{bundle.UsuarioAlta}"/>                        
+
+                        <h:outputLabel value="#{bundle.FechaAlta}"/>
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.fechaAlta}" 
+                                      title="#{bundle.FechaAlta}"/>                         
+
+                        <h:outputLabel value="#{bundle.UsuarioModifica}"/>
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usModif}" 
+                                      title="#{bundle.UsuarioModifica}"/>                        
+
+                        <h:outputLabel value="#{bundle.FechaModifica}"/>
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.fechaModif}" 
+                                      title="#{bundle.FechaModifica}"/>                          
+
+                        <h:outputLabel value="#{bundle.UsuarioBaja}"/>
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usBaja}" 
+                                      title="#{bundle.UsuarioBaja}"/>                        
+
+                        <h:outputLabel value="#{bundle.FechaBaja}"/>
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.fechaBaja}" 
+                                      title="#{bundle.FechaBaja}"/>                         
+                        
+                        <h:outputLabel value="#{bundle.EntidadesAsociadas}" />
+                        <p:commandButton value="Ver" 
+                                         type="button" 
+                                         onclick="PF('CentroPoblado').show();" 
+                                         actionListener="#{mbDepartamento.selected.centrosPoblados}" />      
+                    </h:panelGrid>      
+                    
+                        <p:dialog style="font-size: 80%"
+                                  header="Listado de Ctros.Poblados asociadas"
+                                  widgetVar="CentrosPoblados"
+                                  showEffect="explode"
+                                  hideEffect="bounce"
+                                  height="100"
+                                  width="30%">
+                            <p:dataTable value="#{mbDepartamento.selected.centrosPoblados}" 
+                                         var="e" 
+                                         id="departamentoList" >
+                                <p:column headerText="CentroPoblado" 
+                                          filterMatchMode="contains"
+                                          filterBy="#{e.nombre}"
+                                          sortBy="#{e.nombre}"
+                                          rendered="#{e.adminentidad.habilitado == 'true'}" >
+                                    <p:outputLabel value="#{e.nombre}"/> 
+                                </p:column>                        
+                            </p:dataTable>
+                        </p:dialog>   
+
+                    </p:panel>
+                
                 <p:toolbar>
-                    <f:facet name="right">
-                        <p:commandButton icon="ui-icon-refresh" action="#{mbDepartamento.prepareList}" value="Volver" ajax="false"/>
+                    <f:facet name="left">
+                        <p:commandButton icon="ui-icon-refresh" 
+                                         action="#{mbDepartamento.prepareList()}" 
+                                         value="Volver" 
+                                         ajax="false"/>
                     </f:facet>
                 </p:toolbar>
 

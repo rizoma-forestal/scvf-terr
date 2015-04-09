@@ -37,16 +37,20 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
     /**
      * Método que devuelve todas las Departamentos que contienen la cadena recibida como parámetro 
      * dentro de alguno de sus campos string, en este caso el nombre.
-     * @param aBuscar: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
      * @return: El conjunto de resultados provenientes de la búsqueda. 
      */      
-    public List<Departamento> getXString(String aBuscar){
+    public List<Departamento> getXString(String stringParam){
         em = getEntityManager();        
-        List<Departamento> result;      
+        List<Departamento> result; 
+        
         String queryString = "SELECT depto FROM Departamento depto "
-                + "WHERE depto.nombre LIKE :stringParam";    
+                + "WHERE depto.nombre LIKE :stringParam "
+                + "AND depto.adminentidad.habilitado = true"; 
+        
         Query q = em.createQuery(queryString)
-                .setParameter("stringParam", "%" + aBuscar + "%");       
+                .setParameter("stringParam", "%" + stringParam + "%");  
+        
         result = q.getResultList();       
         return result;
     }
@@ -59,7 +63,8 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
     public boolean existe(String aBuscar){
         em = getEntityManager();
         String queryString = "SELECT depto FROM Departamento depto "
-                + "WHERE depto.nombre = :stringParam";
+                + "WHERE depto.nombre = :stringParam "
+                + "AND depto.adminentidad.habilitado = true";
         
         Query q = em.createQuery(queryString)
                 .setParameter("stringParam", aBuscar);
@@ -92,7 +97,8 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
      */
     public List<String> getNombres(){
         em = getEntityManager();
-        String queryString = "SELECT dep.nombre FROM Departamento dep ";
+        String queryString = "SELECT dep.nombre FROM Departamento dep "
+                + "AND dep.adminentidad.habilitado = true";
         Query q = em.createQuery(queryString);
         return q.getResultList();
     } 

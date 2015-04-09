@@ -12,7 +12,9 @@
         <ui:define name="content">
             <br/>
             <h:form id="frmNew">
-                <p:panel id="pnNew" header="#{bundle.MunicipioNewTitle}" style="margin-bottom:10px;">
+                <p:panel id="pnNew" 
+                         header="#{bundle.MunicipioNewTitle}" 
+                         style="margin-bottom:10px;">
                     
                     <h:panelGrid columns="2">   
                         
@@ -30,7 +32,7 @@
                                             itemValue="" 
                                             noSelectionOption="true" />
                             <f:selectItems 
-                                            value="#{mbMunicipio.listaProvincias}" 
+                                value="#{mbMunicipio.listaProvincias}" 
                                             var="prov" 
                                             itemLabel="#{prov.nombre}" 
                                             itemValue="#{prov}" />
@@ -77,9 +79,15 @@
                 <p:toolbar>
                     
                     <f:facet name="left">
-                        <p:commandButton icon="ui-icon-check" value="Guardar" action="#{mbMunicipio.create}" update="pnNew"/>
-                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: right">
-                            <p:ajax update="pnNew" resetValues="true" />
+                        <p:commandButton icon="ui-icon-check" 
+                                         value="Guardar" 
+                                         action="#{mbMunicipio.create}" 
+                                         update="pnNew"/>
+                        <p:commandButton icon="ui-icon-cancel" 
+                                         value="Limpiar" 
+                                         style="float: right">
+                            <p:ajax update="pnNew" 
+                                    resetValues="true" />
                         </p:commandButton>
                     </f:facet>
                     
@@ -94,4 +102,3 @@
         </ui:define>
     </ui:composition>
 </html>
-

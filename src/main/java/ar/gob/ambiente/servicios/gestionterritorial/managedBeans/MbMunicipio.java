@@ -16,16 +16,15 @@ import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.MunicipioFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -61,6 +60,7 @@ public class MbMunicipio implements Serializable {
     private boolean iniciado;
     private List<Municipio> listado;
     private List<Municipio> listadoFilter;
+    private MbLogin login;
     private Usuario usLogeado;
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar 
     
@@ -74,7 +74,11 @@ public class MbMunicipio implements Serializable {
 
    @PostConstruct
    public void init(){
-       
+        iniciado = false;
+        update = 0;
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        login = (MbLogin)ctx.getSessionMap().get("mbLogin");
+        usLogeado = login.getUsLogeado();    
    }
     
     /********************************
@@ -145,8 +149,9 @@ public class MbMunicipio implements Serializable {
             while(enume.hasMoreElements()){
                 s = (String)enume.nextElement();
                 if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbMunicipio")){
+                    if(!s.equals("mbMunicipio") && !s.equals("mbLogin")){
                         session.removeAttribute(s);
+  
                     }
                 }
             }
@@ -189,7 +194,6 @@ public class MbMunicipio implements Serializable {
     public String prepareCreate() {
         listaProvincias = pciaFacade.getActivos();
         current = new Municipio();
-        selectedItemIndex = -1;
         return "new";
     }
 
@@ -268,7 +272,7 @@ public class MbMunicipio implements Serializable {
         admEnt.setFechaAlta(date);
         admEnt.setHabilitado(true);
         admEnt.setUsAlta(usLogeado);
-        current.setAdminentidad(admEnt);        
+        current.setAdminentidad(admEnt);         
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioCreated"));
@@ -276,7 +280,22 @@ public class MbMunicipio implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioCreatedErrorOccured"));
             return null;
-        }
+    }}
+
+    public int getSelectedItemIndex() {
+        return selectedItemIndex;
+    }
+
+    public void setSelectedItemIndex(int selectedItemIndex) {
+        this.selectedItemIndex = selectedItemIndex;
+    }
+
+    public List<Municipio> getListado() {
+        return listado;
+    }
+
+    public void setListado(List<Municipio> listado) {
+        this.listado = listado;
     }
 
          /**
@@ -451,7 +470,7 @@ public class MbMunicipio implements Serializable {
         comboDepartamentos = dptoFacade.getPorProvincia(selectProvincia);      
     }    
     
-       public void habilitar() {
+    public void habilitar() {
         update = 2;
         update();        
         recreateModel();

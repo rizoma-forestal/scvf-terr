@@ -14,39 +14,77 @@
             <h:outputText value="#{bundle.DepartamentoTitle}" />
         </ui:define>
         <ui:define name="content">
+            
+            <br/>             
             <f:metadata>  
-                <f:event listener="#{mbDepartamento.iniciar}" type="preRenderView"></f:event>  
+                <f:event listener="#{mbDepartamento.iniciar}" 
+                         type="preRenderView"></f:event>  
             </f:metadata>            
-            <br/> 
+
             <h:form>
-                <p:panel id="DepartamentoForm" header="#{bundle.DepartamentoListTitle}" style="margin-bottom:10px;">
-                    <h:panelGrid columns="4">
-                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbDepartamento.prepareCreate}"/>
-                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbDepartamento.prepareList}" update="DepartamentoList"/>
+                <p:panel id="DepartamentoForm" 
+                         header="#{bundle.DepartamentoListTitle}" 
+                         style="margin-bottom:10px;">
+                    
+                    <h:panelGrid columns="6">
+                        <p:commandButton icon="ui-icon-newwin" 
+                                         value="Agregar Nuevo" 
+                                         action="#{mbDepartamento.prepareCreate}"/>
+                        
+                        <p:commandButton icon="ui-icon-refresh" 
+                                         value="Refrescar Listado" 
+                                         action="#{mbDepartamento.prepareList}" 
+                                         update="departamentoList"/>
+                        
+                        <p:commandButton icon="ui-icon-home"
+                                         value="Inicio"
+                                         action="#{mbDepartamento.cleanUp()}"/>
                     </h:panelGrid>
+                    
                 </p:panel>
 
                 <br/>           
 
-                <p:dataTable value="#{mbDepartamento.items}" var="e" id="DepartamentoList" rows="5"
+                <p:dataTable value="#{mbDepartamento.items}" 
+                             var="e" 
+                             id="departamentoList" 
+                             rows="5"
                              paginator="true" 
                              widgetVar="departamentoTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
+                    
                     <f:facet name="header">
                         Listado de #{bundle.DepartamentoListTitle}
-                        <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
-                        <p:columnToggler datasource="DepartamentoList" trigger="toggler" />
+                        
+                        <p:commandButton id="toggler" 
+                                         type="button" 
+                                         value="Columnas" 
+                                         icon="ui-icon-calculator" 
+                                         style="margin-left: 10px" />
+                        
+                        <p:columnToggler datasource="departamentoList" 
+                                         trigger="toggler" />
                     </f:facet>
-                    <p:column headerText="Provincia" sortBy="#{e.provincia.nombre}" filterBy="#{e.provincia.nombre}" >
+                    
+                    <p:column headerText="Provincia" 
+                              filterMatchMode="contains" 
+                              sortBy="#{e.provincia.nombre}" 
+                              filterBy="#{e.provincia.nombre}" >
                         <p:outputLabel value="#{e.provincia.nombre}"/>
                     </p:column>
                     
-                    <p:column headerText="Departamento" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
+                    <p:column headerText="Departamento" 
+                              filterMatchMode="contains" 
+                              sortBy="#{e.nombre}" 
+                              filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
                     
-                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
+                    <p:column filterBy="#{e.adminentidad.habilitado}" 
+                              headerText="Estado" 
+                              footerText="" 
+                              filterMatchMode="equals">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('departamentoTable').filter()">
                                 <f:converter converterId="javax.faces.Boolean" />
@@ -59,10 +97,15 @@
                     </p:column>
                     
 
-                    <p:column headerText="Acciones" style="width:135px">
-                        <p:growl id="messages" showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbDepartamento.prepareView}">
-                                <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
+                    <p:column headerText="Acciones" 
+                              style="width:135px">
+                        <p:growl id="messages" 
+                                 showDetail="true" />    
+                        <p:commandButton icon="ui-icon-zoomin" 
+                                         action="#{mbDepartamento.prepareView}"
+                                         title="Ver Detalle">
+                                <f:setPropertyActionListener value="#{e}" 
+                                                             target="#{mbDepartamento.current}" />
                             </p:commandButton>
 
                             <p:commandButton icon="ui-icon-pencil" 
@@ -95,9 +138,17 @@
                                            icon="ui-icon-alert" />
                             </p:commandButton>  
                         
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            <p:confirmDialog global="true" 
+                                             showEffect="fade" 
+                                             hideEffect="fade">
+                                           <p:commandButton value="Si" 
+                                                            type="button" 
+                                                            styleClass="ui-confirmdialog-yes" 
+                                                            icon="ui-icon-check" />
+                                           <p:commandButton value="No" 
+                                                            type="button" 
+                                                            styleClass="ui-confirmdialog-no" 
+                                                            icon="ui-icon-close" />
                            </p:confirmDialog>      
                     </p:column> 
 
@@ -107,4 +158,3 @@
         </ui:define>
     </ui:composition>
 </html>
-

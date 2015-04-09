@@ -36,9 +36,8 @@ public class Departamento implements Serializable {
     @JoinColumn(name="provincia_id")
     private Provincia provincia;
 
-
     @OneToMany(mappedBy="departamento")
-    private List<CentroPoblado> localidades;    
+    private List<CentroPoblado> centrosPoblados;    
 
     
     @OneToMany(mappedBy="departamento")
@@ -48,10 +47,9 @@ public class Departamento implements Serializable {
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
 
-
     
     public Departamento(){
-        localidades = new ArrayList();
+        centrosPoblados = new ArrayList();
         municipios = new ArrayList();
     }
     
@@ -78,15 +76,16 @@ public class Departamento implements Serializable {
     public void setProvincia(Provincia provincia) {
         this.provincia = provincia;
     }
-    
-    public List<CentroPoblado> getLocalidades() {
-        return localidades;
+
+    public List<CentroPoblado> getCentrosPoblados() {
+        return centrosPoblados;
     }
 
-    public void setLocalidades(List<CentroPoblado> localidades) {
-        this.localidades = localidades;
+    public void setCentrosPoblados(List<CentroPoblado> centrosPoblados) {
+        this.centrosPoblados = centrosPoblados;
     }
     
+   
     public List<Municipio> getMunicipios() {
         return municipios;
     }
@@ -130,5 +129,8 @@ public class Departamento implements Serializable {
     public String toString() {
         return "ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento[ id=" + id + " ]";
     }
+    public AdminEntidad getAdminentidad(AdminEntidad admEnt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }    
     
 }
