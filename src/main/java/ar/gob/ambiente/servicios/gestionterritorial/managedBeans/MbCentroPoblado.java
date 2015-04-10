@@ -24,12 +24,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
+import javax.faces.model.SelectItem;
+import javax.faces.validator.ValidatorException;
+import javax.persistence.Entity;
 import javax.servlet.http.HttpSession;
 
 
@@ -37,35 +43,39 @@ import javax.servlet.http.HttpSession;
  *
  * @author epassarelli
  */
+
 public class MbCentroPoblado implements Serializable {
 
     private CentroPoblado current;
-    private List<CentroPoblado> listado;
-    private List<CentroPoblado> listadoFilter;
+    private DataModel items = null;
 
+    @EJB
+    private DepartamentoFacade departamentoFacade;
+
+    @EJB
+    private CentroPobladoTipoFacade centroPobladoTipoFacade;
+   
     @EJB
     private ProvinciaFacade provFacade;
-    
-    @EJB
-    private DepartamentoFacade dptoFacade;
-
-    @EJB
-    private CentroPobladoTipoFacade tipocpFacade;
-        
+           
     @EJB
     private CentroPobladoFacade centroPobladoFacade;
-
+    private int selectedItemIndex;
+    private String selectParam;
     private List<Departamento> listaDepartamentos; 
     private List<CentroPobladoTipo> listaTiposCP;
     private List<Provincia> listaProvincias; 
     private boolean iniciado;
     private Provincia selectProvincia; 
-    private Long idTipo;
+ //   private Long idTipo;
     private Provincia provSelected;
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar 
     private MbLogin login;
     private Usuario usLogeado;    
-    
+    private List<CentroPoblado> listado;
+    private List<CentroPoblado> listadoFilter;
+    private List<String> listaNombres;
+
     /**
      * Creates a new instance of MbCentroPoblado
      */
@@ -73,23 +83,45 @@ public class MbCentroPoblado implements Serializable {
     }
 
     /**
-     *
+     * Método que se ejecuta luego de instanciada la clase e inicializa los datos del usuario
      */
-    /*
-    @PostConstruct
-    private void init(){
-        iniciado = false;
-    } */
-    
     @PostConstruct
     public void init(){
+        iniciado = false;
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         login = (MbLogin)ctx.getSessionMap().get("mbLogin");
         usLogeado = login.getUsLogeado();
     }
+        /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbUsuario") && !s.equals("mbLogin")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }    
+
     /********************************
      ** Getters y Setters ***********
      ********************************/ 
+    public CentroPoblado getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(CentroPoblado current) {
+        this.current = current;
+    }
     
     public Provincia getProvSelected() {
         return provSelected;
@@ -98,29 +130,8 @@ public class MbCentroPoblado implements Serializable {
     public void setProvSelected(Provincia provSelected) {
         this.provSelected = provSelected;
     }
- 
-    
-    public Long getIdTipo() {
-        return idTipo;
-    }
-
-    public void setIdTipo(Long idTipo) {
-        this.idTipo = idTipo;
-    }
- 
-    
-    public CentroPoblado getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(CentroPoblado current) {
-        this.current = current;
-    }
 
     public List<CentroPoblado> getListado() {
-        if (listado == null) {
-            listado = getFacade().findAll();
-        }        
         return listado;
     }
 
@@ -152,6 +163,7 @@ public class MbCentroPoblado implements Serializable {
         this.listaTiposCP = listaTiposCP;
     }
 
+
     public List<Provincia> getListaProvincias() {
         return listaProvincias;
     }
@@ -169,30 +181,7 @@ public class MbCentroPoblado implements Serializable {
     }
 
   
-    /**
-     * Método que borra de la memoria los MB innecesarios al cargar el listado 
-     */
-    public void iniciar(){
-        if(!iniciado){
-            String s;
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-            .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbCentroPoblado")){
-                        session.removeAttribute(s);
-                    }
-                }
-            }
-        }
-    }    
-    
-
-    /*******************************
-     ** Métodos de inicialización **
-     *******************************/      
+  /***************************/      
     
     /**
      * @return La entidad gestionada
@@ -204,6 +193,22 @@ public class MbCentroPoblado implements Serializable {
         return current;
     }
 
+    public DataModel getItems() {
+        if (items == null) {
+            //items = getPagination().createPageDataModel();
+            items = new ListDataModel(getFacade().findAll());
+        }
+        return items;
+    }    
+    
+    public List<String> getListaNombres() {
+        return listaNombres;
+    }
+
+    public void setListaNombres(List<String> listaNombres) {
+        this.listaNombres = listaNombres;
+    }
+    
     /*******************************
      ** Métodos de inicialización **
      *******************************/
@@ -212,10 +217,21 @@ public class MbCentroPoblado implements Serializable {
      * @return acción para el listado de entidades
      */
     public String prepareList() {
-        iniciado = true;
         recreateModel();
         return "list";
     }     
+    
+    
+    public String iniciarList(){
+        String redirect = "";
+        if(selectParam != null){
+            redirect = "list";
+        }else{
+            redirect = "administracion/centropoblado/list";
+        }
+        recreateModel();
+        return redirect;
+    }   
     
     /**
      * @return acción para el detalle de la entidad
@@ -228,10 +244,9 @@ public class MbCentroPoblado implements Serializable {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        //cargo los list para los combos
-        listaTiposCP = tipocpFacade.getActivos();
         listaProvincias = provFacade.getActivos();
-        //listaDepartamentos = dptoFacade.getActivos();
+        listaDepartamentos = departamentoFacade.getActivos();
+        listaTiposCP = centroPobladoTipoFacade.getActivos();
         current = new CentroPoblado();
         return "new";
     }    
@@ -241,12 +256,26 @@ public class MbCentroPoblado implements Serializable {
      */
     public String prepareEdit() {
         //cargo los list para los combos
-        listaTiposCP = tipocpFacade.getActivos();
+        listaTiposCP = centroPobladoTipoFacade.getActivos();
         listaProvincias = provFacade.getActivos();
-        listaDepartamentos = dptoFacade.getActivos();
+        listaDepartamentos = departamentoFacade.getActivos();
         return "edit";
     }    
-   
+    
+    public String prepareInicio(){
+        recreateModel();
+        return "/faces/index";
+    }
+    
+    /**
+     * Método para preparar la búsqueda
+     * @return la ruta a la vista que muestra los resultados de la consulta en forma de listado
+     */
+    public String prepareSelect(){
+        //items = null;
+        //buscarEspecie();
+        return "list";
+    }    
     /**
      * Método que verifica que el CentroPoblado que se quiere eliminar no esté siento utilizada por otra entidad
      * @return 
@@ -261,25 +290,25 @@ public class MbCentroPoblado implements Serializable {
      * 
      * @return 
      */
-    public String prepareHabilitar(){
-        try{
-            // Actualización de datos de administración de la entidad
-            Date date = new Date(System.currentTimeMillis());
-            current.getAdminentidad().setFechaModif(date);
-            current.getAdminentidad().setUsModif(usLogeado);
-            current.getAdminentidad().setHabilitado(true);
-            current.getAdminentidad().setUsBaja(usLogeado);
-            current.getAdminentidad().setFechaBaja(null);
+  //  public String prepareHabilitar(){
+    //    try{
+   //         // Actualización de datos de administración de la entidad
+  //          Date date = new Date(System.currentTimeMillis());
+  //          current.getAdminentidad().setFechaModif(date);
+  //          current.getAdminentidad().setUsModif(usLogeado);
+  //          current.getAdminentidad().setHabilitado(true);
+  //          current.getAdminentidad().setUsBaja(usLogeado);
+  //          current.getAdminentidad().setFechaBaja(null);
 
             // Actualizo
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoHabilitado"));
-            return "view";
-        }catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoHabilitadoErrorOccured"));
-            return null; 
-        }
-    }    
+  //          getFacade().edit(current);
+  //          JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoHabilitado"));
+  //          return "view";
+  //      }catch (Exception e) {
+  //          JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoHabilitadoErrorOccured"));
+  //          return null; 
+  //      }
+  //  }    
     
     
     /*************************
@@ -336,10 +365,10 @@ public class MbCentroPoblado implements Serializable {
         // acualizo
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdatedErrorOccured"));
             return null;
         }
     }
@@ -348,20 +377,65 @@ public class MbCentroPoblado implements Serializable {
         update = 2;
         update();        
         recreateModel();
-    }  
+        }
+        /*************************
+    ** Métodos de selección **
+    **************************/
+    /**
+     * @return la totalidad de las entidades persistidas formateadas
+     */
+    public SelectItem[] getItemsAvailableSelectMany() {
+        return JsfUtil.getSelectItems(centroPobladoFacade.findAll(), false);
+    }
+    
+
+    /**
+     * @return de a una las entidades persistidas formateadas
+     */
+    public SelectItem[] getItemsAvailableSelectOne() {
+        return JsfUtil.getSelectItems(centroPobladoFacade.findAll(), true);
+    }
+
+   
      /**
+     * @return mensaje que notifica la actualizacion de estado
      */    
     public void deshabilitar() {
-       if (getFacade().tieneDependencias(current.getId())){
           update = 1;
           update();        
           recreateModel();
-       } 
-        else{
-            //No Deshabilita 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("GeneroNonDeletable"));            
-        }
     } 
+     
+    /**
+     * Método para validar que no exista ya una entidad con este nombre al momento de crearla
+     * @param arg0: vista jsf que llama al validador
+     * @param arg1: objeto de la vista que hace el llamado
+     * @param arg2: contenido del campo de texto a validar 
+     */
+    public void validarInsert(FacesContext arg0, UIComponent arg1, Object arg2){
+        validarExistente(arg2);
+    }
+    
+    /**
+     * Método para validar que no exista una entidad con este nombre, siempre que dicho nombre no sea el que tenía originalmente
+     * @param arg0: vista jsf que llama al validador
+     * @param arg1: objeto de la vista que hace el llamado
+     * @param arg2: contenido del campo de texto a validar 
+     * @throws ValidatorException 
+     */
+    public void validarUpdate(FacesContext arg0, UIComponent arg1, Object arg2){
+        if(!current.getNombre().equals((String)arg2)){
+            validarExistente(arg2);
+        }
+    }
+    
+    private void validarExistente(Object arg2) throws ValidatorException{
+        if(!getFacade().existe((String)arg2)){
+            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateCentroPobladoExistente")));
+        }
+    }
+    
+    
     
     /**
      * @param id equivalente al id de la entidad persistida
@@ -390,26 +464,57 @@ public class MbCentroPoblado implements Serializable {
     private void performDestroy() {
         try {
             // Actualización de datos de administración de la entidad
-            Date date = new Date(System.currentTimeMillis());
-            current.getAdminentidad().setFechaBaja(date);
-            current.getAdminentidad().setUsBaja(usLogeado);
-            current.getAdminentidad().setHabilitado(false);
+            //Date date = new Date(System.currentTimeMillis());
+           // current.getAdminentidad().setFechaBaja(date);
+            //current.getAdminentidad().setUsBaja(usLogeado);
+            //current.getAdminentidad().setHabilitado(false);
             
             // Deshabilito la entidad
-            getFacade().edit(current);
+           // getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoDeletedErrorOccured"));
         }
     }      
+
+    /**
+     * Actualiza el detalle de la entidad si la última se eliminó
+     */
+    private void updateCurrentItem() {
+        int count = getFacade().count();
+        if (selectedItemIndex >= count) {
+            // selected index cannot be bigger than number of items:
+            selectedItemIndex = count - 1;
+            // go to previous page if last page disappeared:
+            /*
+            if (pagination.getPageFirstItem() >= count) {
+                pagination.previousPage();
+            }
+            */
+        }
+        if (selectedItemIndex >= 0) {
+            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+        }
+    }    
     
+    /*
+     * Métodos de búsqueda
+     */
+    public String getSelectParam() {
+        return selectParam;
+    }
+
+    public void setSelectParam(String selectParam) {
+        this.selectParam = selectParam;
+    }
+        
     /**
      * Método que deshabilita la entidad
      * @param event
      */    
     public void provinciaChangeListener(ValueChangeEvent event){
         provSelected = (Provincia)event.getNewValue();
-        listaDepartamentos = dptoFacade.getPorProvincia(provSelected);
+        listaDepartamentos = departamentoFacade.getPorProvincia(provSelected);
     }
 
     
@@ -427,10 +532,11 @@ public class MbCentroPoblado implements Serializable {
      * Restea la entidad
      */
     private void recreateModel() {
-        idTipo = null;
-        provSelected = null;
-        listaDepartamentos.clear();
-    }        
+        items = null;
+        if(selectParam != null){
+            selectParam = null;
+        }
+    }      
     
     
     /********************************************************************
@@ -439,13 +545,6 @@ public class MbCentroPoblado implements Serializable {
     @FacesConverter(forClass = CentroPoblado.class)
     public static class CentroPobladoControllerConverter implements Converter {
 
-        /**
-         *
-         * @param facesContext
-         * @param component
-         * @param value
-         * @return
-         */
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
@@ -475,13 +574,6 @@ public class MbCentroPoblado implements Serializable {
             return sb.toString();
         }
 
-        /**
-         *
-         * @param facesContext
-         * @param component
-         * @param object
-         * @return
-         */
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {

@@ -31,8 +31,8 @@ public class CentroPobladoTipo implements Serializable {
     private Long id;
     private String nombre;
 
-    @OneToMany(mappedBy="centropobladotipo")
-    private List<CentroPoblado> centrospoblados;
+    @OneToMany(mappedBy="centroPobladoTipo")
+    private List<CentroPoblado> centrosPoblados;
     
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
@@ -40,7 +40,15 @@ public class CentroPobladoTipo implements Serializable {
     
     
     public CentroPobladoTipo(){
-        centrospoblados = new ArrayList();
+        centrosPoblados = new ArrayList();
+    }
+
+    public List<CentroPoblado> getCentrosPoblados() {
+        return centrosPoblados;
+    }
+
+    public void setCentrosPoblados(List<CentroPoblado> centrosPoblados) {
+        this.centrosPoblados = centrosPoblados;
     }
 
     public Long getId() {
@@ -59,13 +67,6 @@ public class CentroPobladoTipo implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<CentroPoblado> getCentrospoblados() {
-        return centrospoblados;
-    }
-
-    public void setCentrospoblados(List<CentroPoblado> centrospoblados) {
-        this.centrospoblados = centrospoblados;
-    }
 
     public AdminEntidad getAdminentidad() {
         return adminentidad;

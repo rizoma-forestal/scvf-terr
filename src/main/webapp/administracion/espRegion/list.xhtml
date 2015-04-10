@@ -15,25 +15,28 @@
         </ui:define>
         <ui:define name="content">
 
-            <f:metadata>  
-                <f:event listener="#{mbEspRegion.iniciar}" 
-                         type="preRenderView"></f:event>  
-            </f:metadata>
-            
             <br/> 
+            
             <h:form>
                 <p:panel id="espRegionForm" 
                          header="#{bundle.EspRegionListTitle}" 
                          style="margin-bottom:10px;">
-                    <h:panelGrid columns="4">
+                    
+                    <h:panelGrid columns="6">
                         <p:commandButton icon="ui-icon-newwin" 
                                          value="Agregar Nuevo" 
                                          action="#{mbEspRegion.prepareCreate}"/>
+                        
                         <p:commandButton icon="ui-icon-refresh" 
                                          value="Refrescar Listado" 
                                          action="#{mbEspRegion.prepareList}" 
                                          update="espRegionList"/>
+                        
+                        <p:commandButton icon="ui-icon-home" 
+                                         value="Inicio" 
+                                         action="#{mbEspRegion.cleanUp()}"/>                        
                     </h:panelGrid>
+                    
                 </p:panel>
 
                 <br/>           
@@ -49,15 +52,19 @@
                     
                     <f:facet name="header">
                         #{bundle.EspRegionListTitle}
+                        
                         <p:commandButton id="toggler" 
                                          type="button" 
                                          value="Columnas" 
-                                         icon="ui-icon-calculator" />
+                                         icon="ui-icon-calculator" 
+                                         style="margin-left: 10px"/>
+                        
                         <p:columnToggler datasource="espRegionList" 
-                                         trigger="toggler" />
+                                         trigger="toggler" />                        
                     </f:facet>
                     
                     <p:column headerText="Nombre" 
+                              filterMatchMode="contains"
                               sortBy="#{e.nombre}" 
                               filterBy="#{e.nombre}" > 
                         <p:outputLabel value="#{e.nombre}"/>
@@ -69,7 +76,8 @@
                               footerText="" 
                               filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('espTable').filter()">
+                            <p:selectOneMenu onchange="PF('espTable').filter()"
+                                             style="font-size: 80%">
                                 <f:converter converterId="javax.faces.Boolean" />
                                 <f:selectItem itemLabel="Todos" 
                                               itemValue="" />
@@ -87,7 +95,8 @@
                         <p:growl id="messages" 
                                  showDetail="true" />    
                         <p:commandButton icon="ui-icon-zoomin" 
-                                         action="#{mbEspRegion.prepareView}">
+                                         action="#{mbEspRegion.prepareView}"
+                                         title="Ver Detalle">
                                 <f:setPropertyActionListener value="#{e}" 
                                                              target="#{mbEspRegion.current}" />
                             </p:commandButton>
@@ -125,10 +134,12 @@
                             <p:confirmDialog global="true" 
                                              showEffect="fade" 
                                              hideEffect="fade">
+                                
                                            <p:commandButton value="Si" 
                                                             type="button" 
                                                             styleClass="ui-confirmdialog-yes" 
                                                             icon="ui-icon-check" />
+                                           
                                            <p:commandButton value="No" 
                                                             type="button" 
                                                             styleClass="ui-confirmdialog-no" 

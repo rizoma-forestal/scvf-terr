@@ -60,7 +60,7 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
     public boolean existe(String aBuscar){
         em = getEntityManager();
         String queryString = "SELECT pro.nombre FROM Provincia pro "
-                + "WHERE pro.nombre = :stringParam"
+                + "WHERE pro.nombre = :stringParam "
                 + "AND pro.adminentidad.habilitado = true";
         
         Query q = em.createQuery(queryString)

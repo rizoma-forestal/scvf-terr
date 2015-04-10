@@ -12,21 +12,28 @@
         <ui:define name="content">
         <br/>
             <h:form id="frmEdit">
-                <p:panel 
-                                id="pnEdit" 
-                                header="#{bundle.CentroPobladoEditTitle}" 
-                                style="margin-bottom:10px;">
-                    <h:panelGrid columns="2">
+                <p:panel id="pnEdit" 
+                         header="#{bundle.CentroPobladoEditTitle}" 
+                         style="margin-bottom:10px;">
+                    <h:panelGrid columns="4">
 
-                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}" for="tipo"/>
-                        <p:selectOneMenu id="tipo" value="#{mbCentroPoblado.selected.centropobladotipo.id}">
-                            <f:selectItem itemLabel="Seleccione el Tipo" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{mbCentroPoblado.listaTiposCP}" var="tipo" 
+                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}" 
+                                       for="tipo"/>
+                        <p:selectOneMenu id="tipo" 
+                                         value="#{mbCentroPoblado.selected.centroPobladoTipo}"
+                                         requiredMessage="#{bundle.CreateCtroYTipoRequiredMessage}" 
+                                         required="true">
+                            <f:selectItem itemLabel="Seleccione el Tipo" 
+                                          itemValue="" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{mbCentroPoblado.listaTiposCP}" 
+                                           var="tipo" 
                                            itemLabel="#{tipo.nombre}" 
-                                           itemValue="#{tipo.id}"/>
+                                           itemValue="#{tipo}"/>
                         </p:selectOneMenu> 
                         
-                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Provincia}" for="prov" />
+                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Provincia}" 
+                                       for="prov" />
                         <p:selectOneMenu 
                                         id="prov" 
                                         value="#{mbCentroPoblado.selected.departamento.provincia}" 
@@ -84,8 +91,11 @@
                                          value="Guardar" 
                                          style="margin-right:10px;" 
                                          update="pnEdit"/>
-                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: right">
-                            <p:ajax update="pnEdit" resetValues="true" />
+                        <p:commandButton icon="ui-icon-cancel" 
+                                         value="Limpiar" 
+                                         style="float: right">
+                            <p:ajax update="pnEdit" 
+                                    resetValues="true" />
                         </p:commandButton>
                     </f:facet>
                     <f:facet name="right">

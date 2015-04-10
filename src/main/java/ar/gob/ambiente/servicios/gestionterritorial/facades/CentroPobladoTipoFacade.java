@@ -35,17 +35,19 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
     /**
      * Método que devuelve todas las CentroPobladoes que contienen la cadena recibida como parámetro 
  dentro de alguno de sus campos string, en este caso el nombre.
-     * @param aBuscar: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
      * @return: El conjunto de resultados provenientes de la búsqueda. 
      */      
-    public List<CentroPobladoTipo> getXString(String aBuscar){
+    public List<CentroPobladoTipo> getXString(String stringParam){
         em = getEntityManager();
         List<CentroPobladoTipo> result;
         
-        String queryString = "SELECT cpt.nombre FROM CentroPobladoTipo cpt "
-                + "WHERE cpt.nombre LIKE :stringParam ";        
+        String queryString = "SELECT cpt FROM CentroPobladoTipo cpt "
+                + "WHERE cpt.nombre LIKE :stringParam ";    
+        
         Query q = em.createQuery(queryString)
-                .setParameter("stringParam", "%" + aBuscar + "%");        
+                .setParameter("stringParam", "%" + stringParam + "%");    
+        
         result = q.getResultList();
         
         return result;
@@ -59,7 +61,7 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
     public boolean existe(String aBuscar){
         em = getEntityManager();
         
-        String queryString = "SELECT cpt FROM CentroPobladoTipo cpt "
+        String queryString = "SELECT cpt.nombre FROM CentroPobladoTipo cpt "
                 + "WHERE cpt.nombre = :stringParam";
         
         Query q = em.createQuery(queryString)
@@ -67,19 +69,7 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
         
         return q.getResultList().isEmpty();
     }  
-    
-    /**
-     * Metodo para el autocompletado de la búsqueda por nombre
-     * @return 
-     */
-    public List<String> getNombres(){
-        em = getEntityManager();
-        String queryString = "SELECT cpt.nombre FROM CentroPobladoTipo cpt ";
-        Query q = em.createQuery(queryString);
-        return q.getResultList();
-    } 
-
-    /**
+   /**
      * Método que verifica si la entidad tiene dependencia (Hijos) en estado HABILITADO
      * @param id: ID de la entidad
      * @return: True o False
@@ -92,6 +82,19 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
         Query q = em.createQuery(queryString)
                 .setParameter("idParam", id);
         return q.getResultList().isEmpty();
+    } 
+
+     
+    /**
+     * Metodo para el autocompletado de la búsqueda por nombre
+     * @return 
+     */
+    public List<String> getNombres(){
+        em = getEntityManager();
+        String queryString = "SELECT cpt.nombre FROM CentroPobladoTipo cpt "
+                + "WHERE cpt.adminentidad.habilitado = true";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
     } 
 
     

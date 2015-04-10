@@ -12,21 +12,27 @@
         <ui:define name="content">
             <br/>
             <h:form id="frmCentroPobladoView">
-                <p:panel id="pnView" header="#{bundle.CentroPobladoViewTitle}" style="margin-bottom:10px;">
+                <p:panel id="pnView" 
+                         header="#{bundle.CentroPobladoViewTitle}" 
+                         style="margin-bottom:10px;">
                     <p:messages id="messages" />
                     
                     <h:panelGrid columns="2">
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Provincia}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.departamento.provincia.nombre}" />     
+                        <h:outputText value="#{mbCentroPoblado.selected.departamento.provincia}" 
+                                      title="#{bundle.CreateCentroPobladoLabel_Provincia}"/>     
                          
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Departamento}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.departamento.nombre}" />  
+                        <h:outputText value="#{mbCentroPoblado.selected.departamento.nombre}" 
+                                      title="#{bundle.CreateCentroPobladoLabel_Departamento}"/>      
                         
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.centropobladotipo.nombre}" />  
+                        <h:outputText value="#{mbCentroPoblado.selected.centroPobladoTipo}"
+                                      title="#{bundle.CreateCentroPobladoLabel_Tipo}"/>  
                         
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_nombre}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.nombre}" title="#{bundle.CreateCentroPobladoTitle_nombre}"/>
+                        <h:outputText value="#{mbCentroPoblado.selected.nombre}" 
+                                      title="#{bundle.CreateCentroPobladoTitle_nombre}"/>
                         
                         <h:outputLabel value="#{bundle.UsuarioAlta}"/>
                         <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usAlta}"  
@@ -44,12 +50,17 @@
                         <h:outputText value="#{mbCentroPoblado.selected.adminentidad.strFechaModif}" 
                                       title="#{bundle.FechaModifica}"/>                          
 
-                        <h:outputLabel value="#{bundle.UsuarioBaja}" rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usBaja}" rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}" 
+                        <h:outputLabel value="#{bundle.UsuarioBaja}" 
+                                       rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
+                        
+                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usBaja}" 
+                                      rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}" 
                                       title="#{bundle.UsuarioBaja}"/>                        
 
-                        <h:outputLabel value="#{bundle.FechaBaja}" rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.strFechaBaja}" rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"
+                        <h:outputLabel value="#{bundle.FechaBaja}" 
+                                       rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
+                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.strFechaBaja}" 
+                                      rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"
                                       title="#{bundle.FechaBaja}"/>
 
                          
@@ -58,7 +69,10 @@
                 </p:panel>
                 <p:toolbar>
                     <f:facet name="right">
-                        <p:commandButton icon="ui-icon-refresh" action="#{mbCentroPoblado.prepareList}" value="Volver" ajax="false"/>
+                        <p:commandButton icon="ui-icon-refresh" 
+                                         action="#{mbCentroPoblado.prepareList}" 
+                                         value="Volver" 
+                                         ajax="false"/>
                     </f:facet>
                 </p:toolbar>
 

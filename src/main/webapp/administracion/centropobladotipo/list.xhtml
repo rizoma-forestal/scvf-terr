@@ -14,44 +14,75 @@
             <h:outputText value="#{bundle.CentroPobladoTipoTitle}" />
         </ui:define>
         <ui:define name="content">
-            <f:metadata>  
-                <f:event listener="#{mbCentroPobladoTipo.iniciar}" type="preRenderView"></f:event>  
-            </f:metadata>
-            <p:messages id="messages" />
-            <br/> 
+            
+            <br/>
+                        
             <h:form>
-                <p:panel id="espRegionForm" header="#{bundle.TipoCentroPobladoListTitle}" style="margin-bottom:10px;">
-                    <h:panelGrid columns="4">
-                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbCentroPobladoTipo.prepareCreate}"/>
-                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbCentroPobladoTipo.prepareList}" update="espRegionList"/>
+                <p:panel id="CPTForm" 
+                         header="#{bundle.TipoCentroPobladoListTitle}" 
+                         style="margin-bottom:10px;">
+                    
+                    <h:panelGrid columns="6">
+                        <p:commandButton icon="ui-icon-newwin" 
+                                         value="Agregar Nuevo" 
+                                         action="#{mbCentroPobladoTipo.prepareCreate}"/>
+                        
+                        <p:commandButton icon="ui-icon-refresh" 
+                                         value="Refrescar Listado" 
+                                         action="#{mbCentroPobladoTipo.prepareList}" 
+                                         update="centroPobladoTipoList"/>
+                        
+                        <p:commandButton icon="ui-icon-home"
+                                         value="Inicio"
+                                         action="#{mbCentroPobladoTipo.cleanUp()}"/>
                     </h:panelGrid>
                 </p:panel>
 
                 <br/>           
 
-                <p:dataTable value="#{mbCentroPobladoTipo.items}" var="e" id="espRegionList" rows="5"
-                             paginator="true"  widgetVar="espTable"
+                <p:dataTable value="#{mbCentroPobladoTipo.items}" 
+                             var="e" 
+                             id="centroPobladoTipoList" 
+                             rows="5"
+                             paginator="true"  
+                             widgetVar="centroPobladoTipoTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
                     
                     <f:facet name="header">
                         #{bundle.TipoCentroPobladoListTitle}
-                        <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" />
-                        <p:columnToggler datasource="espRegionList" trigger="toggler" />
+                        <p:commandButton id="toggler" 
+                                         type="button" 
+                                         value="Columnas" 
+                                         icon="ui-icon-calculator" 
+                                         style="margin-left: 10px"/>
+                        
+                        <p:columnToggler datasource="centroPobladoTipoList" 
+                                         trigger="toggler" />
                     </f:facet>
                     
-                    <p:column headerText="Nombre" sortBy="#{e.nombre}" filterBy="#{e.nombre}" > 
+                    <p:column headerText="Nombre" 
+                              filterMatchMode="contains"
+                              sortBy="#{e.nombre}" 
+                              filterBy="#{e.nombre}" > 
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>                               
                     
 
-                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="equals" filterMatchMode="equals">
+                    <p:column filterBy="#{e.adminentidad.habilitado}" 
+                              headerText="Estado" 
+                              footerText="equals" 
+                              filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('espTable').filter()">
+                            <p:selectOneMenu onchange="PF('centroPobladoTipoTable').filter()"
+                                             style="font-size: 80%">
                                 <f:converter converterId="javax.faces.Boolean" />
-                                <f:selectItem itemLabel="Todos" itemValue="" />
-                                <f:selectItem itemLabel="Activos" itemValue="true" />
-                                <f:selectItem itemLabel="Inactivos" itemValue="false" />
+                                <f:selectItem itemLabel="Todos" 
+                                              itemValue="" />
+                                <f:selectItem itemLabel="Activos" 
+                                              itemValue="true" />
+                                <f:selectItem itemLabel="Inactivos" 
+                                              itemValue="false" />
                             </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
@@ -68,7 +99,8 @@
                             </p:commandButton>
 
                             <p:commandButton icon="ui-icon-pencil" 
-                                             action="#{mbCentroPobladoTipo.prepareEdit}">
+                                             action="#{mbCentroPobladoTipo.prepareEdit}"
+                                             title="Editar" >
                                 <f:setPropertyActionListener value="#{e}" 
                                                              target="#{mbCentroPobladoTipo.current}" />
                             </p:commandButton>
@@ -97,9 +129,17 @@
                                            icon="ui-icon-alert" />
                             </p:commandButton>  
                         
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                           <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            <p:confirmDialog global="true" 
+                                             showEffect="fade" 
+                                             hideEffect="fade">
+                                           <p:commandButton value="Si" 
+                                                            type="button" 
+                                                            styleClass="ui-confirmdialog-yes" 
+                                                            icon="ui-icon-check" />
+                                           <p:commandButton value="No" 
+                                                            type="button" 
+                                                            styleClass="ui-confirmdialog-no" 
+                                                            icon="ui-icon-close" />
                            </p:confirmDialog>      
                     </p:column> 
                     

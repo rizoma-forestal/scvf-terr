@@ -7,17 +7,22 @@
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPoblado;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPobladoTipo;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoTipoFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoFacade;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -32,18 +37,23 @@ import javax.servlet.http.HttpSession;
  * @author epassarelli
  */
 public class MbCentroPobladoTipo  implements Serializable{
+    
     private CentroPobladoTipo current;
     private DataModel items = null;
     
     @EJB
-    private CentroPobladoTipoFacade tipoCPFacade;
-    //private PaginationHelper pagination;
+    private CentroPobladoTipoFacade centroPobladoTipoFacade;
+    
+    @EJB
+    private CentroPobladoFacade centroPobladoFacade;
     private int selectedItemIndex;
     private String selectParam;    
     //private List<String> listaNombres; 
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
     private Usuario usLogeado;
     private boolean iniciado;
+    private MbLogin login;
+    private List<CentroPoblado> ListaCentroPoblado;
     
     /*
      * Creates a new instance of MbCentroPobladoTipo
@@ -52,15 +62,42 @@ public class MbCentroPobladoTipo  implements Serializable{
          
     }   
     
+    @PostConstruct
+    public void init(){
+        iniciado = false;
+        update = 0;
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        login = (MbLogin)ctx.getSessionMap().get("mbLogin");
+        usLogeado = login.getUsLogeado();
+    }
+
+    /**
+     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     */
+    public void iniciar(){
+        if(!iniciado){
+            String s;
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                if(s.substring(0, 2).equals("mb")){
+                    if(!s.equals("mbUsuario") && !s.equals("mbLogin")){
+                        session.removeAttribute(s);
+                    }
+                }
+            }
+        }
+    }    
+
     public CentroPobladoTipo getCurrent() {
         return current;
     }
 
     public void setCurrent(CentroPobladoTipo current) {
         this.current = current;
-    }
-
-    
+    }       
     
     /********************************
      ** Métodos para la navegación **
@@ -71,7 +108,7 @@ public class MbCentroPobladoTipo  implements Serializable{
     public CentroPobladoTipo getSelected() {
         if (current == null) {
             current = new CentroPobladoTipo();
-            selectedItemIndex = -1;
+            //selectedItemIndex = -1;
         }
         return current;
     }   
@@ -87,26 +124,21 @@ public class MbCentroPobladoTipo  implements Serializable{
         return items;
     }
 
+    
     /**
-     * Método que borra de la memoria los MB innecesarios al cargar el listado 
+     * Método para revocar la sesión del MB
+     * @return 
      */
-    public void iniciar(){
-        if(!iniciado){
-            String s;
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-            .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbCentroPobladoTipo")){
-                        session.removeAttribute(s);
-                    }
-                }
-            }
-        }
-    }    
-  
+    public String cleanUp(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true);
+        session.removeAttribute("mbCentroPobladoTipo");
+   
+        return "inicio";
+    }      
+    
+    
+    
     /*******************************
      ** Métodos de inicialización **
      *******************************/
@@ -140,6 +172,7 @@ public class MbCentroPobladoTipo  implements Serializable{
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
+    //    listaCentrosPoblados = centroPobladoFacade.findAll();
         current = new CentroPobladoTipo();
         return "new";
     }
@@ -173,15 +206,9 @@ public class MbCentroPobladoTipo  implements Serializable{
      /**
      */    
     public void deshabilitar() {
-       if (getFacade().tieneDependencias(current.getId())){
-          update = 1;
-          update();        
-          recreateModel();
-       } 
-        else{
-            //No Deshabilita 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("GeneroNonDeletable"));            
-        }
+        update = 1;
+        update();        
+        recreateModel();
     } 
     
     /**
@@ -275,10 +302,10 @@ public class MbCentroPobladoTipo  implements Serializable{
         // acualizo
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoTipoActualizado"));
             return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("FamiliaUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoTipoErrorAlActualizarlo"));
             return null;
         }
     }
@@ -294,14 +321,14 @@ public class MbCentroPobladoTipo  implements Serializable{
      * @return la totalidad de las entidades persistidas formateadas
      */
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(tipoCPFacade.findAll(), false);
+        return JsfUtil.getSelectItems(centroPobladoTipoFacade.findAll(), false);
     }
 
     /**
      * @return de a una las entidades persistidas formateadas
      */
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(tipoCPFacade.findAll(), true);
+        return JsfUtil.getSelectItems(centroPobladoTipoFacade.findAll(), true);
     }
 
     /**
@@ -309,7 +336,7 @@ public class MbCentroPobladoTipo  implements Serializable{
      * @return la entidad correspondiente
      */
     public CentroPobladoTipo getCentroPobladoTipo(java.lang.Long id) {
-        return tipoCPFacade.find(id);
+        return centroPobladoTipoFacade.find(id);
     }    
     
     /*********************
@@ -319,9 +346,40 @@ public class MbCentroPobladoTipo  implements Serializable{
      * @return el Facade
      */
     private CentroPobladoTipoFacade getFacade() {
-        return tipoCPFacade;
+        return centroPobladoTipoFacade;
+    }
+   
+    /**
+     * Opera el borrado de la entidad
+     */
+    private void performDestroy() {
+        try {
+            //getFacade().remove(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoTipoDeleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoTipoDeletedErrorOccured"));
+        }
     }
 
+    /**
+     * Actualiza el detalle de la entidad si la última se eliminó
+     */
+    private void updateCurrentItem() {
+        int count = getFacade().count();
+        if (selectedItemIndex >= count) {
+            // selected index cannot be bigger than number of items:
+            selectedItemIndex = count - 1;
+            // go to previous page if last page disappeared:
+            /*
+            if (pagination.getPageFirstItem() >= count) {
+                pagination.previousPage();
+            }
+            */
+        }
+        if (selectedItemIndex >= 0) {
+            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+        }
+    }
     
     /*
      * Métodos de búsqueda
@@ -347,7 +405,7 @@ public class MbCentroPobladoTipo  implements Serializable{
                 return null;
             }
             MbCentroPobladoTipo controller = (MbCentroPobladoTipo) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "mbCPTipo");
+                    getValue(facesContext.getELContext(), null, "mbCentroPobladoTipo");
             return controller.getCentroPobladoTipo(getKey(value));
         }
 
@@ -383,6 +441,4 @@ public class MbCentroPobladoTipo  implements Serializable{
             }
         }
     }        
-
-    
 }
