@@ -17,6 +17,8 @@
 
         <ui:define name="content">
             
+                <br/> 
+            
             <f:metadata>  
                 <f:event listener="#{mbCentroPoblado.iniciar}" 
                          type="preRenderView"></f:event>  
@@ -26,6 +28,7 @@
                 <p:panel id="CentroPobladoForm" 
                          header="#{bundle.CentroPobladoListTitle}" 
                          style="margin-bottom:10px;">
+                    
                     <h:panelGrid columns="6">
                         <p:commandButton icon="ui-icon-newwin" 
                                          value="Agregar Nuevo" 
@@ -33,12 +36,13 @@
                         
                         <p:commandButton icon="ui-icon-refresh" 
                                          value="Refrescar Listado" 
-                                         action="#{mbCentroPoblado.prepareList()}" 
+                                         action="#{mbCentroPoblado.prepareList}" 
                                          update="centroPobladoList"/>
                         
                         <p:commandButton icon="ui-icon-cancel" 
                                          value="Inicio" 
                                          action="#{mbCentroPoblado.cleanUp()}"/>
+                        
                     </h:panelGrid>
                 </p:panel>          
 
@@ -47,12 +51,11 @@
                 <p:dataTable value="#{mbCentroPoblado.items}" 
                              var="e" 
                              id="centroPobladoList" 
-                             rows="10" 
-                             filteredValue="#{mbCentroPoblado.listadoFilter}"
+                             rows="5" 
                              paginator="true" 
                              widgetVar="cpTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="10,25,50">
+                             rowsPerPageTemplate="5,10,15">
                     
                     <f:facet name="header">
                         #{bundle.CentroPobladoListTitle}
@@ -61,23 +64,27 @@
                                          value="Columnas" 
                                          icon="ui-icon-calculator" 
                                          style="margin-left: 10px" />
+                        
                         <p:columnToggler datasource="centroPobladoList" 
                                          trigger="toggler" />
                     </f:facet>
 
-                    <p:column headerText="CentroPoblado" 
+                    <p:column headerText="Centro Poblado" 
+                              filterMatchMode="contains"
                               sortBy="#{e.nombre}" 
                               filterBy="#{e.nombre}">
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
 
-                    <p:column headerText="Tipo" 
+                    <p:column headerText="Tipo de Centro Poblado" 
+                              filterMatchMode="contains"
                               sortBy="#{e.centroPobladoTipo.nombre}" 
                               filterBy="#{e.centroPobladoTipo.nombre}">
                         <p:outputLabel value="#{e.centroPobladoTipo.nombre}"/>
                     </p:column>                    
                     
                     <p:column headerText="Departamento" 
+                              filterMatchMode="contains"
                               sortBy="#{e.departamento.nombre}" 
                               filterBy="#{e.departamento.nombre}">
                         <p:outputLabel value="#{e.departamento.nombre}"/>
@@ -94,7 +101,8 @@
                               footerText="" 
                               filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('cpTable').filter()">
+                            <p:selectOneMenu onchange="PF('cpTable').filter()"
+                                             style="font-size: 80%">
                                 <f:converter converterId="javax.faces.Boolean" />
                                 <f:selectItem itemLabel="Todos" 
                                               itemValue="" />
@@ -109,15 +117,16 @@
                     
                     <p:column headerText="Acciones" 
                               style="width:135px">
-                        <p:growl id="messages" showDetail="true" />    
                             <p:commandButton icon="ui-icon-zoomin" 
-                                             action="#{mbCentroPoblado.prepareView}">
+                                             action="#{mbCentroPoblado.prepareView}"
+                                             title="Ver Detalle">
                                 <f:setPropertyActionListener value="#{e}" 
                                                              target="#{mbCentroPoblado.current}" />
                             </p:commandButton>
 
                             <p:commandButton icon="ui-icon-pencil" 
-                                             action="#{mbCentroPoblado.prepareEdit}">
+                                             action="#{mbCentroPoblado.prepareEdit}"
+                                             title="Editar">
                                 <f:setPropertyActionListener value="#{e}" 
                                                              target="#{mbCentroPoblado.current}" />
                             </p:commandButton>

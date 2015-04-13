@@ -15,10 +15,14 @@ import javax.persistence.TemporalType;
 /**
  *
  * @author Administrador
+ * @param <T>
  */
 public abstract class AbstractFacade<T> {
     private final Class<T> entityClass;
-
+    /**
+     *
+     * @param entityClass
+     */
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }

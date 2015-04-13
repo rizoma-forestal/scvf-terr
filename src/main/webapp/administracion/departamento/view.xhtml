@@ -30,38 +30,42 @@
                                       title="#{bundle.CreateDepartamentoTitle_nombre}"/>
                         
                         <h:outputLabel value="#{bundle.UsuarioAlta}"/>
-                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usAlta}" 
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usAlta.nombre}" 
                                       title="#{bundle.UsuarioAlta}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaAlta}"/>
-                        <h:outputText value="#{mbDepartamento.selected.adminentidad.fechaAlta}" 
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.strFechaAlta}" 
                                       title="#{bundle.FechaAlta}"/>                         
 
                         <h:outputLabel value="#{bundle.UsuarioModifica}"/>
-                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usModif}" 
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usModif.nombre}" 
                                       title="#{bundle.UsuarioModifica}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaModifica}"/>
-                        <h:outputText value="#{mbDepartamento.selected.adminentidad.fechaModif}" 
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.strFechaModif}" 
                                       title="#{bundle.FechaModifica}"/>                          
 
-                        <h:outputLabel value="#{bundle.UsuarioBaja}"/>
-                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usBaja}" 
+                        <h:outputLabel value="#{bundle.UsuarioBaja}"
+                                       rendered="#{not mbDepartamento.selected.adminentidad.habilitado}"/>
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.usBaja.nombre}"
+                                      rendered="#{not mbDepartamento.selected.adminentidad.habilitado}"
                                       title="#{bundle.UsuarioBaja}"/>                        
 
-                        <h:outputLabel value="#{bundle.FechaBaja}"/>
-                        <h:outputText value="#{mbDepartamento.selected.adminentidad.fechaBaja}" 
+                        <h:outputLabel value="#{bundle.FechaBaja}"
+                                       rendered="#{not mbDepartamento.selected.adminentidad.habilitado}"/>
+                        <h:outputText value="#{mbDepartamento.selected.adminentidad.strFechaBaja}" 
+                                      rendered="#{not mbDepartamento.selected.adminentidad.habilitado}"
                                       title="#{bundle.FechaBaja}"/>                         
                         
-                        <h:outputLabel value="#{bundle.EntidadesAsociadas}" />
+                        <h:outputLabel value="#{bundle.CentrosPobladosAsociados}" />
                         <p:commandButton value="Ver" 
                                          type="button" 
-                                         onclick="PF('CentroPoblado').show();" 
+                                         onclick="PF('CentrosPoblados').show();" 
                                          actionListener="#{mbDepartamento.selected.centrosPoblados}" />      
                     </h:panelGrid>      
                     
                         <p:dialog style="font-size: 80%"
-                                  header="Listado de Ctros.Poblados asociadas"
+                                  header="Listado de Ctros.Poblados asociados"
                                   widgetVar="CentrosPoblados"
                                   showEffect="explode"
                                   hideEffect="bounce"

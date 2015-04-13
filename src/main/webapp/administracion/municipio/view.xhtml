@@ -10,19 +10,28 @@
             <h:outputText value="#{bundle.MunicipioTitle}" />
         </ui:define>
         <ui:define name="content">
+            
             <br/>
+            
             <h:form id="frmMunicipioView">
-                <p:panel id="pnView" header="#{bundle.MunicipioViewTitle}" style="margin-bottom:10px;">
+                <p:panel id="pnView" 
+                         header="#{bundle.MunicipioViewTitle}" 
+                         style="margin-bottom:10px;">
                     <p:messages id="messages" />
                     
                     <h:panelGrid columns="2">
+                        
                         <h:outputLabel value="#{bundle.CreateMunicipioLabel_nombre}"/>
-                        <h:outputText value="#{mbMunicipio.selected.nombre}" title="#{bundle.CreateMunicipioTitle_nombre}"/>
+                        <h:outputText value="#{mbMunicipio.selected.nombre}" 
+                                      title="#{bundle.CreateMunicipioTitle_nombre}"/>
                     </h:panelGrid>                    
                 </p:panel>
                 <p:toolbar>
                     <f:facet name="right">
-                        <p:commandButton icon="ui-icon-refresh" action="#{mbMunicipio.prepareList}" value="Volver" ajax="false"/>
+                        <p:commandButton icon="ui-icon-refresh" 
+                                         action="#{mbMunicipio.prepareList}" 
+                                         value="Volver" 
+                                         ajax="false"/>
                     </f:facet>
                 </p:toolbar>
 

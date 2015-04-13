@@ -30,7 +30,7 @@
                                       title="#{bundle.ViewEspRegion}"/>                       
                         
                         <h:outputLabel value="#{bundle.UsuarioAlta}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usAlta}"  
+                        <h:outputText value="#{mbRegion.selected.adminentidad.usAlta.nombre}"  
                                       title="#{bundle.UsuarioAlta}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaAlta}"/>
@@ -38,19 +38,23 @@
                                       title="#{bundle.FechaAlta}"/>                         
 
                         <h:outputLabel value="#{bundle.UsuarioModifica}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usModif}" 
+                        <h:outputText value="#{mbRegion.selected.adminentidad.usModif.nombre}" 
                                       title="#{bundle.UsuarioModifica}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaModifica}"/>
                         <h:outputText value="#{mbRegion.selected.adminentidad.strFechaModif}" 
                                       title="#{bundle.FechaModifica}"/>                          
 
-                        <h:outputLabel value="#{bundle.UsuarioBaja}" rendered="#{not mbRegion.selected.adminentidad.habilitado}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usBaja}" rendered="#{not mbRegion.selected.adminentidad.habilitado}" 
+                        <h:outputLabel value="#{bundle.UsuarioBaja}" 
+                                       rendered="#{not mbRegion.selected.adminentidad.habilitado}"/>
+                        <h:outputText value="#{mbRegion.selected.adminentidad.usBaja.nombre}" 
+                                      rendered="#{not mbRegion.selected.adminentidad.habilitado}" 
                                       title="#{bundle.UsuarioBaja}"/>                        
 
-                        <h:outputLabel value="#{bundle.FechaBaja}" rendered="#{not mbRegion.selected.adminentidad.habilitado}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.strFechaBaja}" rendered="#{not mbRegion.selected.adminentidad.habilitado}"
+                        <h:outputLabel value="#{bundle.FechaBaja}" 
+                                       rendered="#{not mbRegion.selected.adminentidad.habilitado}"/>
+                        <h:outputText value="#{mbRegion.selected.adminentidad.strFechaBaja}" 
+                                      rendered="#{not mbRegion.selected.adminentidad.habilitado}"
                                       title="#{bundle.FechaBaja}"/>                         
                         
                         <h:outputLabel value="#{bundle.ProvinciasAsociadas}" />
