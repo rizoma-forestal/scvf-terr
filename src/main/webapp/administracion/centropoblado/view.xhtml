@@ -19,7 +19,7 @@
                     
                     <h:panelGrid columns="2">
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Provincia}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.departamento.provincia}" 
+                        <h:outputText value="#{mbCentroPoblado.selected.departamento.provincia.nombre}" 
                                       title="#{bundle.CreateCentroPobladoLabel_Provincia}"/>     
                          
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Departamento}"/>
@@ -27,7 +27,7 @@
                                       title="#{bundle.CreateCentroPobladoLabel_Departamento}"/>      
                         
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.centroPobladoTipo}"
+                        <h:outputText value="#{mbCentroPoblado.selected.centroPobladoTipo.nombre}"
                                       title="#{bundle.CreateCentroPobladoLabel_Tipo}"/>  
                         
                         <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_nombre}"/>

@@ -24,6 +24,46 @@
                         <h:outputLabel value="#{bundle.CreateMunicipioLabel_nombre}"/>
                         <h:outputText value="#{mbMunicipio.selected.nombre}" 
                                       title="#{bundle.CreateMunicipioTitle_nombre}"/>
+                    
+                       <h:outputLabel value="#{bundle.CreateMunicipioLabel_Departamento}"/>
+                       <h:outputText value="#{mbMunicipio.selected.departamento.nombre}" 
+                                      title="#{bundle.CreateMunicipioLabel_Departamento}"/>  
+                    
+                       <h:outputLabel value="#{bundle.CreateMunicipioLabel_Provincia}"/>
+                       <h:outputText value="#{mbMunicipio.selected.departamento.provincia.nombre}" 
+                                      title="#{bundle.CreateMunicipioLabel_Provincia}"/> 
+                       
+                       <h:outputLabel value="#{bundle.UsuarioAlta}"/>
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usAlta}"  
+                                      title="#{bundle.UsuarioAlta}"/>                        
+
+                        <h:outputLabel value="#{bundle.FechaAlta}"/>
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.strFechaAlta}" 
+                                      title="#{bundle.FechaAlta}"/>                         
+
+                        <h:outputLabel value="#{bundle.UsuarioModifica}"/>
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usModif}" 
+                                      title="#{bundle.UsuarioModifica}"/>                        
+
+                        <h:outputLabel value="#{bundle.FechaModifica}"/>
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.strFechaModif}" 
+                                      title="#{bundle.FechaModifica}"/>                          
+
+                        <h:outputLabel value="#{bundle.UsuarioBaja}" 
+                                       rendered="#{not mbMunicipio.selected.adminentidad.habilitado}"/>
+                        
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usBaja}" 
+                                      rendered="#{not mbMunicipio.selected.adminentidad.habilitado}" 
+                                      title="#{bundle.UsuarioBaja}"/>                        
+
+                        <h:outputLabel value="#{bundle.FechaBaja}" 
+                                       rendered="#{not mbMunicipio.selected.adminentidad.habilitado}"/>
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.strFechaBaja}" 
+                                      rendered="#{not mbMunicipio.selected.adminentidad.habilitado}"
+                                      title="#{bundle.FechaBaja}"/>
+                    
+                    
+                    
                     </h:panelGrid>                    
                 </p:panel>
                 <p:toolbar>
