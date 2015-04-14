@@ -35,7 +35,7 @@
                                       title="#{bundle.CreateCentroPobladoTitle_nombre}"/>
                         
                         <h:outputLabel value="#{bundle.UsuarioAlta}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usAlta}"  
+                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usAlta.nombre}"  
                                       title="#{bundle.UsuarioAlta}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaAlta}"/>
@@ -43,7 +43,7 @@
                                       title="#{bundle.FechaAlta}"/>                         
 
                         <h:outputLabel value="#{bundle.UsuarioModifica}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usModif}" 
+                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usModif.nombre}" 
                                       title="#{bundle.UsuarioModifica}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaModifica}"/>
@@ -53,7 +53,7 @@
                         <h:outputLabel value="#{bundle.UsuarioBaja}" 
                                        rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
                         
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usBaja}" 
+                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usBaja.nombre}" 
                                       rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}" 
                                       title="#{bundle.UsuarioBaja}"/>                        
 

@@ -61,7 +61,7 @@
                                          trigger="toggler" />
                     </f:facet>
                     
-                    <p:column headerText="Nombre" 
+                    <p:column headerText="Tipo de Centro Poblado" 
                               filterMatchMode="contains"
                               sortBy="#{e.nombre}" 
                               filterBy="#{e.nombre}" > 
@@ -71,7 +71,7 @@
 
                     <p:column filterBy="#{e.adminentidad.habilitado}" 
                               headerText="Estado" 
-                              footerText="equals" 
+                              footerText="" 
                               filterMatchMode="equals">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('centroPobladoTipoTable').filter()"
