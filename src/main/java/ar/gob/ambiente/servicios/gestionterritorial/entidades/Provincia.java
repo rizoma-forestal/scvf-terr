@@ -33,8 +33,13 @@ public class Provincia implements Serializable {
     private Long id;
     private String nombre;
     
- //   @ManyToMany(mappedBy = "provincias")
-//    private List<Region> regiones; 
+    @ManyToMany
+   	@JoinTable(
+            	name = "provinciasXRegiones",
+            	joinColumns = @JoinColumn(name = "provincia_fk"),
+            	inverseJoinColumns = @JoinColumn(name = "region_fk")
+   	)
+    private List<Region> regiones; 
 
     @OneToMany(mappedBy="provincia")
     private List<Municipio> municipios;     
@@ -45,15 +50,6 @@ public class Provincia implements Serializable {
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
-
-    @ManyToMany
-   	@JoinTable(
-            	name = "provinciasXRegiones",
-            	joinColumns = @JoinColumn(name = "provincia_fk"),
-            	inverseJoinColumns = @JoinColumn(name = "region_fk")
-   	)
-    
-    private List<Region> regiones; 
     
     public Provincia(){
         regiones = new ArrayList<>();

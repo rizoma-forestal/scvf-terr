@@ -41,23 +41,10 @@ public class Region implements Serializable {
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad;    
    
-    /*
+
     @ManyToMany(mappedBy = "regiones")
-    */
-    
-    @ManyToMany
-   	@JoinTable(
-            	name = "provinciasXRegiones",
-            	joinColumns = @JoinColumn(name = "region_fk"),
-            	inverseJoinColumns = @JoinColumn(name = "provincia_fk")
-   	)
-       
-    private List<Provincia> provincias;
-        
-    public Region(){
-        provincias = new ArrayList<>();
-    }
-    
+    	private List<Provincia> provincias;
+
     public List<Provincia> getProvincias() {
         return provincias;
     }
@@ -65,8 +52,11 @@ public class Region implements Serializable {
     public void setProvincias(List<Provincia> provincias) {
         this.provincias = provincias;
     }
-
-
+        
+ //   public Region(){
+ //       provincias = new ArrayList<>();
+ //   }
+    
     public AdminEntidad getAdminentidad() {
         return adminentidad;
     }

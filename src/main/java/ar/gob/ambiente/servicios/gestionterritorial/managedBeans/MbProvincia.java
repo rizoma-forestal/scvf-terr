@@ -8,6 +8,7 @@ package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.AdminEntidad;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Provincia;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Region;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
@@ -44,14 +45,15 @@ public class MbProvincia implements Serializable{
     private DataModel items = null;
     
     @EJB
-    private RegionFacade regFacade;
+    private RegionFacade regionFacade;
     
     @EJB
     private ProvinciaFacade provinciaFacade;
     //private PaginationHelper pagination;
     private int selectedItemIndex;
     private String selectParam;    
-    private List<String> listaNombres;   
+    private List<String> listaNombres;  
+    private List<Region> listaRegiones;
     private Usuario usLogeado;
     private boolean iniciado;  
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
@@ -159,6 +161,7 @@ public class MbProvincia implements Serializable{
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
+        listaRegiones =regionFacade.getActivos();
         current = new Provincia();
         return "new";
     }
@@ -210,7 +213,7 @@ public class MbProvincia implements Serializable{
     
     private void validarExistente(Object arg2) throws ValidatorException{
         if(!getFacade().existe((String)arg2)){
-            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateProvinciaExistente")));
+            throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateProvinciaTitle_nombre")));
         }
     }
     
@@ -329,6 +332,14 @@ public class MbProvincia implements Serializable{
      */
     private ProvinciaFacade getFacade() {
         return provinciaFacade;
+    }
+
+    public List<Region> getListaRegiones() {
+        return listaRegiones;
+    }
+
+    public void setListaRegiones(List<Region> listaRegiones) {
+        this.listaRegiones = listaRegiones;
     }
            
     /*

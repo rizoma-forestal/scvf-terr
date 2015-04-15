@@ -17,7 +17,7 @@
                 <p:panel id="pnEdit" 
                          header="#{bundle.RegionEditTitle}" 
                          style="margin-bottom:10px;">
-                    <h:panelGrid columns="4">
+                    <h:panelGrid columns="2">
                         
                         
                         <p:outputLabel value="#{bundle.CreateRegionLabel_espRegion}" 
@@ -36,6 +36,24 @@
                                            itemLabel="#{espReg.nombre}" 
                                            itemValue="#{espReg}"/>
                         </p:selectOneMenu>                         
+                        
+                        <p:outputLabel value="#{bundle.CreateProvinciaTitle_nombre}" 
+                                       for="prov"/> 
+                        <p:selectManyCheckbox id="prov" 
+                                         value="#{mbRegion.selected.provincias}" 
+                                         requiredMessage="#{bundle.CreateRegionEspecifRegionRequiredMessage}" 
+                                         required="true">
+                            
+                            <f:selectItem itemLabel="Seleccione la Provincia" 
+                                          itemValue="" 
+                                          noSelectionOption="true" />
+                            
+                            <f:selectItems value="#{mbRegion.listaProvincia}" 
+                                           var="prov" 
+                                           itemLabel="#{prov.nombre}" 
+                                           itemValue="#{prov}"/>
+                        </p:selectManyCheckbox>                        
+                                                
                         
                         <p:outputLabel value="" />
                         

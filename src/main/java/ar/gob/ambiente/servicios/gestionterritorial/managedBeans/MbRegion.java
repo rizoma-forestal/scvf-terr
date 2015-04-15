@@ -13,6 +13,7 @@ import ar.gob.ambiente.servicios.gestionterritorial.entidades.Region;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.JsfUtil;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegionFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.ProvinciaFacade;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.RegionFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,14 +49,15 @@ public class MbRegion implements Serializable{
     private EspecificidadDeRegionFacade espRegionFacade;
     
     @EJB
+    private ProvinciaFacade provFacade;
+    
+    @EJB
     private RegionFacade regionFacade;
     private int selectedItemIndex;
     private String selectParam;    
   //  private List<String> listaNombres; 
     
     private List<EspecificidadDeRegion> listaEspecificidadDeRegion;   
-    
-   // private List<Provincia> listaProvincias; 
     private Usuario usLogeado;
     private boolean iniciado;
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
@@ -179,6 +181,7 @@ public class MbRegion implements Serializable{
      */
     public String prepareCreate() {
         listaEspecificidadDeRegion = espRegionFacade.getActivos();
+        listaProvincia = provFacade.getActivos();
         current = new Region();
         return "new";
     }
@@ -187,7 +190,8 @@ public class MbRegion implements Serializable{
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        listaEspecificidadDeRegion = espRegionFacade.getActivos();        
+        listaEspecificidadDeRegion = espRegionFacade.getActivos();
+        listaProvincia = provFacade.getActivos();
         return "edit";
     }
     
@@ -314,6 +318,7 @@ public class MbRegion implements Serializable{
         if(update == 0){
             current.getAdminentidad().setFechaModif(date);
             current.getAdminentidad().setUsModif(usLogeado);
+            current.getProvincias().set(update, null);
         }
 
         // acualizo

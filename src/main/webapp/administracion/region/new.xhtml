@@ -27,7 +27,7 @@
                                          value="#{mbRegion.selected.especificidadderegion}" 
                                          requiredMessage="#{bundle.CreateRegionEspecifRegionRequiredMessage}" 
                                          required="true">
-                            <f:selectItem itemLabel="Seleccione la Esp de Region" 
+                            <f:selectItem itemLabel="Seleccione la Esp.de Región" 
                                           itemValue="" 
                                           noSelectionOption="true" />
                             
@@ -48,6 +48,22 @@
                                      requiredMessage="#{bundle.CreateRegionRequiredMessage_nombre}" 
                                      required="true"/>
                         <p:message for="nombre" />
+                        
+                        <p:outputLabel value="#{bundle.ProvinciaTitle}" 
+                                       for="prov"/>
+                        
+                        <p:selectOneMenu id="prov" 
+                                         value="#{mbRegion.selected.provincias}"
+                                         requiredMessage="#{bundle.CreateProvinciaRequiredMessage_nombre}" 
+                                         required="true">
+                            <f:selectItem itemLabel="Seleccione la Provincia" 
+                                          itemValue="" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{mbRegion.listaProvincia}" 
+                                           var="prov" 
+                                           itemLabel="#{prov.nombre}" 
+                                           itemValue="#{prov}"/>
+                        </p:selectOneMenu>                          
 
                     </h:panelGrid>
                 </p:panel>
@@ -68,7 +84,7 @@
                         </p:commandButton>
                                                 
                         <p:commandButton icon="ui-icon-arrowreturnthick-1-w" 
-                                         action="#{mbRegion.prepareList()}" 
+                                         action="#{mbRegion.prepareList}" 
                                          value="Volver" 
                                          immediate="true"/>
                     </f:facet>

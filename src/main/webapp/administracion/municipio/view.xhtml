@@ -34,7 +34,7 @@
                                       title="#{bundle.CreateMunicipioLabel_Provincia}"/> 
                        
                        <h:outputLabel value="#{bundle.UsuarioAlta}"/>
-                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usAlta}"  
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usAlta.nombre}"  
                                       title="#{bundle.UsuarioAlta}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaAlta}"/>
@@ -42,7 +42,7 @@
                                       title="#{bundle.FechaAlta}"/>                         
 
                         <h:outputLabel value="#{bundle.UsuarioModifica}"/>
-                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usModif}" 
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usModif.nombre}" 
                                       title="#{bundle.UsuarioModifica}"/>                        
 
                         <h:outputLabel value="#{bundle.FechaModifica}"/>
@@ -52,7 +52,7 @@
                         <h:outputLabel value="#{bundle.UsuarioBaja}" 
                                        rendered="#{not mbMunicipio.selected.adminentidad.habilitado}"/>
                         
-                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usBaja}" 
+                        <h:outputText value="#{mbMunicipio.selected.adminentidad.usBaja.nombre}" 
                                       rendered="#{not mbMunicipio.selected.adminentidad.habilitado}" 
                                       title="#{bundle.UsuarioBaja}"/>                        
 
