@@ -27,14 +27,21 @@
                         <p:commandButton icon="ui-icon-newwin" 
                                          value="Agregar Nuevo" 
                                          action="#{mbMunicipio.prepareCreate}"/>
+                       
                         <p:commandButton icon="ui-icon-refresh" 
                                          value="Refrescar Listado" 
                                          action="#{mbMunicipio.prepareList}" 
                                          update="municipioList"/>
+                       
+                        <p:commandButton icon="ui-icon-home" 
+                                         value="Inicio" 
+                                         action="#{mbRegion.cleanUp()}"/>
+                          
                         <p:commandButton icon="ui-icon-calculator" 
                                          value="Columnas" id="toggler" 
                                          type="button" 
                                          style="float:right" />
+                        
                         <p:columnToggler datasource="municipioList" 
                                          trigger="toggler"  />              
                 </p:panel>
