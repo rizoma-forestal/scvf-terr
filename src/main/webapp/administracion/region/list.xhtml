@@ -5,162 +5,84 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-      
     <h:head>
         <title>#{bundle.RegionTitle}</title>
     </h:head>
-    
     <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundle.RegionTitle}" />
         </ui:define>
         <ui:define name="content">
-            
             <br/>
-            
             <f:metadata>  
-                <f:event listener="#{mbRegion.iniciar}" 
-                         type="preRenderView"></f:event>  
+                <f:event listener="#{mbRegion.iniciar}" type="preRenderView"></f:event>  
             </f:metadata>            
             <h:form>
                 <p:panel id="RegionForm" 
                          header="#{bundle.RegionListTitle}" 
                          style="margin-bottom:10px;">
-                    
                     <h:panelGrid columns="6">
-                        <p:commandButton icon="ui-icon-newwin" 
-                                         value="Agregar Nuevo" 
-                                         action="#{mbRegion.prepareCreate}"/>
-                        
-                        <p:commandButton icon="ui-icon-refresh" 
-                                         value="Refrescar Listado" 
-                                         action="#{mbRegion.prepareList}" 
-                                         update="regionList"/>
-                        
-                        <p:commandButton icon="ui-icon-home" 
-                                         value="Inicio" 
-                                         action="#{mbRegion.cleanUp()}"/>
+                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbRegion.prepareCreate}"/>  
+                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbRegion.prepareList}" update="regionList"/>   
+                        <p:commandButton icon="ui-icon-home" value="Inicio" action="#{mbRegion.cleanUp()}"/>
                     </h:panelGrid>
                 </p:panel>
-
                 <br/>           
-
-                <p:dataTable value="#{mbRegion.items}" 
-                             var="e" 
-                             id="regionList" 
-                             rows="5"
-                             paginator="true" 
-                             widgetVar="regionTable"
+                <p:dataTable value="#{mbRegion.items}" var="e" id="regionList" rows="5"paginator="true" widgetVar="regionTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,15">
-                    
-                    <f:facet name="header">
-                        Listado de #{bundle.RegionListTitle}
-                        
-                        <p:commandButton id="toggler" 
-                                         type="button" 
-                                         value="Columnas" 
-                                         icon="ui-icon-calculator" 
-                                         style="margin-left: 10px" />
-                        
-                        <p:columnToggler datasource="regionList" 
-                                         trigger="toggler" />
+                             rowsPerPageTemplate="5,10,15"> 
+                    <f:facet name="header"> Listado de #{bundle.RegionListTitle}
+                        <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
+                        <p:columnToggler datasource="regionList" trigger="toggler" />
                     </f:facet>
- 
-                    <p:column headerText="Region" 
-                              filterMatchMode="contains"
-                              sortBy="#{e.nombre}" 
-                              filterBy="#{e.nombre}" >
+                    <p:column headerText="Region" filterMatchMode="contains"sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>                    
-                    
-                    <p:column headerText="Especificidad de Region" 
-                              filterMatchMode="contains"
-                              sortBy="#{e.especificidadderegion.nombre}" 
-                              filterBy="#{e.especificidadderegion.nombre}" >
+                    <p:column headerText="Especificidad de Region" filterMatchMode="contains"sortBy="#{e.especificidadderegion.nombre}" filterBy="#{e.especificidadderegion.nombre}" >
                         <p:outputLabel value="#{e.especificidadderegion.nombre}"/>
-                    </p:column>
-                    
-                    <p:column filterBy="#{e.adminentidad.habilitado}" 
-                              headerText="Estado" 
-                              footerText="" 
-                              filterMatchMode="equals">
+                    </p:column>                  
+                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('regionTable').filter()"
-                                               style="font-size: 80%">
+                            <p:selectOneMenu onchange="PF('regionTable').filter()"style="font-size: 80%">
                                 <f:converter converterId="javax.faces.Boolean" />
-                                <f:selectItem itemLabel="Todos" 
-                                              itemValue="" />
-                                <f:selectItem itemLabel="Activos" 
-                                              itemValue="true" />
-                                <f:selectItem itemLabel="Inactivos" 
-                                              itemValue="false" />
+                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                <f:selectItem itemLabel="Activos" itemValue="true" />
+                                <f:selectItem itemLabel="Inactivos" itemValue="false" />
                             </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
                     </p:column>
-                    
-
-                    <p:column headerText="Acciones" 
-                              style="width:135px">
-                        <p:growl id="messages" 
-                                 showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" 
-                                         action="#{mbRegion.prepareView}"
-                                         title="Ver Detalle">
+                    <p:column headerText="Acciones" style="width:135px">
+                        <p:growl id="messages" showDetail="true" />    
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}"title="Ver Detalle">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}"title="Editar" >
+                                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-close" 
+                                         action="#{mbRegion.deshabilitar}" 
+                                         rendered="#{e.adminentidad.habilitado == 'true'}" 
+                                         title="Deshabilitar"
+                                         update="regionList">
                                 <f:setPropertyActionListener value="#{e}" 
                                                              target="#{mbRegion.current}" />
-                            </p:commandButton>
-
-                            <p:commandButton icon="ui-icon-pencil" 
-                                             action="#{mbRegion.prepareEdit}"
-                                             title="Editar" >
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbRegion.current}" />
-                            </p:commandButton>
-
-                            <p:commandButton icon="ui-icon-close" 
-                                             action="#{mbRegion.deshabilitar}" 
-                                             rendered="#{e.adminentidad.habilitado == 'true'}" 
-                                             title="Deshabilitar"
-                                             update="regionList">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbRegion.current}" />
-                                <p:confirm header="Confirmar" 
-                                           message="¿Desea deshabilitar la Región?" 
-                                           icon="ui-icon-alert" />
-                            </p:commandButton>                
-
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar la Región?" icon="ui-icon-alert" />
+                         </p:commandButton>                
                             <p:commandButton icon="ui-icon-check" 
                                              action="#{mbRegion.habilitar}" 
                                              rendered="#{e.adminentidad.habilitado == 'false'}" 
                                              title="Habilitar"
                                              update="regionList">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbRegion.current}" />
-                                <p:confirm header="Confirmar" 
-                                           message="¿Desea habilitar la Región?" 
-                                           icon="ui-icon-alert" />
+                                <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar la Región?" icon="ui-icon-alert" />
                             </p:commandButton>  
-                        
-                            <p:confirmDialog global="true" 
-                                             showEffect="fade" 
-                                             hideEffect="fade">
-                                            <p:commandButton value="Si" 
-                                                             type="button" 
-                                                             styleClass="ui-confirmdialog-yes" 
-                                                             icon="ui-icon-check" />
-                                            
-                                            <p:commandButton value="No" 
-                                                             type="button" 
-                                                             styleClass="ui-confirmdialog-no" 
-                                                             icon="ui-icon-close" />
-                           </p:confirmDialog>   
-                        
-                    </p:column> 
-                    
-                </p:dataTable>
-                
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                           </p:confirmDialog>                   
+                    </p:column>  
+                </p:dataTable>          
             </h:form>
         </ui:define>
     </ui:composition>

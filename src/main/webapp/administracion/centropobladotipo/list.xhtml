@@ -18,23 +18,11 @@
             <br/>
                         
             <h:form>
-                <p:panel id="CPTForm" 
-                         header="#{bundle.TipoCentroPobladoListTitle}" 
-                         style="margin-bottom:10px;">
-                    
+                <p:panel id="CPTForm" header="#{bundle.TipoCentroPobladoListTitle}" style="margin-bottom:10px;">
                     <h:panelGrid columns="6">
-                        <p:commandButton icon="ui-icon-newwin" 
-                                         value="Agregar Nuevo" 
-                                         action="#{mbCentroPobladoTipo.prepareCreate}"/>
-                        
-                        <p:commandButton icon="ui-icon-refresh" 
-                                         value="Refrescar Listado" 
-                                         action="#{mbCentroPobladoTipo.prepareList}" 
-                                         update="centroPobladoTipoList"/>
-                        
-                        <p:commandButton icon="ui-icon-home"
-                                         value="Inicio"
-                                         action="#{mbCentroPobladoTipo.cleanUp()}"/>
+                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbCentroPobladoTipo.prepareCreate}"/>
+                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbCentroPobladoTipo.prepareList}" update="centroPobladoTipoList"/>
+                        <p:commandButton icon="ui-icon-home"value="Inicio"action="#{mbCentroPobladoTipo.cleanUp()}"/>
                     </h:panelGrid>
                 </p:panel>
 
@@ -49,98 +37,55 @@
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
                     
-                    <f:facet name="header">
-                        #{bundle.TipoCentroPobladoListTitle}
-                        <p:commandButton id="toggler" 
-                                         type="button" 
-                                         value="Columnas" 
-                                         icon="ui-icon-calculator" 
-                                         style="margin-left: 10px"/>
+                    <f:facet name="header">#{bundle.TipoCentroPobladoListTitle}
+                        <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px"/>
                         
-                        <p:columnToggler datasource="centroPobladoTipoList" 
-                                         trigger="toggler" />
+                        <p:columnToggler datasource="centroPobladoTipoList" trigger="toggler" />
                     </f:facet>
                     
-                    <p:column headerText="Tipo de Centro Poblado" 
-                              filterMatchMode="contains"
-                              sortBy="#{e.nombre}" 
-                              filterBy="#{e.nombre}" > 
+                    <p:column headerText="Tipo de Centro Poblado" filterMatchMode="contains"sortBy="#{e.nombre}" filterBy="#{e.nombre}" > 
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>                               
                     
 
-                    <p:column filterBy="#{e.adminentidad.habilitado}" 
-                              headerText="Estado" 
-                              footerText="" 
-                              filterMatchMode="equals">
+                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('centroPobladoTipoTable').filter()"
-                                             style="font-size: 80%">
+                            <p:selectOneMenu onchange="PF('centroPobladoTipoTable').filter()"style="font-size: 80%">
                                 <f:converter converterId="javax.faces.Boolean" />
-                                <f:selectItem itemLabel="Todos" 
-                                              itemValue="" />
-                                <f:selectItem itemLabel="Activos" 
-                                              itemValue="true" />
-                                <f:selectItem itemLabel="Inactivos" 
-                                              itemValue="false" />
+                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                <f:selectItem itemLabel="Activos" itemValue="true" />
+                                <f:selectItem itemLabel="Inactivos" itemValue="false" />
                             </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
                     </p:column>
                     
-                    <p:column headerText="Acciones" 
-                              style="width:135px">
-                        <p:growl id="messages" 
-                                 showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" 
-                                         action="#{mbCentroPobladoTipo.prepareView}">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbCentroPobladoTipo.current}" />
-                            </p:commandButton>
+                    <p:column headerText="Acciones" style="width:135px">
+                        <p:growl id="messages" showDetail="true" />    
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbCentroPobladoTipo.prepareView}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
+                        </p:commandButton>
 
-                            <p:commandButton icon="ui-icon-pencil" 
-                                             action="#{mbCentroPobladoTipo.prepareEdit}"
-                                             title="Editar" >
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbCentroPobladoTipo.current}" />
-                            </p:commandButton>
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbCentroPobladoTipo.prepareEdit}"title="Editar" >
+                                <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
+                         </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-close" 
-                                         action="#{mbCentroPobladoTipo.deshabilitar}" 
-                                         rendered="#{e.adminentidad.habilitado == 'true'}" 
+                        <p:commandButton icon="ui-icon-close" action="#{mbCentroPobladoTipo.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" 
                                          title="Deshabilitar"
                                          update="centroPobladoTipoList">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbCentroPobladoTipo.current}" />
-                                <p:confirm header="Confirmar" 
-                                           message="¿Desea deshabilitar el Tipo de Centro Poblado?" 
-                                           icon="ui-icon-alert" />
-                            </p:commandButton>                
+                                <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Tipo de Centro Poblado?" icon="ui-icon-alert" />
+                        </p:commandButton>                
 
-                            <p:commandButton icon="ui-icon-check" 
-                                             action="#{mbCentroPobladoTipo.habilitar}" 
-                                             rendered="#{e.adminentidad.habilitado == 'false'}" 
-                                             title="Habilitar"
-                                             update="centroPobladoTipoList">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbCentroPobladoTipo.current}" />
-                                <p:confirm header="Confirmar" 
-                                           message="¿Desea habilitar el Tipo de Centro Poblado?" 
-                                           icon="ui-icon-alert" />
-                            </p:commandButton>  
+                        <p:commandButton icon="ui-icon-check" action="#{mbCentroPobladoTipo.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar"update="centroPobladoTipoList">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar el Tipo de Centro Poblado?" icon="ui-icon-alert" />
+                        </p:commandButton>  
                         
-                            <p:confirmDialog global="true" 
-                                             showEffect="fade" 
-                                             hideEffect="fade">
-                                           <p:commandButton value="Si" 
-                                                            type="button" 
-                                                            styleClass="ui-confirmdialog-yes" 
-                                                            icon="ui-icon-check" />
-                                           <p:commandButton value="No" 
-                                                            type="button" 
-                                                            styleClass="ui-confirmdialog-no" 
-                                                            icon="ui-icon-close" />
-                           </p:confirmDialog>      
+                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                  <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                  <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                         </p:confirmDialog>      
                     </p:column> 
                     
                 </p:dataTable>

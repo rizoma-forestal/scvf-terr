@@ -14,55 +14,19 @@
             <h:form id="frmEdit">
                 <p:panel id="pnEdit" header="#{bundle.MunicipioEditTitle}" style="margin-bottom:10px;">
                     <h:panelGrid columns="2">
-                        
-                        
-                        <p:outputLabel
-                                            value="#{bundle.CreateMunicipioLabel_Provincia}" 
-                                            for="prov" />
-                        <p:selectOneMenu 
-                                            id="prov" 
-                                            value="#{mbMunicipio.selectProvincia}" 
-                                            required="true" 
-                                            requiredMessage="#{bundle.CreateCentroPobladoProvinciaRequiredMessage}" 
-                                            valueChangeListener="#{mbMunicipio.departamentoChangeListener}" >
-                            <f:selectItem 
-                                            itemLabel="Seleccione la Provincia" 
-                                            itemValue="" 
-                                            noSelectionOption="true" />
-                            <f:selectItems 
-                                            value="#{mbMunicipio.listaProvincias}" 
-                                            var="prov" 
-                                            itemLabel="#{prov.nombre}" 
-                                            itemValue="#{prov}" />
-                           <p:ajax event="change" update="depto"/>
+                        <p:outputLabel value="#{bundle.CreateMunicipioLabel_Provincia}" for="prov" />
+                        <p:selectOneMenu id="prov" value="#{mbMunicipio.selectProvincia}" required="true" requiredMessage="#{bundle.CreateCentroPobladoProvinciaRequiredMessage}" valueChangeListener="#{mbMunicipio.departamentoChangeListener}" >
+                                <f:selectItem itemLabel="Seleccione la Provincia" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{mbMunicipio.listaProvincias}" var="prov" itemLabel="#{prov.nombre}" itemValue="#{prov}" />
+                                <p:ajax event="change" update="depto"/>
                         </p:selectOneMenu>                          
-
-                         <p:outputLabel 
-                                            value="#{bundle.CreateCentroPobladoLabel_Departamento}" 
-                                            for="depto"/>                                                      
-                        <p:selectOneMenu 
-                                            id="depto" 
-                                            value="#{mbMunicipio.selected.departamento}" 
-                                            requiredMessage="#{bundle.CreateCentroPobladoDepartamentoRequiredMessage}" 
-                                            required="true">                                                      
-                            <f:selectItem 
-                                            itemLabel="Seleccione el Departamento" 
-                                            itemValue="" 
-                                            noSelectionOption="true" />                                                     
-                            <f:selectItems 
-                                           value="#{mbMunicipio.comboDepartamentos}" 
-                                           var="depto" 
-                                           itemLabel="#{depto.nombre}" 
-                                           itemValue="#{depto}"/>                           
-                        </p:selectOneMenu>                        
-                        
-                        
+                        <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Departamento}" for="depto"/>                                                      
+                        <p:selectOneMenu id="depto" value="#{mbMunicipio.selected.departamento}" requiredMessage="#{bundle.CreateCentroPobladoDepartamentoRequiredMessage}" required="true">                                                      
+                            <f:selectItem itemLabel="Seleccione el Departamento" itemValue="" noSelectionOption="true" />                                                     
+                            <f:selectItems value="#{mbMunicipio.comboDepartamentos}" var="depto" itemLabel="#{depto.nombre}" itemValue="#{depto}"/>                           
+                        </p:selectOneMenu>                         
                         <p:outputLabel value="#{bundle.CreateMunicipioLabel_nombre}" for="nombre"/>
-                        
-                        <p:inputText id="nombre" validator="#{mbMunicipio.validarUpdate}" 
-                                     value="#{mbMunicipio.selected.nombre}" 
-                                     requiredMessage="#{bundle.CreateMunicipioRequiredMessage_nombre}" 
-                                     required="true"/>
+                        <p:inputText id="nombre" validator="#{mbMunicipio.validarUpdate}" value="#{mbMunicipio.selected.nombre}" requiredMessage="#{bundle.CreateMunicipioRequiredMessage_nombre}" required="true"/>
                         <h:inputHidden id="id" value="#{mbMunicipio.selected.id}" />
                         <p:message for="nombre" />
                     </h:panelGrid>
@@ -80,10 +44,7 @@
                         </p:commandButton>
                     </f:facet>
                     <f:facet name="right">
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" 
-                                         action="#{mbMunicipio.prepareList}" 
-                                         value="Volver" 
-                                         immediate="true"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbMunicipio.prepareList}" value="Volver" immediate="true"/>
                     </f:facet>                    
                 </p:toolbar>
             </h:form>

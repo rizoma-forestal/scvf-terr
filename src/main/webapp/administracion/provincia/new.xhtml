@@ -7,19 +7,16 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.ProvinciaTitle}" />
+        <h:outputText value="#{bundle.ProvinciaTitle}" />
         </ui:define>
         <ui:define name="content">
-            <br/>
-            <h:form id="frmNew">
+        <br/>
+        <h:form id="frmNew">
                 <p:panel id="pnNew" 
                          header="#{bundle.ProvinciaNewTitle}" 
-                         style="margin-bottom:10px;">
-                    
-                    <h:panelGrid columns="2">
-                           
-                        <p:outputLabel value="#{bundle.CreateProvinciaLabel_nombre}" 
-                                       for="nombre"/>
+                         style="margin-bottom:10px;">   
+                    <h:panelGrid columns="2">        
+                        <p:outputLabel value="#{bundle.CreateProvinciaLabel_nombre}" for="nombre"/>
                         <p:inputText id="nombre" 
                                      validator="#{mbProvincia.validarInsert}" 
                                      value="#{mbProvincia.selected.nombre}" 
@@ -34,18 +31,12 @@
                                          value="Guardar" 
                                          action="#{mbProvincia.create}" 
                                          update="pnNew"/>
-                        <p:commandButton icon="ui-icon-cancel" 
-                                         value="Limpiar" 
-                                         style="float: right">
-                            <p:ajax update="pnNew" 
-                                    resetValues="true" />
+                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: right">
+                            <p:ajax update="pnNew" resetValues="true" />
                         </p:commandButton>
                     </f:facet>
                     <f:facet name="right">
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" 
-                                         action="#{mbProvincia.prepareList}" 
-                                         value="Volver" 
-                                         immediate="true"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbProvincia.prepareList}" value="Volver" immediate="true"/>
                     </f:facet>
                 </p:toolbar>
             </h:form>

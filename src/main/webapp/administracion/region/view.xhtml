@@ -7,63 +7,53 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.RegionTitle}" />
+        <h:outputText value="#{bundle.RegionTitle}" />
         </ui:define>
         <ui:define name="content">
-            
-            <br/>
-            
+        <br/>
             <h:form id="frmRegionView">
-                <p:panel id="pnView" 
-                         header="#{bundle.RegionViewTitle}" 
-                         style="margin-bottom:10px;">
+                <p:panel id="pnView" header="#{bundle.RegionViewTitle}" style="margin-bottom:10px;">
                     <p:messages id="messages" />
-                    
                     <h:panelGrid columns="2">
+                        <h:outputLabel  value="#{bundle.CreateRegionLabel_nombre}"/>
+                        <h:outputText   value="#{mbRegion.selected.nombre}" 
+                                        title="#{bundle.CreateRegionTitle_nombre}"/>
                         
-                        <h:outputLabel value="#{bundle.CreateRegionLabel_nombre}"/>
-                        <h:outputText value="#{mbRegion.selected.nombre}" 
-                                      title="#{bundle.CreateRegionTitle_nombre}"/>
+                        <h:outputLabel  value="#{bundle.ViewEspRegion}"/>
+                        <h:outputText   value="#{mbRegion.selected.especificidadderegion.nombre}" 
+                                        title="#{bundle.ViewEspRegion}"/>                       
                         
-                        <h:outputLabel value="#{bundle.ViewEspRegion}"/>
-                        <h:outputText value="#{mbRegion.selected.especificidadderegion.nombre}" 
-                                      title="#{bundle.ViewEspRegion}"/>                       
+                        <h:outputLabel  value="#{bundle.UsuarioAlta}"/>
+                        <h:outputText   value="#{mbRegion.selected.adminentidad.usAlta.nombre}"  
+                                        title="#{bundle.UsuarioAlta}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaAlta}"/>
+                        <h:outputText   value="#{mbRegion.selected.adminentidad.strFechaAlta}" 
+                                        title="#{bundle.FechaAlta}"/>                         
+
+                        <h:outputLabel  value="#{bundle.UsuarioModifica}"/>
+                        <h:outputText   value="#{mbRegion.selected.adminentidad.usModif.nombre}" 
+                                        title="#{bundle.UsuarioModifica}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaModifica}"/>
+                        <h:outputText   value="#{mbRegion.selected.adminentidad.strFechaModif}" 
+                                        title="#{bundle.FechaModifica}"/>                          
+
+                        <h:outputLabel  value="#{bundle.UsuarioBaja}" 
+                                        rendered="#{not mbRegion.selected.adminentidad.habilitado}"/>
+                        <h:outputText   value="#{mbRegion.selected.adminentidad.usBaja.nombre}" 
+                                        rendered="#{not mbRegion.selected.adminentidad.habilitado}" 
+                                        title="#{bundle.UsuarioBaja}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaBaja}" 
+                                        rendered="#{not mbRegion.selected.adminentidad.habilitado}"/>
+                        <h:outputText   value="#{mbRegion.selected.adminentidad.strFechaBaja}" 
+                                        rendered="#{not mbRegion.selected.adminentidad.habilitado}"
+                                        title="#{bundle.FechaBaja}"/>                         
                         
-                        <h:outputLabel value="#{bundle.UsuarioAlta}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usAlta.nombre}"  
-                                      title="#{bundle.UsuarioAlta}"/>                        
-
-                        <h:outputLabel value="#{bundle.FechaAlta}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.strFechaAlta}" 
-                                      title="#{bundle.FechaAlta}"/>                         
-
-                        <h:outputLabel value="#{bundle.UsuarioModifica}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usModif.nombre}" 
-                                      title="#{bundle.UsuarioModifica}"/>                        
-
-                        <h:outputLabel value="#{bundle.FechaModifica}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.strFechaModif}" 
-                                      title="#{bundle.FechaModifica}"/>                          
-
-                        <h:outputLabel value="#{bundle.UsuarioBaja}" 
-                                       rendered="#{not mbRegion.selected.adminentidad.habilitado}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.usBaja.nombre}" 
-                                      rendered="#{not mbRegion.selected.adminentidad.habilitado}" 
-                                      title="#{bundle.UsuarioBaja}"/>                        
-
-                        <h:outputLabel value="#{bundle.FechaBaja}" 
-                                       rendered="#{not mbRegion.selected.adminentidad.habilitado}"/>
-                        <h:outputText value="#{mbRegion.selected.adminentidad.strFechaBaja}" 
-                                      rendered="#{not mbRegion.selected.adminentidad.habilitado}"
-                                      title="#{bundle.FechaBaja}"/>                         
-                        
-                        <h:outputLabel value="#{bundle.ProvinciasAsociadas}" />
-                        <p:commandButton value="Ver" 
-                                         type="button" 
-                                         onclick="PF('Provincias').show();" 
-                                         actionListener="#{mbRegion.selected.provincias}" />      
+                        <h:outputLabel   value="#{bundle.ProvinciasAsociadas}" />
+                        <p:commandButton value="Ver" type="button" onclick="PF('Provincias').show();" actionListener="#{mbRegion.selected.provincias}" />      
                     </h:panelGrid>   
-
                         <p:dialog style="font-size: 80%"
                                   header="Listado de provincias asociadas"
                                   widgetVar="Provincias"
@@ -83,18 +73,12 @@
                                 </p:column>                        
                             </p:dataTable>
                         </p:dialog>   
-
-                    </p:panel>
-                
+                    </p:panel>      
                 <p:toolbar>
                     <f:facet name="left">
-                        <p:commandButton icon="ui-icon-refresh" 
-                                         action="#{mbRegion.prepareList()}" 
-                                         value="Volver" 
-                                         ajax="false"/>
+                        <p:commandButton icon="ui-icon-refresh" action="#{mbRegion.prepareList()}" value="Volver" ajax="false"/>
                     </f:facet>
                 </p:toolbar>
-
             </h:form>
         </ui:define>
     </ui:composition>

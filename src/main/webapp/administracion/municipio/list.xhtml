@@ -5,9 +5,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-      
     <h:head>
-        <title>#{bundle.MunicipioTitle}</title>
+    <title>#{bundle.MunicipioTitle}</title>
     </h:head>
     <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
         <ui:define name="title">
@@ -15,56 +14,31 @@
         </ui:define>
         <ui:define name="content">
             <f:metadata>  
-                <f:event listener="#{mbMunicipio.iniciar}" 
-                         type="preRenderView"></f:event>  
+                <f:event listener="#{mbMunicipio.iniciar}" type="preRenderView"></f:event>  
             </f:metadata>
             <br/> 
             <h:form>
-                
-                <p:panel id="MunicipioForm" 
-                         header="#{bundle.MunicipioListTitle}" 
-                         style="margin-bottom:10px;">                  
-                        <p:commandButton icon="ui-icon-newwin" 
-                                         value="Agregar Nuevo" 
-                                         action="#{mbMunicipio.prepareCreate}"/>
-                       
-                        <p:commandButton icon="ui-icon-refresh" 
-                                         value="Refrescar Listado" 
-                                         action="#{mbMunicipio.prepareList}" 
-                                         update="municipioList"/>
-                       
-                        <p:commandButton icon="ui-icon-home" 
-                                         value="Inicio" 
-                                         action="#{mbRegion.cleanUp()}"/>
-                          
-                        <p:commandButton icon="ui-icon-calculator" 
-                                         value="Columnas" id="toggler" 
-                                         type="button" 
-                                         style="float:right" />
-                        
-                        <p:columnToggler datasource="municipioList" 
-                                         trigger="toggler"  />              
+                <p:panel id="MunicipioForm" header="#{bundle.MunicipioListTitle}" style="margin-bottom:10px;">                  
+                        <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbMunicipio.prepareCreate}"/>
+                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbMunicipio.prepareList}" update="municipioList"/>
+                        <p:commandButton icon="ui-icon-home" value="Inicio" action="#{mbRegion.cleanUp()}"/>
+                        <p:commandButton icon="ui-icon-calculator" value="Columnas" id="toggler" type="button"  style="float:right" />
+                        <p:columnToggler datasource="municipioList" trigger="toggler"  />              
                 </p:panel>
-                     
-
                 <p:dataTable value="#{mbMunicipio.items}" var="e" id="municipioList" rows="5"
                              paginator="true" 
                              widgetVar="municipioTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
-
                     <p:column headerText="Municipio" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
-                    </p:column>
-                    
+                    </p:column>                    
                     <p:column headerText="Departamento" sortBy="#{e.departamento.nombre}" filterBy="#{e.departamento.nombre}" >
                         <p:outputLabel value="#{e.departamento.nombre}"/>
-                    </p:column>                    
-                    
+                    </p:column>                       
                     <p:column headerText="Provincia" sortBy="#{e.departamento.provincia.nombre}" filterBy="#{e.departamento.provincia.nombre}" >
                         <p:outputLabel value="#{e.departamento.provincia.nombre}"/>
-                    </p:column>               
-                    
+                    </p:column>                
                     <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('municipioTable').filter()">
@@ -76,54 +50,33 @@
                         </f:facet>
                        <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
                     </p:column>
-                    
-
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" 
-                                         action="#{mbMunicipio.prepareView}">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbMunicipio.current}" />
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbMunicipio.prepareView}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
                             </p:commandButton>
-
-                            <p:commandButton icon="ui-icon-pencil" 
-                                             action="#{mbMunicipio.prepareEdit}">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbMunicipio.current}" />
+                            <p:commandButton icon="ui-icon-pencil" action="#{mbMunicipio.prepareEdit}">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
                             </p:commandButton>
-
-                        <p:commandButton icon="ui-icon-close" 
-                                         action="#{mbMunicipio.deshabilitar}" 
-                                         rendered="#{e.adminentidad.habilitado == 'true'}" 
-                                         title="Deshabilitar"
+                        <p:commandButton icon="ui-icon-close" action="#{mbMunicipio.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar"
                                          update="municipioList">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbMunicipio.current}" />
-                                <p:confirm header="Confirmar" 
-                                           message="¿Desea deshabilitar el Municipio?" 
-                                           icon="ui-icon-alert" />
+                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar el Municipio?" icon="ui-icon-alert" />
                             </p:commandButton>                
-
                             <p:commandButton icon="ui-icon-check" 
                                              action="#{mbMunicipio.habilitar}" 
                                              rendered="#{e.adminentidad.habilitado == 'false'}" 
                                              title="Habilitar"
                                              update="municipioList">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbMunicipio.current}" />
-                                <p:confirm header="Confirmar" 
-                                           message="¿Desea habilitar el Municipio?" 
-                                           icon="ui-icon-alert" />
+                                <f:setPropertyActionListener value="#{e}" target="#{mbMunicipio.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar el Municipio?" icon="ui-icon-alert" />
                             </p:commandButton>  
-                        
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                            </p:confirmDialog>      
-                    </p:column> 
-                    
+                    </p:column>        
                 </p:dataTable>
-
             </h:form>
         </ui:define>
     </ui:composition>

@@ -9,6 +9,7 @@
         <ui:define name="title">
             <h:outputText value="#{bundle.CentroPobladoTitle}" />
         </ui:define>
+        
         <ui:define name="content">
             <br/>
             <h:form id="frmCentroPobladoView">
@@ -18,64 +19,61 @@
                     <p:messages id="messages" />
                     
                     <h:panelGrid columns="2">
-                        <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Provincia}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.departamento.provincia.nombre}" 
-                                      title="#{bundle.CreateCentroPobladoLabel_Provincia}"/>     
+                        <h:outputLabel  value="#{bundle.CreateCentroPobladoLabel_Provincia}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.departamento.provincia.nombre}" 
+                                        title="#{bundle.CreateCentroPobladoLabel_Provincia}"/>     
                          
-                        <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Departamento}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.departamento.nombre}" 
-                                      title="#{bundle.CreateCentroPobladoLabel_Departamento}"/>      
+                        <h:outputLabel  value="#{bundle.CreateCentroPobladoLabel_Departamento}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.departamento.nombre}" 
+                                        title="#{bundle.CreateCentroPobladoLabel_Departamento}"/>      
                         
-                        <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_Tipo}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.centroPobladoTipo.nombre}"
-                                      title="#{bundle.CreateCentroPobladoLabel_Tipo}"/>  
+                        <h:outputLabel  value="#{bundle.CreateCentroPobladoLabel_Tipo}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.centroPobladoTipo.nombre}"
+                                        title="#{bundle.CreateCentroPobladoLabel_Tipo}"/>  
                         
-                        <h:outputLabel value="#{bundle.CreateCentroPobladoLabel_nombre}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.nombre}" 
-                                      title="#{bundle.CreateCentroPobladoTitle_nombre}"/>
+                        <h:outputLabel  value="#{bundle.CreateCentroPobladoLabel_nombre}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.nombre}" 
+                                        title="#{bundle.CreateCentroPobladoTitle_nombre}"/>
                         
-                        <h:outputLabel value="#{bundle.UsuarioAlta}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usAlta.nombre}"  
-                                      title="#{bundle.UsuarioAlta}"/>                        
+                        <h:outputLabel  value="#{bundle.UsuarioAlta}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.adminentidad.usAlta.nombre}"  
+                                        title="#{bundle.UsuarioAlta}"/>                        
 
-                        <h:outputLabel value="#{bundle.FechaAlta}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.strFechaAlta}" 
-                                      title="#{bundle.FechaAlta}"/>                         
+                        <h:outputLabel  value="#{bundle.FechaAlta}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.adminentidad.strFechaAlta}" 
+                                        title="#{bundle.FechaAlta}"/>                         
 
-                        <h:outputLabel value="#{bundle.UsuarioModifica}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usModif.nombre}" 
-                                      title="#{bundle.UsuarioModifica}"/>                        
+                        <h:outputLabel  value="#{bundle.UsuarioModifica}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.adminentidad.usModif.nombre}" 
+                                        title="#{bundle.UsuarioModifica}"/>                        
 
-                        <h:outputLabel value="#{bundle.FechaModifica}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.strFechaModif}" 
-                                      title="#{bundle.FechaModifica}"/>                          
+                        <h:outputLabel  value="#{bundle.FechaModifica}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.adminentidad.strFechaModif}" 
+                                        title="#{bundle.FechaModifica}"/>                          
 
-                        <h:outputLabel value="#{bundle.UsuarioBaja}" 
-                                       rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
+                        <h:outputLabel  value="#{bundle.UsuarioBaja}" 
+                                        rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
                         
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.usBaja.nombre}" 
-                                      rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}" 
-                                      title="#{bundle.UsuarioBaja}"/>                        
+                        <h:outputText   value="#{mbCentroPoblado.selected.adminentidad.usBaja.nombre}" 
+                                        rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}" 
+                                        title="#{bundle.UsuarioBaja}"/>                        
 
-                        <h:outputLabel value="#{bundle.FechaBaja}" 
-                                       rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
-                        <h:outputText value="#{mbCentroPoblado.selected.adminentidad.strFechaBaja}" 
-                                      rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"
-                                      title="#{bundle.FechaBaja}"/>
+                        <h:outputLabel  value="#{bundle.FechaBaja}" 
+                                        rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"/>
+                        <h:outputText   value="#{mbCentroPoblado.selected.adminentidad.strFechaBaja}" 
+                                        rendered="#{not mbCentroPoblado.selected.adminentidad.habilitado}"
+                                        title="#{bundle.FechaBaja}"/>
 
-                         
-                        
+      
                     </h:panelGrid>                    
                 </p:panel>
+                
                 <p:toolbar>
                     <f:facet name="right">
-                        <p:commandButton icon="ui-icon-refresh" 
-                                         action="#{mbCentroPoblado.prepareList}" 
-                                         value="Volver" 
-                                         ajax="false"/>
+                        <p:commandButton icon="ui-icon-refresh" action="#{mbCentroPoblado.prepareList}" value="Volver" ajax="false"/>
                     </f:facet>
                 </p:toolbar>
-
+            
             </h:form>
         </ui:define>
     </ui:composition>

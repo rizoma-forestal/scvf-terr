@@ -5,9 +5,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-      
     <h:head>
-        <title>#{bundle.ProvinciaTitle}</title>
+    <title>#{bundle.ProvinciaTitle}</title>
     </h:head>
     <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
         <ui:define name="title">
@@ -26,9 +25,7 @@
                         <p:commandButton icon="ui-icon-cancel" value="Inicio" action="#{mbProvincia.cleanUp}" />
                     </h:panelGrid>
                 </p:panel>
-
                 <br/>           
-
                 <p:dataTable value="#{mbProvincia.items}" var="e" id="provinciaList" rows="5"
                              paginator="true" widgetVar="provinciaTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -41,8 +38,6 @@
                     <p:column headerText="Nombre" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>
- 
-
                     <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('provinciaTable').filter()">
@@ -53,60 +48,33 @@
                             </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
-                    </p:column>
-                    
-                    
+                    </p:column>    
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
                         <p:commandButton icon="ui-icon-zoomin" action="#{mbProvincia.prepareView}">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
                             </p:commandButton>
-
                             <p:commandButton icon="ui-icon-pencil" action="#{mbProvincia.prepareEdit}">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
                             </p:commandButton>
-
-                        <p:commandButton icon="ui-icon-close" 
-                                         action="#{mbProvincia.deshabilitar}" 
-                                         rendered="#{e.adminentidad.habilitado == 'true'}" 
-                                         title="Deshabilitar"
-                                         update="provinciaList">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbProvincia.current}" />
-                                <p:confirm header="Confirmar" 
-                                           message="¿Desea deshabilitar la Provincia?" 
-                                           icon="ui-icon-alert" />
+                        <p:commandButton icon="ui-icon-close" action="#{mbProvincia.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar"update="provinciaList">
+                                <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea deshabilitar la Provincia?" icon="ui-icon-alert" />
                        </p:commandButton>                
-
                             <p:commandButton icon="ui-icon-check" 
                                              action="#{mbProvincia.habilitar}" 
                                              rendered="#{e.adminentidad.habilitado == 'false'}" 
                                              title="Habilitar"
                                              update="provinciaList">
-                                <f:setPropertyActionListener value="#{e}" 
-                                                             target="#{mbProvincia.current}" />
-                                <p:confirm header="Confirmar" 
-                                           message="¿Desea habilitar la Provincia?" 
-                                           icon="ui-icon-alert" />
+                                <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
+                                <p:confirm header="Confirmar" message="¿Desea habilitar la Provincia?" icon="ui-icon-alert" />
                             </p:commandButton>  
-                        
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                            </p:confirmDialog>      
                     </p:column> 
-
-
-                            
-
-        
-
-            
-                    
-                    
-                    
                 </p:dataTable>
-
             </h:form>
         </ui:define>
     </ui:composition>
