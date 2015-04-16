@@ -33,7 +33,6 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
-import static sun.security.jgss.GSSUtil.login;
 
 /**
  *

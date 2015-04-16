@@ -14,8 +14,6 @@ import ar.gob.ambiente.servicios.gestionterritorial.facades.EspecificidadDeRegio
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;

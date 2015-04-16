@@ -48,7 +48,6 @@ public class MbCentroPobladoTipo  implements Serializable{
     private CentroPobladoFacade centroPobladoFacade;
     private int selectedItemIndex;
     private String selectParam;    
-    //private List<String> listaNombres; 
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
     private Usuario usLogeado;
     private boolean iniciado;
@@ -124,7 +123,6 @@ public class MbCentroPobladoTipo  implements Serializable{
         return items;
     }
 
-    
     /**
      * Método para revocar la sesión del MB
      * @return 
@@ -136,9 +134,7 @@ public class MbCentroPobladoTipo  implements Serializable{
    
         return "inicio";
     }      
-    
-    
-    
+
     /*******************************
      ** Métodos de inicialización **
      *******************************/
@@ -310,10 +306,6 @@ public class MbCentroPobladoTipo  implements Serializable{
         }
     }
 
-
-
-  
-    
     /**************************
     **    Métodos de selección     **
     **************************/
@@ -369,15 +361,6 @@ public class MbCentroPobladoTipo  implements Serializable{
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            /*
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-            */
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
     

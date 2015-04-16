@@ -8,7 +8,6 @@ package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Usuario;
-import ar.gob.ambiente.servicios.gestionterritorial.entidades.util.CriptPass;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.UsuarioFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
