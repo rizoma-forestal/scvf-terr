@@ -64,20 +64,6 @@ public class MunicipioFacade extends AbstractFacade<Municipio> {
                 .setParameter("stringParam", aBuscar);
         return q.getResultList().isEmpty();
     }    
-    
-    /**
-     * Método que verifica si la entidad tiene dependencia (Hijos)
-     * @param id: ID de la entidad
-     * @return: True o False
-     */
-    public boolean tieneDependencias(Long id){
-        em = getEntityManager();
-        String queryString = "SELECT loc FROM Localidad loc " 
-                + "WHERE loc.municipio.id = :idParam";               
-        Query q = em.createQuery(queryString)
-                .setParameter("idParam", id); 
-        return q.getResultList().isEmpty();
-    }  
 
     /**
      * Metodo para el autocompletado de la búsqueda por nombre

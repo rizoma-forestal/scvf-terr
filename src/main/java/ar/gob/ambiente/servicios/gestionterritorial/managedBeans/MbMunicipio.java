@@ -303,54 +303,38 @@ public class MbMunicipio implements Serializable {
      * Previamente actualiza los datos de administración
      * @return mensaje que notifica la actualización
      */
-    public String update() {    
-        Municipio mu;
-        try {
-            mu = getFacade().getExistente(current.getNombre(), current.getDepartamento());
-            if(mu == null){
-                // Actualización de datos de administración de la entidad
-                Date date = new Date(System.currentTimeMillis());
-                current.getAdminentidad().setFechaModif(date);
-                current.getAdminentidad().setUsModif(usLogeado);
-                
-                // Actualizo
-                getFacade().edit(current);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioUpdated"));
-                //listaTiposCP.clear();
-                listaProvincias.clear();
-                
-                //listado.clear();
-                //listado = null;
-                
-                return "view";
-            }else{
-                if(mu.getId().equals(current.getId())){
-                    // Actualización de datos de administración de la entidad
-                    Date date = new Date(System.currentTimeMillis());
-                    current.getAdminentidad().setFechaModif(date);
-                    current.getAdminentidad().setUsModif(usLogeado);
+    public String update() {
+        Date date = new Date(System.currentTimeMillis());
+        //Date dateBaja = new Date();
+        
+        // actualizamos según el valor de update
+        if(update == 1){
+            current.getAdminentidad().setFechaBaja(date);
+            current.getAdminentidad().setUsBaja(usLogeado);
+            current.getAdminentidad().setHabilitado(false);
+        }
+        if(update == 2){
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+            current.getAdminentidad().setHabilitado(true);
+            current.getAdminentidad().setFechaBaja(null);
+            current.getAdminentidad().setUsBaja(usLogeado);
+        }
+        if(update == 0){
+            current.getAdminentidad().setFechaModif(date);
+            current.getAdminentidad().setUsModif(usLogeado);
+        }
 
-                    // Actualizo
-                    getFacade().edit(current);
-                    JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdated"));
-                    //listaTiposCP.clear();
-                    listaProvincias.clear();
-                    return "view";                   
-                }else{
-                    JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("CentroPobladoExistente"));
-                    return null;
-                }
-            }
+        // acualizo
+        try {
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MunicipioUpdated"));
+            return "view";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("CentroPobladoUpdatedErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("MunicipioUpdatedErrorOccured"));
             return null;
         }
-    }   
-
-    
-    
-    
-    
+    }
     
     /*************************
     ** Métodos de selección **
@@ -478,19 +462,8 @@ public class MbMunicipio implements Serializable {
      /**
      */    
     public void deshabilitar() {
-       if (getFacade().tieneDependencias(current.getId())){
           update = 1;
           update();        
           recreateModel();
-       } 
-        else{
-            //No Deshabilita 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("GeneroNonDeletable"));            
-        }
-    } 
-        
-    
-
-    
-    
+       }    
 }

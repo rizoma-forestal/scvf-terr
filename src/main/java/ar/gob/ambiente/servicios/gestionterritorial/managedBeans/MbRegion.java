@@ -318,7 +318,7 @@ public class MbRegion implements Serializable{
         if(update == 0){
             current.getAdminentidad().setFechaModif(date);
             current.getAdminentidad().setUsModif(usLogeado);
-            current.getProvincias().set(update, null);
+            //current.getProvincias().set(update, null);
         }
 
         // acualizo

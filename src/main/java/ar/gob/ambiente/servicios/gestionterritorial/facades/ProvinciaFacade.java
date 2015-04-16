@@ -105,7 +105,8 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
         em = getEntityManager();        
         List<Provincia> result;
         String queryString = "SELECT pro FROM Provincia pro " 
-                + "WHERE pro.adminentidad.habilitado = true";                   
+                + "WHERE pro.adminentidad.habilitado = true "
+                + "ORDER BY pro.nombre";                   
         Query q = em.createQuery(queryString);
         result = q.getResultList();
         return result;
