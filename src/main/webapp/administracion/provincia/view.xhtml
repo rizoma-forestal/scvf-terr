@@ -53,25 +53,20 @@
                         <h:outputLabel value="Regiones Asociadas" />
                         <p:commandButton value="Ver" type="button" onclick="PF('Regiones').show();" actionListener="#{mbProvincia.selected.regiones}" />                              
                  </h:panelGrid>    
-                     <p:dialog style="font-size: 80%"
-                                  header="Listado de Departamentos asociados"
-                                  widgetVar="Departamentos"
-                                  showEffect="explode"
-                                  hideEffect="bounce"
-                                  height="100"
-                                  width="30%">
-      
+                     <p:dialog style="font-size: 80%" header="Listado de Departamentos asociados"
+                                  widgetVar="Departamentos" showEffect="explode" hideEffect="bounce"
+                                  height="100" width="30%">     
                         <p:dataTable value="#{mbProvincia.selected.departamentos}" var="e" id="departamentoList" >
-                            <p:column headerText="Especie"filterMatchMode="contains"filterBy="#{e.nombre}"sortBy="#{e.nombre}"rendered="#{e.adminentidad.habilitado == 'true'}" >
+                            <p:column headerText="Especie" filterMatchMode="contains" filterBy="#{e.nombre}" sortBy="#{e.nombre}" rendered="#{e.adminentidad.habilitado == 'true'}" >
                                 <p:outputLabel value="#{e.nombre}"/> 
                             </p:column>                        
                         </p:dataTable>
                     </p:dialog>     
                     
                     <p:dialog style="font-size: 80%"
-                              header="Asociado a las Regiones:"widgetVar="Regiones"showEffect="explode"hideEffect="bounce"height="100"width="30%">
+                              header="Asociado a las Regiones:" widgetVar="Regiones" showEffect="explode" hideEffect="bounce" height="100" width="30%">
                         <p:dataTable value="#{mbProvincia.selected.regiones}" var="reg" id="provinciaList" >
-                            <p:column headerText="Regiones"filterMatchMode="contains"filterBy="#{reg.nombre}"sortBy="#{reg.nombre}"rendered="#{reg.adminentidad.habilitado == 'true'}" >
+                            <p:column headerText="Regiones" filterMatchMode="contains" filterBy="#{reg.nombre}" sortBy="#{reg.nombre}" rendered="#{reg.adminentidad.habilitado == 'true'}" >
                                 <p:outputLabel value="#{reg.nombre}"/> 
                             </p:column>                        
                         </p:dataTable>

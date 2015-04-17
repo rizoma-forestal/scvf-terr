@@ -23,8 +23,8 @@
                 <p:panel id="DepartamentoForm" header="#{bundle.DepartamentoListTitle}" style="margin-bottom:10px;">
                     <h:panelGrid columns="6">
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbDepartamento.prepareCreate}"/>
-                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbDepartamento.prepareList}"  update="departamentoList"/>
-                        <p:commandButton icon="ui-icon-home"value="Inicio"action="#{mbDepartamento.cleanUp()}"/>
+                        <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbDepartamento.prepareList}" update="departamentoList"/>
+                        <p:commandButton icon="ui-icon-home" value="Inicio" action="#{mbDepartamento.cleanUp()}"/>
                     </h:panelGrid>  
                 </p:panel>
                 <br/>           
@@ -65,7 +65,7 @@
 
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbDepartamento.prepareView}"title="Ver Detalle">
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbDepartamento.prepareView}" title="Ver Detalle">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
                             </p:commandButton>
 
@@ -73,12 +73,12 @@
                                 <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
                             </p:commandButton>
 
-                            <p:commandButton icon="ui-icon-close" action="#{mbDepartamento.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar"update="departamentoList">
+                            <p:commandButton icon="ui-icon-close" action="#{mbDepartamento.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar" update="departamentoList">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
                                 <p:confirm header="Confirmar" message="¿Desea deshabilitar el Departamento?" icon="ui-icon-alert" />
                             </p:commandButton>                
 
-                            <p:commandButton icon="ui-icon-check" action="#{mbDepartamento.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar"update="departamentoList">
+                            <p:commandButton icon="ui-icon-check" action="#{mbDepartamento.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar" update="departamentoList">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbDepartamento.current}" />
                                 <p:confirm header="Confirmar" message="¿Desea habilitar el Departamento?" icon="ui-icon-alert" />
                             </p:commandButton>  

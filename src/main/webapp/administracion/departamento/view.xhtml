@@ -54,9 +54,9 @@
                         <h:outputLabel value="#{bundle.CentrosPobladosAsociados}" />
                         <p:commandButton value="Ver" type="button" onclick="PF('CentrosPoblados').show();" actionListener="#{mbDepartamento.selected.centrosPoblados}" />      
                     </h:panelGrid>      
-                        <p:dialog style="font-size: 80%"header="Listado de Ctros.Poblados asociados"widgetVar="CentrosPoblados"showEffect="explode"hideEffect="bounce"height="100" width="30%">
+                        <p:dialog style="font-size: 80%" header="Listado de Ctros.Poblados asociados" widgetVar="CentrosPoblados" showEffect="explode" hideEffect="bounce" height="100" width="30%">
                             <p:dataTable value="#{mbDepartamento.selected.centrosPoblados}" var="e" id="departamentoList" >
-                                <p:column headerText="CentroPoblado" filterMatchMode="contains"filterBy="#{e.nombre}"sortBy="#{e.nombre}"rendered="#{e.adminentidad.habilitado == 'true'}" >
+                                <p:column headerText="CentroPoblado" filterMatchMode="contains" filterBy="#{e.nombre}" sortBy="#{e.nombre}" rendered="#{e.adminentidad.habilitado == 'true'}" >
                                     <p:outputLabel value="#{e.nombre}"/> 
                                 </p:column>                        
                             </p:dataTable>

@@ -59,7 +59,8 @@
                                   height="100" 
                                   width="30%">
                             <p:dataTable value="#{mbEspRegion.selected.regiones}" var="er" id="espRegionList">
-                                <p:column headerText="Región" filterMatchMode="contains"filterBy="#{er.nombre}"sortBy="#{er.nombre}" rendered="#{er.adminentidad.habilitado == 'true'}" ><p:outputLabel value="#{er.nombre}"/> 
+                                <p:column headerText="Región" filterMatchMode="contains" filterBy="#{er.nombre}" sortBy="#{er.nombre}" rendered="#{er.adminentidad.habilitado == 'true'}" >
+                                    <p:outputLabel value="#{er.nombre}"/> 
                                 </p:column>                        
                             </p:dataTable>
                         </p:dialog>

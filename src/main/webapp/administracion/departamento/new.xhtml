@@ -18,7 +18,7 @@
                             <p:selectOneMenu id="provincia" value="#{mbDepartamento.selected.provincia}" requiredMessage="#{bundle.CreateDepartamentoProvinciaRequiredMessage}" required="true">
                                 <f:selectItem itemLabel="Seleccione la Provincia" itemValue="" noSelectionOption="true" />
                                 <f:selectItems value="#{mbDepartamento.listaProvincias}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia}"/>
-                        <   /p:selectOneMenu>  
+                            </p:selectOneMenu>  
                         <p:outputLabel value="" />                        
                         <p:outputLabel value="#{bundle.CreateDepartamentoLabel_nombre}" for="nombre"/>
                         <p:inputText id="nombre" validator="#{mbDepartamento.validarInsert}" value="#{mbDepartamento.selected.nombre}" requiredMessage="#{bundle.CreateDepartamentoRequiredMessage_nombre}" required="true"/>

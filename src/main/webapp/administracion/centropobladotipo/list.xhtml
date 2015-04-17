@@ -22,7 +22,7 @@
                     <h:panelGrid columns="6">
                         <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbCentroPobladoTipo.prepareCreate}"/>
                         <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbCentroPobladoTipo.prepareList}" update="centroPobladoTipoList"/>
-                        <p:commandButton icon="ui-icon-home"value="Inicio"action="#{mbCentroPobladoTipo.cleanUp()}"/>
+                        <p:commandButton icon="ui-icon-home" value="Inicio" action="#{mbCentroPobladoTipo.cleanUp()}"/>
                     </h:panelGrid>
                 </p:panel>
 
@@ -43,14 +43,14 @@
                         <p:columnToggler datasource="centroPobladoTipoList" trigger="toggler" />
                     </f:facet>
                     
-                    <p:column headerText="Tipo de Centro Poblado" filterMatchMode="contains"sortBy="#{e.nombre}" filterBy="#{e.nombre}" > 
+                    <p:column headerText="Tipo de Centro Poblado" filterMatchMode="contains" sortBy="#{e.nombre}" filterBy="#{e.nombre}" > 
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>                               
                     
 
                     <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('centroPobladoTipoTable').filter()"style="font-size: 80%">
+                            <p:selectOneMenu onchange="PF('centroPobladoTipoTable').filter()" style="font-size: 80%">
                                 <f:converter converterId="javax.faces.Boolean" />
                                 <f:selectItem itemLabel="Todos" itemValue="" />
                                 <f:selectItem itemLabel="Activos" itemValue="true" />
@@ -66,7 +66,7 @@
                                 <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
                         </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbCentroPobladoTipo.prepareEdit}"title="Editar" >
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbCentroPobladoTipo.prepareEdit}" title="Editar" >
                                 <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
                          </p:commandButton>
 
@@ -77,7 +77,7 @@
                                 <p:confirm header="Confirmar" message="¿Desea deshabilitar el Tipo de Centro Poblado?" icon="ui-icon-alert" />
                         </p:commandButton>                
 
-                        <p:commandButton icon="ui-icon-check" action="#{mbCentroPobladoTipo.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar"update="centroPobladoTipoList">
+                        <p:commandButton icon="ui-icon-check" action="#{mbCentroPobladoTipo.habilitar}" rendered="#{e.adminentidad.habilitado == 'false'}" title="Habilitar" update="centroPobladoTipoList">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbCentroPobladoTipo.current}" />
                                 <p:confirm header="Confirmar" message="¿Desea habilitar el Tipo de Centro Poblado?" icon="ui-icon-alert" />
                         </p:commandButton>  

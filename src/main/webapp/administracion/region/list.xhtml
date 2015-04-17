@@ -28,22 +28,22 @@
                     </h:panelGrid>
                 </p:panel>
                 <br/>           
-                <p:dataTable value="#{mbRegion.items}" var="e" id="regionList" rows="5"paginator="true" widgetVar="regionTable"
+                <p:dataTable value="#{mbRegion.items}" var="e" id="regionList" rows="5" paginator="true" widgetVar="regionTable"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15"> 
                     <f:facet name="header"> Listado de #{bundle.RegionListTitle}
                         <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
                         <p:columnToggler datasource="regionList" trigger="toggler" />
                     </f:facet>
-                    <p:column headerText="Region" filterMatchMode="contains"sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
+                    <p:column headerText="Region" filterMatchMode="contains" sortBy="#{e.nombre}" filterBy="#{e.nombre}" >
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>                    
-                    <p:column headerText="Especificidad de Region" filterMatchMode="contains"sortBy="#{e.especificidadderegion.nombre}" filterBy="#{e.especificidadderegion.nombre}" >
+                    <p:column headerText="Especificidad de Region" filterMatchMode="contains" sortBy="#{e.especificidadderegion.nombre}" filterBy="#{e.especificidadderegion.nombre}" >
                         <p:outputLabel value="#{e.especificidadderegion.nombre}"/>
                     </p:column>                  
                     <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('regionTable').filter()"style="font-size: 80%">
+                            <p:selectOneMenu onchange="PF('regionTable').filter()" style="font-size: 80%">
                                 <f:converter converterId="javax.faces.Boolean" />
                                 <f:selectItem itemLabel="Todos" itemValue="" />
                                 <f:selectItem itemLabel="Activos" itemValue="true" />
@@ -54,10 +54,10 @@
                     </p:column>
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}"title="Ver Detalle">
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}" title="Ver Detalle">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}"title="Editar" >
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}" title="Editar" >
                                 <f:setPropertyActionListener value="#{e}" target="#{mbRegion.current}" />
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-close" 

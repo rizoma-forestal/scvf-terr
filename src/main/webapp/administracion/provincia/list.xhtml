@@ -57,7 +57,7 @@
                             <p:commandButton icon="ui-icon-pencil" action="#{mbProvincia.prepareEdit}">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
                             </p:commandButton>
-                        <p:commandButton icon="ui-icon-close" action="#{mbProvincia.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar"update="provinciaList">
+                        <p:commandButton icon="ui-icon-close" action="#{mbProvincia.deshabilitar}" rendered="#{e.adminentidad.habilitado == 'true'}" title="Deshabilitar" update="provinciaList">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbProvincia.current}" />
                                 <p:confirm header="Confirmar" message="¿Desea deshabilitar la Provincia?" icon="ui-icon-alert" />
                        </p:commandButton>                

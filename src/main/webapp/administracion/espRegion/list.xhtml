@@ -37,13 +37,13 @@
                         <p:columnToggler datasource="espRegionList" trigger="toggler" />                        
                     </f:facet>
                     
-                    <p:column headerText="Especificidad de Región" filterMatchMode="contains"sortBy="#{e.nombre}" filterBy="#{e.nombre}" > 
+                    <p:column headerText="Especificidad de Región" filterMatchMode="contains" sortBy="#{e.nombre}" filterBy="#{e.nombre}" > 
                         <p:outputLabel value="#{e.nombre}"/>
                     </p:column>                               
 
                     <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" footerText="" filterMatchMode="equals">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('espTable').filter()"style="font-size: 80%">
+                            <p:selectOneMenu onchange="PF('espTable').filter()" style="font-size: 80%">
                                 <f:converter converterId="javax.faces.Boolean" />
                                 <f:selectItem itemLabel="Todos" itemValue="" />
                                 <f:selectItem itemLabel="Activos" itemValue="true" />
@@ -55,7 +55,7 @@
                     
                     <p:column headerText="Acciones" style="width:135px">
                         <p:growl id="messages" showDetail="true" />    
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbEspRegion.prepareView}"title="Ver Detalle">
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbEspRegion.prepareView}" title="Ver Detalle">
                                 <f:setPropertyActionListener value="#{e}" target="#{mbEspRegion.current}" />
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-pencil" action="#{mbEspRegion.prepareEdit}">
