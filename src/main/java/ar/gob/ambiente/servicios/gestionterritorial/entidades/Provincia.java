@@ -16,10 +16,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,13 +33,11 @@ public class Provincia implements Serializable {
     private Long id;
     private String nombre;
     
-    @ManyToMany
-   	@JoinTable(
-            	name = "provinciasXRegiones",
-            	joinColumns = @JoinColumn(name = "provincia_fk"),
-            	inverseJoinColumns = @JoinColumn(name = "region_fk")
-   	)
-    private List<Region> regiones; 
+    /**
+     * Campo de tipo array que contiene las Actividades planificadas que se vinculen con el subprograma
+     */    
+    @ManyToMany(mappedBy = "provincias")
+    private List<Region> regiones;  
 
     @OneToMany(mappedBy="provincia")
     private List<Municipio> municipios;     
@@ -50,6 +48,7 @@ public class Provincia implements Serializable {
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
+    
     
     public Provincia(){
         regiones = new ArrayList<>();
@@ -103,6 +102,23 @@ public class Provincia implements Serializable {
         this.adminentidad = adminentidad;
     }
 
+    
+    /**
+     *
+     * @return
+     */
+    @XmlTransient
+    public List<Region> getRegion() {
+        return regiones;
+    }
+    
+    /**
+     *
+     * @param actividadesPlan
+     */
+    public void setRegion(List<Region> regiones) {
+        this.regiones = regiones;
+    }
     
     
     @Override

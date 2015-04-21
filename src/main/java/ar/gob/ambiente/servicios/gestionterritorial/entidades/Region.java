@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,20 +46,28 @@ public class Region implements Serializable {
     private AdminEntidad adminentidad;    
    
 
-    @ManyToMany(mappedBy = "regiones")
-    	private List<Provincia> provincias;
-
-    public List<Provincia> getProvincias() {
-        return provincias;
-    }
-
-    public void setProvincias(List<Provincia> provincias) {
-        this.provincias = provincias;
-    }
+    /**
+     * Campo de tipo Array que contiene el conjunto de las provincias que contienen esta region
+     */
+    @ManyToMany
+    @JoinTable(
+            name = "regionesXProvincias",
+            joinColumns = @JoinColumn(name = "region_fk"),
+            inverseJoinColumns = @JoinColumn(name = "provincia_fk")
+    )
+    private List<Provincia> provincias;
+        /**
+     * Campo de texto que contiene la url a la informaciación general de la actividad en el centro documental
+     */    
+ //   @Column (nullable=false, length=200)
+//    @NotNull(message = "Este campo es obligatorio")
+//    @Size(message = "El campo no puede excederse de  los 200 caracteres", max = 200)
+ //   private String verMas;       
         
- //   public Region(){
- //       provincias = new ArrayList<>();
- //   }
+    public Region(){
+       provincias = new ArrayList<>();
+    }
+
     
     public AdminEntidad getAdminentidad() {
         return adminentidad;
@@ -73,6 +85,8 @@ public class Region implements Serializable {
         this.nombre = nombre;
     }
 
+
+    
     public EspecificidadDeRegion getEspecificidadderegion() {
         return especificidadderegion;
     }
@@ -81,13 +95,38 @@ public class Region implements Serializable {
         this.especificidadderegion = especificidadderegion;
     }
     
-    
+    /**
+     *
+     * @return
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
+    }
+    
+
+    /**
+     *
+     * @return
+     */
+    @XmlTransient
+    public List<Provincia> getProvincias() {
+        return provincias;
+    }
+
+    /**
+     *
+     * @param provincias
+     */
+    public void setProvincias(List<Provincia> provincias) {
+        this.provincias = provincias;
     }
 
     @Override
@@ -115,7 +154,4 @@ public class Region implements Serializable {
         return "ar.gob.ambiente.servicios.gestionterritorial.entidades.Region[ id=" + id + " ]";
     }
  
-    public AdminEntidad getAdminentidad(AdminEntidad admEnt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }   
 }

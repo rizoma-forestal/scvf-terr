@@ -52,7 +52,7 @@ public class MbDepartamento implements Serializable {
     private String selectParam;    
     private List<String> listaNombres;  
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
-    private List<Provincia> listaProvincias;
+    private List<Provincia> listProvincias;
     private MbLogin login;
     private Usuario usLogeado;
     private boolean iniciado;
@@ -98,12 +98,12 @@ public class MbDepartamento implements Serializable {
     }
 
     
-    public List<Provincia> getListaProvincias() {
-        return listaProvincias;
+    public List<Provincia> getListProvincias() {
+        return listProvincias;
     }
 
-    public void setListaProvincias(List<Provincia> listaProvincias) {
-        this.listaProvincias = listaProvincias;
+    public void setListProvincias(List<Provincia> listProvincias) {
+        this.listProvincias = listProvincias;
     }
    
         
@@ -166,7 +166,7 @@ public class MbDepartamento implements Serializable {
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaProvincias = pciaFacade.getActivos();
+        listProvincias = pciaFacade.getActivos();
         current = new Departamento();
         return "new";
     }
@@ -175,7 +175,7 @@ public class MbDepartamento implements Serializable {
      * @return acción para la edición de la entidad
      */
     public String prepareEdit() {
-        listaProvincias = pciaFacade.getActivos();
+        listProvincias = pciaFacade.getActivos();
         return "edit";
     }
     

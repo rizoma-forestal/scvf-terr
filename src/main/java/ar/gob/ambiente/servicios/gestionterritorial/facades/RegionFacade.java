@@ -32,7 +32,22 @@ public class RegionFacade extends AbstractFacade<Region> {
     public RegionFacade() {
         super(Region.class);
     }
-    
+ 
+   /**
+     * Método que verifica si la Region puede ser eliminada
+     * @param id: Id de la region que se desea verificar
+     * @return
+     */
+    public boolean getUtilizado(Long id){
+        em = getEntityManager();
+        String queryString = "SELECT pro.id FROM Provincia pro "
+                + "INNER JOIN pro.regiones reg "
+                + "WHERE reg.id = :id";
+        Query q = em.createQuery(queryString)
+                .setParameter("id", id);
+        return q.getResultList().isEmpty();
+    } 
+       
     /**
      * Método que devuelve todas las Regiones que contienen la cadena recibida como parámetro 
      * dentro de alguno de sus campos string, en este caso el nombre.
@@ -53,7 +68,26 @@ public class RegionFacade extends AbstractFacade<Region> {
         result = q.getResultList();
         return result;
     }
-             
+  /**
+     * Método que obtiene una Region existente según los datos recibidos como parámetro
+     * @param nombre
+     * @return 
+     */
+    public Region getExistente(String nombre){
+        List<Region> lPcia;
+        em = getEntityManager();
+        String queryString = "SELECT reg FROM Region reg "
+                + "WHERE reg.nombre = :nombre";
+        Query q = em.createQuery(queryString)
+                .setParameter("nombre", nombre);
+        lPcia = q.getResultList();
+        if(!lPcia.isEmpty()){
+            return lPcia.get(0);
+        }else{
+            return null;
+        }
+    }     
+    
     /**
      * Metodo que verifica si ya existe la entidad.
      * @param aBuscar: es la cadena que buscara para ver si ya existe en la BDD
@@ -69,6 +103,20 @@ public class RegionFacade extends AbstractFacade<Region> {
                 .setParameter("stringParam", aBuscar);
         return q.getResultList().isEmpty();
     }    
+    /**
+     * Método para validad que no exista una Actividad Planificada con este nombre ya ingresado
+     * @param nombre
+     * @return 
+     */
+    public boolean noExiste(String nombre){
+        em = getEntityManager();
+        String queryString = "SELECT reg FROM Region reg "
+                + "WHERE reg.nombre = :nombre";
+        Query q = em.createQuery(queryString)
+                .setParameter("nombre", nombre);
+        return q.getResultList().isEmpty();
+    }    
+    
     
     /**
      * Método que verifica si la entidad tiene dependencia (Hijos)
@@ -111,4 +159,29 @@ public class RegionFacade extends AbstractFacade<Region> {
         result = q.getResultList();
         return result;
     }        
+     
+    /**
+     * Método que devuelve todas los Actividades Planificadas habilitadas y vigentes
+     * @return 
+     */
+    public List<Region> getHabilitadas(){
+        em = getEntityManager();
+        String queryString = "SELECT reg FROM Region reg "
+                + "WHERE reg.adminentidad.habilitado = true";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }
+    
+
+    /**
+     * Método que devuelve todas los Actividades Planificadas deshabilitadas
+     * @return 
+     */
+    public List<Region> getDeshabilitadas(){
+        em = getEntityManager();
+        String queryString = "SELECT reg FROM Region reg "
+                + "WHERE reg.adminentidad.habilitado = false";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }  
 }

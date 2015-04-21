@@ -159,7 +159,7 @@ public class MbLogin implements Serializable{
                 //harcodeo los datos del usuario, por ahora Ceci
                 usLogeado = new Usuario();
                 usLogeado.setNombre("carmendariz");
-                usLogeado.setId(Long.valueOf(3));
+                usLogeado.setId(Long.valueOf(5));
 
                 msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", usLogeado.getNombre());
             }else{
