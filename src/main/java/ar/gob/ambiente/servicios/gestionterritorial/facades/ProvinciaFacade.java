@@ -111,5 +111,9 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
         result = q.getResultList();
         return result;
     }    
+
+    public List<Provincia> getHabilitadas() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

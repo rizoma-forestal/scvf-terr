@@ -160,7 +160,7 @@ public class MbProvincia implements Serializable{
      * @return acción para el formulario de nuevo
      */
     public String prepareCreate() {
-        listaRegiones =regionFacade.getActivos();
+        listaRegiones =regionFacade.getHabilitadas();
         current = new Provincia();
         return "new";
     }

@@ -13,39 +13,71 @@
         <br/>
         <h:form id="frmNew">
                 <p:panel id="pnNew" header="#{bundle.RegionNewTitle}" style="margin-bottom:10px;">
-                <h:panelGrid columns="3">
-                        <p:outputLabel value="#{bundle.CreateRegionLabel_espRegion}" for="espReg"/>      
-                        <p:selectOneMenu id="espReg" value="#{mbRegion.selected.especificidadderegion}" 
-                                         requiredMessage="#{bundle.CreateRegionEspecifRegionRequiredMessage}" required="true">
-                            <f:selectItem itemLabel="Seleccione la Esp.de Región" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{mbRegion.listaEspecificidadDeRegion}" var="espReg" itemLabel="#{espReg.nombre}" itemValue="#{espReg}"/>
-                        </p:selectOneMenu>    
-                        <p:outputLabel value="" />                        
-                        <p:outputLabel value="#{bundle.CreateRegionLabel_nombre}" for="nombre"/>                        
-                        <p:inputText id="nombre" 
-                                     validator="#{mbRegion.validarInsert}" 
+                    <p:growl id="messages" />
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="#{bundle.CreateRegionLabel_nombre}" for="nombre"/>
+                        <p:inputText id="nombre"
                                      value="#{mbRegion.selected.nombre}" 
-                                     requiredMessage="#{bundle.CreateRegionRequiredMessage_nombre}" 
-                                     required="true"/>
-                        <p:message for="nombre" />
-                        <p:outputLabel value="#{bundle.ProvinciaTitle}" for="prov"/>    
-                        <p:selectOneMenu id="prov" 
-                                         value="#{mbRegion.selected.provincias}"
-                                         requiredMessage="#{bundle.CreateProvinciaRequiredMessage_nombre}" 
-                                         required="true">
-                            <f:selectItem itemLabel="Seleccione la Provincia" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{mbRegion.listaProvincia}" var="prov"  itemLabel="#{prov.nombre}" itemValue="#{prov}"/>
-                        </p:selectOneMenu>                          
-                    </h:panelGrid>
-                </p:panel>      
+                                     requiredMessage="#{bundle.RegionTitle}" 
+                                     required="true" style="width: 500px"/>   
+                        
+                        <p:outputLabel value="#{bundle.EspRegionTitle}" for="espReg"/>
+                        <p:selectOneMenu id="espReg" value="#{mbRegion.selected.especificidadderegion}"
+                                         required="true" 
+                                         requiredMessage="#{bundle.CreateEspRegionRequiredMessage_nombre}">
+                            <f:selectItem itemLabel="Seleccione la Especificidad de Región" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{mbRegion.listaEspecificidadDeRegion}" var="espReg" 
+                                           itemLabel="#{espReg.nombre}" 
+                                           itemValue="#{espReg}"/>
+                        </p:selectOneMenu> 
+
+                      </h:panelGrid>
+                </p:panel>
+                
+                <p:panel id="pnProvincias" 
+                         header="Seleccione las provincias para la esta Región" 
+                         toggleable="true" toggleTitle="Ver/Ocultar"
+                         style="width:800px;">
+                    <p:dataTable value="#{mbRegion.provincias}" var="e" id="provList" rows="5" 
+                                 filteredValue="#{mbRegion.provinciasFilter}"
+                                 rowKey="#{e.id}"
+                                 selection="#{mbRegion.selected.provincias}"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" style="font-size: 80%">
+                        <f:facet name="header">
+                            Listado de #{bundle.ProvinciasAsociadas}
+                            <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
+                            <p:commandButton icon="ui-icon-refresh" value="Listar" 
+                                             update="provList" style="margin-left: 10px"/>
+                            <p:columnToggler datasource="provList" trigger="toggler" />
+                        </f:facet>
+                        <p:column selectionMode="multiple" style="width: 20px"  />  
+                        
+                        <p:column headerText="#{bundle.CreateProvinciaLabel_nombre}" sortBy="#{e.nombre}" filterBy="#{e.nombre}" filterMatchMode="contains">
+                            <p:outputLabel value="#{e.nombre}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+                
+                <br/>
+                
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton icon="ui-icon-check" value="Guardar" action="#{mbRegion.create}" update="pnNew"/>
-                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: next"><p:ajax update="pnNew" resetValues="true" />
-                        </p:commandButton>                    
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbRegion.prepareList}" value="Volver" immediate="true"/>
+                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: right">
+                            <p:ajax update="pnNew" resetValues="true" />
+                        </p:commandButton>
                     </f:facet>
-                </p:toolbar>   
+                    <f:facet name="right">
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" 
+                                         action="#{mbRegion.prepareList}" 
+                                         value="Volver" 
+                                         immediate="true" 
+                                         ajax="false"/>
+                    </f:facet>
+                </p:toolbar>
             </h:form>
         </ui:define>
     </ui:composition>
