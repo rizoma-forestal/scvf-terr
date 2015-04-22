@@ -231,7 +231,7 @@ public class MbRegion implements Serializable{
      * 
      * @return 
      */
-    public String prepareListDes() {
+    public String prepareListaDes() {
         tipoList = 2;
         recreateModel();
         asignaProvincia = false;
@@ -241,7 +241,7 @@ public class MbRegion implements Serializable{
         if(provDisp != null){
             provDisp.clear();
         }
-        return "listDes";
+        return "listaDes";
     }     
     
     /**
@@ -283,7 +283,7 @@ public class MbRegion implements Serializable{
      */
     public String prepareEdit() {
         //cargo los list para los combos
-        listaEspecificidadDeRegion = espRegionFacade.getHabilitados();
+        listaEspecificidadDeRegion = espRegionFacade.getActivos();
         current = regionSelected;
         asignaProvincia = true;
         provVinc = current.getProvincias();
@@ -581,7 +581,7 @@ public class MbRegion implements Serializable{
      * 
      */
     private List<Provincia> cargarProvinciasDisponibles(){
-        List<Provincia> provs = provFacade.getHabilitadas();
+        List<Provincia> provs = provFacade.getActivos();
         List<Provincia> provsSelect = new ArrayList();
         Iterator itProvs = provs.listIterator();
         while(itProvs.hasNext()){

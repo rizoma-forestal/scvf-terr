@@ -14,25 +14,21 @@
      
     <h:body>
         <h:form id="frmProvDisp">
-            <p:dataTable var="pro" 
-                         value="#{mbRegion.provDisponibles}" 
+            <p:dataTable var="prov" 
+                         value="#{mbRegion.provDisp}" 
                          filteredValue="#{mbRegion.provDispFilter}"
 			 rows="5" 
                          paginator="true" 
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                          rowsPerPageTemplate="5,10,15">
-                <p:column headerText="Nombre" 
-                          sortBy="#{pro.nombre}" 
-                          filterBy="#{pro.nombre}" 
-                          filterMatchMode="contains">
-                    <h:outputText value="#{pro.nombre}" />
+                
+                <p:column headerText="Nombre" sortBy="#{prov.nombre}" filterBy="#{prov.nombre}" filterMatchMode="contains">
+                    <h:outputText value="#{prov.nombre}" />
                 </p:column>
                 
-                <p:column headerText="Asignar" 
-                          style="width :45px;">
-                    <p:commandButton icon="ui-icon-circle-triangle-s" 
-                                     ajax="false" 
-                                     actionListener="#{mbRegion.asignarProvincia(pro)}" />
+                <p:column headerText="Asignar" style="width :45px;">
+                    <p:commandButton icon="ui-icon-circle-triangle-s" ajax="false" 
+                                     actionListener="#{mbRegion.asignarProvincia(prov)}" />
                 </p:column>
             </p:dataTable>
         </h:form>

@@ -11,35 +11,60 @@
      </ui:define>
      <ui:define name="content">
      <br/>
-     <h:form id="frmEdit">
+     <h:form style="text-align: left">
                 <p:panel id="pnEdit" header="#{bundle.RegionEditTitle}" style="margin-bottom:10px;">
+                    <h:inputHidden id="id" value="#{mbRegion.selected.id}" />
+                    <p:messages id="messages" />
+                    <p:dialog id="dlg" resizable="false" />
                     <h:panelGrid columns="2">
-                            <p:outputLabel value="#{bundle.CreateRegionLabel_espRegion}" for="espReg"/> 
-                            <p:selectOneMenu id="espReg" value="#{mbRegion.selected.especificidadderegion}" requiredMessage="#{bundle.CreateRegionEspecifRegionRequiredMessage}" required="true">
-                                <f:selectItem itemLabel="Seleccione la Esp de Region" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{mbRegion.listaEspecificidadDeRegion}" var="espReg" itemLabel="#{espReg.nombre}" itemValue="#{espReg}"/>
-                            </p:selectOneMenu>                         
-                            <p:outputLabel value="#{bundle.CreateProvinciaTitle_nombre}" for="prov"/> 
-                            <p:selectManyCheckbox id="prov" value="#{mbRegion.selected.provincias}" requiredMessage="#{bundle.CreateRegionEspecifRegionRequiredMessage}" required="true">
-                                <f:selectItem itemLabel="Seleccione la Provincia" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{mbRegion.listaProvincia}" var="prov" itemLabel="#{prov.nombre}" itemValue="#{prov}"/>
-                            </p:selectManyCheckbox>                          
-                            <p:outputLabel value="" />
-                            <h:inputHidden id="id" value="#{mbRegion.selected.id}"/>                                               
-                            <p:outputLabel value="#{bundle.CreateRegionLabel_nombre}" for="nombre"/>
-                            <p:inputText id="nombre" validator="#{mbRegion.validarUpdate}" value="#{mbRegion.selected.nombre}" requiredMessage="#{bundle.CreateRegionRequiredMessage_nombre}" required="true"/>
-                        <p:message for="nombre" />
+                        <p:outputLabel value="#{bundle.RegionTitle}" for="nombre"/>
+                        <p:inputText id="nombre" style="width: 500px"
+                                     value="#{mbRegion.selected.nombre}" 
+                                     requiredMessage="#{bundle.RegionRequire_nombre}" 
+                                     required="true"/>   
+                        
+                        <h:outputLabel value="#{bundle.ProvinciaListTitle}"/>
+                        <h:panelGrid id="btnVerSub" columns="2">
+                            <p:commandButton value="Ver/Quitar Asignadas" icon="ui-icon-extlink"  
+                                             actionListener="#{mbRegion.verProvincias()}" />
+                            <p:commandButton value="Ver/Asignar Disponibles" icon="ui-icon-extlink"  
+                                             actionListener="#{mbRegion.verProvinciasDisp()}" />
+                        </h:panelGrid>
+
+                        <p:outputLabel value="#{bundle.CreateRegionLabel_espRegion}" for="espReg"/>
+                        <p:selectOneMenu id="espReg" value="#{mbRegion.selected.especificidadderegion}"
+                                         required="true" 
+                                         requiredMessage="#{bundle.CreateRegionEspecifRegionRequiredMessage}">
+                            <f:selectItem itemLabel="Seleccione la Especificidad de Región" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{mbRegion.listaEspecificidadDeRegion}" var="espReg" 
+                                           itemLabel="#{espReg.nombre}" 
+                                           itemValue="#{espReg}"/>
+                        </p:selectOneMenu> 
                     </h:panelGrid>
-                </p:panel>                        
-               <p:toolbar> 
+                </p:panel>
+                
+                <p:toolbar>
                     <f:facet name="left">
-                        <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.update}" value="Guardar" style="float: next" update="pnEdit"/>
-                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: next" update="pnEdit" resetValues="true" />
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbRegion.prepareList}" style="float: next" value="Volver" immediate="true"/>
-                    </f:facet> 
-               </p:toolbar>
-     </h:form>
-     </ui:define>
-     </ui:composition>
+                        <p:commandButton icon="ui-icon-pencil" 
+                                         action="#{mbRegion.update}" 
+                                         value="Guardar" 
+                                         style="margin-right:10px;" 
+                                         update="pnEdit"/>
+                        <p:commandButton icon="ui-icon-cancel" action="#{mbRegion.limpiarProvincia()}" value="Limpiar" style="float: right">
+                            <p:ajax update="pnEdit" resetValues="true" />
+                        </p:commandButton>                        
+                    </f:facet>
+                    <f:facet name="right">
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" 
+                                         action="#{mbRegion.prepareList()}" 
+                                         value="Volver" 
+                                         immediate="true" 
+                                         ajax="false"/>
+                    </f:facet>                    
+                </p:toolbar>
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </html>
 
+    

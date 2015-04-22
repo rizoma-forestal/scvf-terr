@@ -52,7 +52,7 @@
                                         title="#{bundle.FechaBaja}"/>                         
                         
                         <h:outputLabel   value="#{bundle.ProvinciasAsociadas}" />
-                        <p:commandButton value="Ver" type="button" onclick="PF('Provincias').show();" actionListener="#{mbRegion.selected.provincias}" />      
+                        <p:commandButton value="Ver" type="button" onclick="PF('Provincias').show();" actionListener="#{mbRegion.verProvincias()}" />      
                     </h:panelGrid>   
                         <p:dialog style="font-size: 80%"
                                   header="Listado de provincias asociadas"

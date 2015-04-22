@@ -16,7 +16,7 @@
         <ui:define name="content">
             <br/> 
             <h:form style="text-align: left">
-                <p:panel id="provinciaForm" header="#{bundle.RegionListTitle} Deshabilitados" style="margin-bottom:10px;" toggleable="true" toggleTitle="Ver/Ocultar" >
+                <p:panel id="provForm" header="#{bundle.RegionListTitle} Deshabilitados" style="margin-bottom:10px;" toggleable="true" toggleTitle="Ver/Ocultar" >
                     <h:panelGroup>
                         <h:panelGrid columns="3" id="pnBotones">
                             <p:commandButton icon="ui-icon-refresh" value="Habilitados" action="#{mbRegion.prepareList}" ajax="false"/>
@@ -25,7 +25,7 @@
                     </h:panelGroup>
                 </p:panel>      
                 
-                <p:dataTable value="#{mbRegion.listRegion}" var="r" id="provinciaList" rows="5" 
+                <p:dataTable value="#{mbRegion.listRegion}" var="r" id="provList" rows="5" 
                              filteredValue="#{mbRegion.listRegion}"
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -33,18 +33,22 @@
                     <f:facet name="header">
                         Listado de regiones
                         <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
-                        <p:commandButton icon="ui-icon-refresh" value="Listar" action="#{mbRegion.prepareListDes()}" update="provinciaList" style="margin-left: 10px"/>
-                        <p:columnToggler datasource="provinciaList" trigger="toggler" />
+                        <p:commandButton icon="ui-icon-refresh" value="Listar" action="#{mbRegion.prepareListaDes}" update="provList" style="margin-left: 10px"/>
+                        <p:columnToggler datasource="provList" trigger="toggler" />
                     </f:facet>
                     
                     <p:column headerText="#{bundle.RegionLabel_nombre}" sortBy="#{r.nombre}" filterBy="#{r.nombre}" filterMatchMode="contains">
                         <p:outputLabel value="#{r.nombre}"/>
                     </p:column>
 
+                    <p:column headerText="#{bundle.EspecificidadLabel_nombre}" sortBy="#{r.especificidadderegion.nombre}" filterBy="#{r.especificidadderegion.nombre}" filterMatchMode="contains">
+                        <p:outputLabel value="#{r.especificidadderegion.nombre}"/>
+                    </p:column>                     
+
                     <p:column headerText="Acciones" style="width:90px">
                         <p:growl id="messages" showDetail="true" />
-                        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareViewDes}" title="Ver Detalle">
-                            <f:setPropertyActionListener value="#{e}" target="#{mbRegion.regionSelected}" />
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareViewDes()}" title="Ver Detalle">
+                            <f:setPropertyActionListener value="#{r}" target="#{mbRegion.regionSelected}" />
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-unlocked" action="#{mbRegion.prepareHabilitar}" update="messages" title="Habilitar">
                             <f:setPropertyActionListener value="#{e}" target="#{mbRegion.regionSelected}" />
