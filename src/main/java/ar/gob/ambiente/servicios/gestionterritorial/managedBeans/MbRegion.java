@@ -26,14 +26,17 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.faces.model.DataModel;
+import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+
+
 /**
  *
  * @author epassarelli
@@ -41,32 +44,37 @@ import org.primefaces.context.RequestContext;
 public class MbRegion implements Serializable{
 
     private Region current;
-    private DataModel items = null;
+//    private DataModel items = null;
     private List<Provincia> provVinc;
     private List<Provincia> provVincFilter;
     private List<Provincia> provDisp;
     private List<Provincia> provDispFilter;
     private List<Provincia> provincias;
     private List<Provincia> provinciasFilter;
+    private List<Provincia> listProvincias;
     private boolean asignaProvincia; 
-    private List<Region> listRegion;    
-    
+    private List<Region> listRegion;  
+
+
     @EJB
-    private EspecificidadDeRegionFacade espRegionFacade;
+    private RegionFacade regionFacade;
     
     @EJB
     private ProvinciaFacade provFacade;
     
     @EJB
-    private RegionFacade regionFacade;
+    private EspecificidadDeRegionFacade espRegionFacade;
 
-    private List<EspecificidadDeRegion> listaEspecificidadDeRegion;   
+    private Region regionSelected;
     private Usuario usLogeado;
+    private List<EspecificidadDeRegion> listaEspecificidadDeRegion;   
+    private MbLogin login;
+    private int tipoList; //1= habilitadas | 2=deshabilitada    
     private boolean iniciado;
     //private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
-    private MbLogin login;
-    private int tipoList; //1= habilitadas | 2=deshabilitada
-    private Region regionSelected;
+
+
+
 
     /**
      * Creates a new instance of MbRegion
@@ -102,13 +110,21 @@ public class MbRegion implements Serializable{
     public void setProvDispFilter(List<Provincia> provDispFilter) {
         this.provDispFilter = provDispFilter;
     }
+    
+    public List<Provincia> getProvinciasFilter() {
+        return provinciasFilter;
+    }
+
+    public void setProvinciasFilter(List<Provincia> provinciasFilter) {
+        this.provinciasFilter = provinciasFilter;
+    }
 
     public List<Region> getListRegion() {
         if(listRegion == null){
             switch(tipoList){
                 case 1: listRegion = getFacade().getHabilitadas();
                     break;
-                default:  listRegion =getFacade().getDeshabilitadas();
+                case 2: listRegion =getFacade().getDeshabilitadas();
             }
         }
         return listRegion;
@@ -126,15 +142,14 @@ public class MbRegion implements Serializable{
         this.provincias = provincias;
     }
 
-    public List<Provincia> getProvinciasFilter() {
-        return provinciasFilter;
+    public List<Provincia> getListProvincias() {
+        return listProvincias;
     }
 
-    public void setProvinciasFilter(List<Provincia> provinciasFilter) {
-        this.provinciasFilter = provinciasFilter;
+    public void setListProvincias(List<Provincia> listProvincias) {
+        this.listProvincias = listProvincias;
     }
 
-    
     public boolean isAsignaProvincia() {
         return asignaProvincia;
     }
@@ -394,14 +409,14 @@ public class MbRegion implements Serializable{
      */
     public String update() {    
         boolean edito;
-        Region prov;
+        Region sub;
         String retorno = "";
         try {
-            prov = getFacade().getExistente(current.getNombre());
-            if(prov == null){
+            sub = getFacade().getExistente(current.getNombre());
+            if(sub == null){
                 edito = true;  
             }else{
-                edito = prov.getId().equals(current.getId());
+                edito = sub.getId().equals(current.getId());
             }
             if(edito){
                 // Actualización de datos de administración de la entidad
@@ -418,7 +433,9 @@ public class MbRegion implements Serializable{
                 if(tipoList == 1){
                     retorno = "view";  
                 }
-
+                if(tipoList == 2){
+                    retorno = "viewDes";  
+                }     
                 return retorno;
             }else{
                 JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("RegionExistente"));
@@ -429,7 +446,7 @@ public class MbRegion implements Serializable{
             return null;
         }
     }
-
+    
     /**
      * @return mensaje que notifica el borrado
      */    
@@ -466,9 +483,18 @@ public class MbRegion implements Serializable{
     
     
     /**
-     * Método para manipular los Sub Programas de una Actividad
+     * Método para mostrar las Actividades Implementadas vinculadas a esta Actividad Planificada
      */
     public void verProvincias(){
+        provincias = current.getProvincias();
+        Map<String,Object> options = new HashMap<>();
+        options.put("contentWidth", 950);
+        RequestContext.getCurrentInstance().openDialog("dlgActividadesImp", options, null);
+    }       
+    /**
+     * Método para manipular las provincias de una región
+     */
+    public void verProvinciasVinc(){
         Map<String,Object> options = new HashMap<>();
         options.put("contentWidth", 950);
         RequestContext.getCurrentInstance().openDialog("dlgProvVinc", options, null);

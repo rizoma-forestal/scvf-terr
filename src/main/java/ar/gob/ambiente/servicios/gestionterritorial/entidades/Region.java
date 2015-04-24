@@ -21,6 +21,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -31,11 +33,18 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Region implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+        
+    /**
+     * Campo de texto que indica el nombre de la REgion. 
+     */    
+    @Column (nullable=false, length=200, unique=true)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 200)
     private String nombre;
     
-    @ManyToOne
+    @ManyToOne 
     @JoinColumn(name="especificidadderegion_id")
     private EspecificidadDeRegion especificidadderegion;
     
@@ -61,11 +70,16 @@ public class Region implements Serializable {
     public Region(){
         provincias = new ArrayList();
     }
-
+    /**
+     * @return 
+     */
     public EspecificidadDeRegion getEspecificidadderegion() {
         return especificidadderegion;
     }
-
+    /**
+     *
+     * @param EspecificidadDeRegion
+     */
     public void setEspecificidadderegion(EspecificidadDeRegion especificidadderegion) {
         this.especificidadderegion = especificidadderegion;
     }

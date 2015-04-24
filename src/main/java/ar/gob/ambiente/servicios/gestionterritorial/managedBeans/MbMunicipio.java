@@ -121,6 +121,8 @@ public class MbMunicipio implements Serializable {
         this.listaProvincias = listaProvincias;
     }
 
+
+
     public List<Departamento> getComboDepartamentos() {
         return comboDepartamentos;
     }

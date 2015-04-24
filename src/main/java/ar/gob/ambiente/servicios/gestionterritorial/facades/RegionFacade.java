@@ -40,8 +40,8 @@ public class RegionFacade extends AbstractFacade<Region> {
      */
     public boolean getUtilizado(Long id){
         em = getEntityManager();
-        String queryString = "SELECT pro.id FROM Provincia pro "
-                + "INNER JOIN pro.regiones reg "
+        String queryString = "SELECT prov.id FROM Provincia prov "
+                + "INNER JOIN prov.regiones reg "
                 + "WHERE reg.id = :id";
         Query q = em.createQuery(queryString)
                 .setParameter("id", id);
@@ -66,15 +66,15 @@ public class RegionFacade extends AbstractFacade<Region> {
      * @return 
      */
     public Region getExistente(String nombre){
-        List<Region> lPcia;
+        List<Region> lProv;
         em = getEntityManager();
         String queryString = "SELECT reg FROM Region reg "
                 + "WHERE reg.nombre = :nombre";
         Query q = em.createQuery(queryString)
                 .setParameter("nombre", nombre);
-        lPcia = q.getResultList();
-        if(!lPcia.isEmpty()){
-            return lPcia.get(0);
+        lProv = q.getResultList();
+        if(!lProv.isEmpty()){
+            return lProv.get(0);
         }else{
             return null;
         }

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,10 +20,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Entidad que modela las Provincias
+ * 
  * @author epassarelli
  */
 @Entity
@@ -31,10 +35,16 @@ public class Provincia implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+      /**
+     * Campo de texto que indica el nombre del SubPrograma
+     */  
+    @Column (nullable=false, length=100, unique=true)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
     private String nombre;
     
     /**
-     * Campo de tipo array que contiene las Actividades planificadas que se vinculen con el subprograma
+     * Campo de tipo array que contiene las entidades que se vinculen con el subprograma
      */    
     @ManyToMany(mappedBy = "provincias")
     private List<Region> regiones;  
@@ -49,7 +59,9 @@ public class Provincia implements Serializable {
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
     
-    
+     /**
+     * Constructor
+     */   
     public Provincia(){
         regiones = new ArrayList<>();
     }   
@@ -101,26 +113,7 @@ public class Provincia implements Serializable {
     public void setAdminentidad(AdminEntidad adminentidad) {
         this.adminentidad = adminentidad;
     }
-
-    
-    /**
-     *
-     * @return
-     */
-    @XmlTransient
-    public List<Region> getRegion() {
-        return regiones;
-    }
-    
-    /**
-     *
-     * @param actividadesPlan
-     */
-    public void setRegion(List<Region> regiones) {
-        this.regiones = regiones;
-    }
-    
-    
+  
     @Override
     public int hashCode() {
         int hash = 0;

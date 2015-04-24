@@ -19,18 +19,11 @@ import javax.persistence.TemporalType;
  */
 public abstract class AbstractFacade<T> {
     private final Class<T> entityClass;
-    /**
-     *
-     * @param entityClass
-     */
+
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
-    /**
-     *
-     * @return
-     */
     protected abstract EntityManager getEntityManager();
 
     public void create(T entity) {
