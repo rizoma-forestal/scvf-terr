@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
+        <ui:define name="title">
+        <h:outputText value="#{bundle.ProvinciaTitle}" />
+        </ui:define>
+        <ui:define name="content">
+        <h:form id="frmProvinciaView">
+                <p:panel id="pnView" header="#{bundle.ProvinciaViewTitle}" 
+                    style="margin-bottom:10px;">
+                    <p:messages id="messages" />
+                    <h:panelGrid columns="2">                        
+                        <h:outputLabel  value="#{bundle.CreateProvinciaLabel_nombre}"/>
+                        <h:outputText   value="#{mbProvincia.selected.nombre}" 
+                                        title="#{bundle.CreateProvinciaTitle_nombre}"/>
+                        
+                        <h:outputLabel  value="#{bundle.UsuarioAlta}"/>
+                        <h:outputText   value="#{mbProvincia.selected.adminentidad.usAlta.nombre}" 
+                                        title="#{bundle.UsuarioAlta}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaAlta}"/>
+                        <h:outputText   value="#{mbProvincia.selected.adminentidad.strFechaAlta}" 
+                                        title="#{bundle.FechaAlta}"/>                         
+
+                        <h:outputLabel  value="#{bundle.UsuarioModifica}"/>
+                        <h:outputText   value="#{mbProvincia.selected.adminentidad.usModif.nombre}" 
+                                        title="#{bundle.UsuarioModifica}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaModifica}"/>
+                        <h:outputText   value="#{mbProvincia.selected.adminentidad.strFechaModif}" 
+                                        title="#{bundle.FechaModifica}"/>                          
+
+                        <h:outputLabel  value="#{bundle.UsuarioBaja}"
+                                        rendered="#{not mbProvincia.selected.adminentidad.habilitado}"/>
+                        <h:outputText   value="#{mbProvincia.selected.adminentidad.usBaja.nombre}" 
+                                        rendered="#{not mbProvincia.selected.adminentidad.habilitado}"
+                                        title="#{bundle.UsuarioBaja}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaBaja}"
+                                        rendered="#{not mbProvincia.selected.adminentidad.habilitado}"/>
+                        <h:outputText   value="#{mbProvincia.selected.adminentidad.strFechaBaja}"
+                                        rendered="#{not mbProvincia.selected.adminentidad.habilitado}"
+                                        title="#{bundle.FechaBaja}"/>  
+                        
+                        <h:outputLabel  value="#{bundle.DepartamentosAsociados}: " />
+                        <p:commandButton value="Ver" type="button" onclick="PF('Departamentos').show();" actionListener="#{mbProvincia.selected.departamentos}" />      
+                        <h:outputLabel value="Regiones Asociadas: " />
+                        <p:commandButton value="Ver" type="button" onclick="PF('Regiones').show();" actionListener="#{mbProvincia.selected.regiones}" />                              
+                 </h:panelGrid>      
+                </p:panel>
+                <p:toolbar>
+                    <f:facet name="right">
+                        <p:commandButton icon="ui-icon-refresh" action="#{mbProvincia.prepareList}" value="Volver" ajax="false"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:dialog style="font-size: 80%" header="Listado de Departamentos asociados"
+                             widgetVar="Departamentos" showEffect="fade" hideEffect="fade"
+                             height="200" width="30%">     
+                   <p:dataTable value="#{mbProvincia.selected.departamentos}" var="e" id="departamentoList" >
+                       <f:facet name="header">
+                           <p:commandButton icon="ui-icon-refresh" value="Actualizar" update="departamentoList" style="margin-left: 10px"/>
+                       </f:facet>
+                       <p:column headerText="Departamento" filterMatchMode="contains" filterBy="#{e.nombre}" sortBy="#{e.nombre}" >
+                           <p:outputLabel value="#{e.nombre}"/> 
+                       </p:column>                        
+                   </p:dataTable>
+               </p:dialog>     
+
+                <p:dialog style="font-size: 80%"
+                          header="Asociado a las Regiones:" widgetVar="Regiones" showEffect="fade" hideEffect="fade" height="200" width="30%">
+                    <p:dataTable value="#{mbProvincia.selected.regiones}" var="reg" id="provinciaList" 
+                                rows="5" 
+                                paginator="true" 
+                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                rowsPerPageTemplate="5,10,15" >
+                        <f:facet name="header">
+                            <p:commandButton icon="ui-icon-refresh" value="Actualizar" update="provinciaList" style="margin-left: 10px"/>
+                        </f:facet>
+                        <p:column headerText="Regiones" filterMatchMode="contains" filterBy="#{reg.nombre}" sortBy="#{reg.nombre}" >
+                            <p:outputLabel value="#{reg.nombre}"/> 
+                        </p:column>                        
+                    </p:dataTable>
+                </p:dialog>   
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
