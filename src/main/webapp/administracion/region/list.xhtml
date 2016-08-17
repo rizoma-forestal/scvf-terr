@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
+        <ui:define name="content">
+            <f:metadata>  
+                <f:event listener="#{mbRegion.iniciar}" type="preRenderView"></f:event>  
+            </f:metadata>         
+            <br/> 
+            <h:form style="text-align: left">
+                <p:panel id="regionForm" header="#{bundle.RegionListTitle} Habilitadas" style="margin-bottom:10px;" toggleable="true" toggleTitle="Ver/Ocultar"  >
+                    <h:panelGroup>
+                        <h:panelGrid columns="4" id="pnBotones">
+                            <p:commandButton icon="ui-icon-newwin" value="Agregar Nuevo" action="#{mbRegion.prepareCreate}"/>
+                            <p:commandButton icon="ui-icon-refresh" value="Deshabilitadas" action="#{mbRegion.prepareListaDes}" ajax="false"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </p:panel>      
+                
+                <p:dataTable value="#{mbRegion.listRegion}" var="e" id="regionList" rows="5" 
+                             filteredValue="#{mbRegion.listRegion}"
+                             paginator="true" 
+                             widgetVar="regTable"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <f:facet name="header">
+                        Listado de #{bundle.RegionListTitle}
+                        <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
+                        <p:commandButton icon="ui-icon-refresh" value="Listar" action="#{mbRegion.prepareList}" update="regionList" style="margin-left: 10px"/>
+                        <p:columnToggler datasource="regionList" trigger="toggler" />
+                    </f:facet>
+                    <p:column headerText="#{bundle.RegionTitle}" sortBy="#{e.nombre}" filterBy="#{e.nombre}" filterMatchMode="contains">
+                        <p:outputLabel value="#{e.nombre}"/>
+                    </p:column>
+                    
+                    <p:column headerText="#{bundle.EspRegionTitle}" sortBy="#{e.especificidadderegion.nombre}" filterBy="#{e.especificidadderegion.nombre}" filterMatchMode="contains"  >
+                        <p:outputLabel value="#{e.especificidadderegion.nombre}"/>
+                    </p:column>   
+                    
+                    <p:column filterBy="#{e.adminentidad.habilitado}" headerText="Estado" filterMatchMode="equals">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('regTable').filter()" style="font-size: 80%">
+                                <f:converter converterId="javax.faces.Boolean" />
+                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                <f:selectItem itemLabel="Activos" itemValue="true" />
+                                <f:selectItem itemLabel="Inactivos" itemValue="false" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{e.adminentidad.habilitado ? 'Habilitado': 'Deshabilitado'}" />
+                    </p:column>                    
+
+                    <p:column headerText="Acciones" style="width:140px">
+                        <p:growl id="messages" showDetail="true" />
+                        <p:commandButton icon="ui-icon-zoomin" action="#{mbRegion.prepareView}" title="Ver detalle">
+                            <f:setPropertyActionListener value="#{e}" target="#{mbRegion.regionSelected}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-pencil" action="#{mbRegion.prepareEdit}" title="Editar">
+                            <f:setPropertyActionListener value="#{e}" target="#{mbRegion.regionSelected}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-trash" action="#{mbRegion.prepareDestroy}" update="messages" title="Deshabilitar">
+                            <f:setPropertyActionListener value="#{e}" target="#{mbRegion.regionSelected}" />
+                            <p:confirm header="Confirmar" message="¿Desea deshabiltar la Región?" />
+                        </p:commandButton>
+                        
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                           <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                           <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                       </p:confirmDialog>                       
+                    </p:column>                
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
+   

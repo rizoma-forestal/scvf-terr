@@ -1,0 +1,4 @@
+/target/
+/src/main/java/ar/gob/ambiente/servicios/gestionterritorial/servlets/regionServlet.java
+derby.log
+nb-configuration.xml

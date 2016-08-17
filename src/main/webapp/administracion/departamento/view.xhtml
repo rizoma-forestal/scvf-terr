@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
+        <ui:define name="content"> 
+        <h:form id="frmDepartamentoView">
+                <p:panel id="pnView" header="#{bundle.DepartamentoViewTitle}" style="margin-bottom:10px;">
+                    <p:messages id="messages" />              
+                    <h:panelGrid columns="2">
+                        <h:outputLabel  value="#{bundle.ViewProvincia}"/>
+                        <h:outputText   value="#{mbDepartamento.selected.provincia.nombre}" 
+                                        title="#{bundle.ViewProvincia}"/>  
+
+                        <h:outputLabel  value="#{bundle.CreateDepartamentoLabel_nombre}"/>
+                        <h:outputText   value="#{mbDepartamento.selected.nombre}" 
+                                        title="#{bundle.CreateDepartamentoTitle_nombre}"/>
+                        
+                        <h:outputLabel  value="#{bundle.UsuarioAlta}"/>
+                        <h:outputText   value="#{mbDepartamento.selected.adminentidad.usAlta.nombre}" 
+                                        title="#{bundle.UsuarioAlta}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaAlta}"/>
+                        <h:outputText   value="#{mbDepartamento.selected.adminentidad.strFechaAlta}" 
+                                        title="#{bundle.FechaAlta}"/>                         
+
+                        <h:outputLabel  value="#{bundle.UsuarioModifica}"/>
+                        <h:outputText   value="#{mbDepartamento.selected.adminentidad.usModif.nombre}" 
+                                        title="#{bundle.UsuarioModifica}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaModifica}"/>
+                        <h:outputText   value="#{mbDepartamento.selected.adminentidad.strFechaModif}" 
+                                        title="#{bundle.FechaModifica}"/>                          
+
+                        <h:outputLabel  value="#{bundle.UsuarioBaja}"
+                                        rendered="#{not mbDepartamento.selected.adminentidad.habilitado}"/>
+                        <h:outputText   value="#{mbDepartamento.selected.adminentidad.usBaja.nombre}"
+                                        rendered="#{not mbDepartamento.selected.adminentidad.habilitado}"
+                                        title="#{bundle.UsuarioBaja}"/>                        
+
+                        <h:outputLabel  value="#{bundle.FechaBaja}"
+                                        rendered="#{not mbDepartamento.selected.adminentidad.habilitado}"/>
+                        <h:outputText   value="#{mbDepartamento.selected.adminentidad.strFechaBaja}" 
+                                        rendered="#{not mbDepartamento.selected.adminentidad.habilitado}"
+                                        title="#{bundle.FechaBaja}"/>                         
+                        
+                        <h:outputLabel value="#{bundle.CentrosPobladosAsociados}" />
+                        <p:commandButton value="Ver" type="button" onclick="PF('CentrosPoblados').show();" actionListener="#{mbDepartamento.selected.centrosPoblados}" />      
+                    </h:panelGrid>      
+                </p:panel>       
+                <p:toolbar>
+                    <f:facet name="right">
+                        <p:commandButton icon="ui-icon-refresh" action="#{mbDepartamento.prepareList()}" value="Volver" ajax="false"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:dialog style="font-size: 80%" header="Listado de Ctros.Poblados asociados" widgetVar="CentrosPoblados" showEffect="fade" hideEffect="fade" height="200" width="30%">
+                    <p:dataTable value="#{mbDepartamento.selected.centrosPoblados}" var="e" id="departamentoList"  
+                            rows="5" 
+                            paginator="true" 
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                            rowsPerPageTemplate="5,10,15" >
+                        <f:facet name="header">
+                            <p:commandButton icon="ui-icon-refresh" value="Actualizar" update="departamentoList" style="margin-left: 10px"/>
+                        </f:facet>
+                        <p:column headerText="CentroPoblado" filterMatchMode="contains" filterBy="#{e.nombre}" sortBy="#{e.nombre}" >
+                            <p:outputLabel value="#{e.nombre}"/> 
+                        </p:column>                        
+                    </p:dataTable>
+                </p:dialog>   
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

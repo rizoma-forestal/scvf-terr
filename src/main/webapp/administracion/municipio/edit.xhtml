@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmEdit">
+                <p:panel id="pnEdit" header="#{bundle.MunicipioEditTitle}" style="margin-bottom:10px;">
+                    <p:growl id="messages" />
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="#{bundle.CreateMunicipioLabel_Provincia}" for="prov" />
+                        <p:selectOneMenu id="prov" value="#{mbMunicipio.selected.provincia}" required="true" requiredMessage="#{bundle.CreateCentroPobladoProvinciaRequiredMessage}" >
+                                <f:selectItem itemLabel="Seleccione la Provincia" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{mbMunicipio.listaProvincias}" var="prov" itemLabel="#{prov.nombre}" itemValue="#{prov}" />
+                        </p:selectOneMenu>                          
+                         
+                        <p:outputLabel value="#{bundle.CreateMunicipioLabel_nombre}" for="nombre"/>
+                        <p:inputText id="nombre" value="#{mbMunicipio.selected.nombre}" requiredMessage="#{bundle.CreateMunicipioRequiredMessage_nombre}" required="true"/>
+                        <h:inputHidden id="id" value="#{mbMunicipio.selected.id}" />
+                    </h:panelGrid>
+                </p:panel>
+                
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton icon="ui-icon-pencil" 
+                                         action="#{mbMunicipio.update}" 
+                                         value="Guardar" 
+                                         style="margin-right:10px;" 
+                                         update="pnEdit"/>
+                        <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: right">
+                            <p:ajax update="pnEdit" resetValues="true" />
+                        </p:commandButton>
+                    </f:facet>
+                    <f:facet name="right">
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbMunicipio.prepareList}" value="Volver" immediate="true"/>
+                    </f:facet>                    
+                </p:toolbar>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
