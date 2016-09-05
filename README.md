@@ -12,13 +12,15 @@ La acreditación de esta aplicación es gestionada mediante el servicio brindado
 
 Disitingue dos roles de usuarios, el administrador que gestiona los contenidos y el seguridad, que gestiona usuarios y roles. Para asignar usuarios a la aplicación, previamente deben ser vinculados mediante gestionAplicaciones.	
 
-Para más datos se recomienda acceder a la documentación de la aplicación en \\vmfs\Desarrollo\Servicios\Gestion Territorial
+Para más datos se recomienda acceder a la documentación de la aplicación en `docs\Gestion Territorial`
 
 
 Ambiente:
 ---------
 
-Para conocer las características del ambiente para el despliegue de la aplicación se recomiendo leer la documentación alojada en \\vmfs\Desarrollo\Aplicaciones\javaApp. Dado que la aplicación requiere el servicio de acreditación de usuarios de gestionAplicaciones, es condición para el ambiente local de esta aplicación tener desplegada previamente gestionAplicaciones. Una vez levantado el proyecto en el IDE, con gestionAplicaciones despleagada, deberá actualizarse la referencia a http://localhost:8080/AccesoAppWebService/AccesoAppWebService?WSDL para que se creen las entidades necesarias para el consumo del servicio.
+Para conocer las características del ambiente para el despliegue de la aplicación se recomienda leer la documentación alojada en `doc/entornoLocal.txt` y `doc/frameworks_tecnologias.txt`
+
+Dado que la aplicación requiere el servicio de acreditación de usuarios de gestionAplicaciones, es condición para el ambiente local de esta aplicación tener desplegada previamente gestionAplicaciones. Una vez levantado el proyecto en el IDE, con gestionAplicaciones despleagada, deberá actualizarse la referencia a http://localhost:8080/AccesoAppWebService/AccesoAppWebService?WSDL para que se creen las entidades necesarias para el consumo del servicio.
 
 
 Configuraciones:
@@ -38,18 +40,21 @@ Datos:
 
 Deberá crearse la base de datos gestionTerritorial en el servidor local de Postgres y los permisos según se especifica en el archivo glassfish-resource.xml
 	
-Los backup de la base se encuentran en \\vmfs\Desarrollo\Servicios\Gestion Territorial\bkBase y los scripts en \\vmfs\Desarrollo\Servicios\Gestion Territorial\scriptsBase
-	
-Se recomienda crear, luego de la base, primero las tablas y luego las restricciones de cada una.
+Los backup de la base se encuentran en \\vmfs\Desarrollo\Servicios\Gestion Territorial\bkBase y los scripts `docs\scriptsBase`. Se recomienda crear, luego de la base, primero las tablas y luego las restricciones de cada una.
+
+Otra alternativa es cargar el archivo gestionTerritorial.tar que contiene toda la informacion (esquema y datos)
 
 
 Servicios brindados:
 --------------------
 	
-Los archivos xml correspondientes al contrato del servicio web que brinda la aplicación para gestionar el logeo de otras aplicaciones del mismo entorno, se encuentran en \\vmfs\Desarrollo\Servicios\Gestion Territorial\contratoServicios
+Los archivos xml correspondientes al contrato del servicio web que brinda la aplicación para gestionar el logeo de otras aplicaciones del mismo entorno, se encuentran en `docs\Gestion Territorial\contratoServicios`
 
 
 Servicios consumidos:
 ---------------------
 	
-Como se antició, la aplicación consume los servicios de acreditación de usuarios de gestionAplicaciones.
+La aplicación consume los servicios de acreditación de usuarios de gestionAplicaciones. En netbeans se ejecuta el `wsimport` automáticamente, pero si se usa Eclipse, hay que ejecutarlo manualmente, mediante el comando:
+
+
+`wsimport -keep -p ar.gob.ambiente.servicios.gestionterritorial.wsExt -d src/main/java/  http://localhost:8080/AccesoAppWebService/AccesoAppWebService?WSDL`
