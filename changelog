@@ -1,38 +1,49 @@
-*   [33m452778e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mrelease-1.0.0[m[33m, [m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m Merge branch 'build-local' into develop
+*   [33m27e03e8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mrelease-1.0.1[m[33m, [m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m Merge branch 'limpieza-codigo' into develop
 [31m|[m[32m\[m  
-[31m|[m * [33mae0343c[m Build Local
+[31m|[m * [33m976bf0e[m Limpieza
+[31m|[m * [33m587c521[m Limpieza
 [31m|[m[31m/[m  
-*   [33m1842bee[m Merge branch 'config' into develop
+* [33m55a2825[m Build
+* [33mf7a9fe4[m Limpieza
+*   [33m4c01136[m[33m ([m[1;33mtag: 1.0.0[m[33m)[m Merge branch 'release-1.0.0' into develop
 [33m|[m[34m\[m  
-[33m|[m * [33md35d682[m Eliminar prueba
-* [34m|[m   [33m8bc6f8d[m Merge branch 'config' into develop
-[35m|[m[34m\[m [34m\[m  
-[35m|[m [34m|[m[34m/[m  
-[35m|[m *   [33m87942bd[m Merge branch 'develop' into config
-[35m|[m [1;31m|[m[35m\[m  
-[35m|[m [1;31m|[m[35m/[m  
-[35m|[m[35m/[m[1;31m|[m   
-* [1;31m|[m   [33mc12a012[m Merge branch 'config' into develop
-[1;33m|[m[1;34m\[m [1;31m\[m  
-[1;33m|[m [1;34m|[m * [33md0b2a33[m Borrar
-[1;33m|[m [1;34m|[m[1;34m/[m  
-[1;33m|[m * [33md13f811[m Configuracion Se agregan los archivos para la creacion de la base de datos y los archivos genericos de configuracion.
-[1;33m|[m[1;33m/[m  
+[33m|[m * [33mb260715[m[33m ([m[1;32mrelease-1.0.0[m[33m)[m Produccion 1.0.0
+[33m|[m[33m/[m  
+*   [33m452778e[m Merge branch 'build-local' into develop
+[35m|[m[36m\[m  
+[35m|[m * [33mae0343c[m Build Local
+[35m|[m[35m/[m  
+*   [33m1842bee[m Merge branch 'config' into develop
+[1;31m|[m[1;32m\[m  
+[1;31m|[m * [33md35d682[m Eliminar prueba
+* [1;32m|[m   [33m8bc6f8d[m Merge branch 'config' into develop
+[1;33m|[m[1;32m\[m [1;32m\[m  
+[1;33m|[m [1;32m|[m[1;32m/[m  
+[1;33m|[m *   [33m87942bd[m Merge branch 'develop' into config
+[1;33m|[m [1;35m|[m[1;33m\[m  
+[1;33m|[m [1;35m|[m[1;33m/[m  
+[1;33m|[m[1;33m/[m[1;35m|[m   
+* [1;35m|[m   [33mc12a012[m Merge branch 'config' into develop
+[31m|[m[32m\[m [1;35m\[m  
+[31m|[m [32m|[m * [33md0b2a33[m Borrar
+[31m|[m [32m|[m[32m/[m  
+[31m|[m * [33md13f811[m Configuracion Se agregan los archivos para la creacion de la base de datos y los archivos genericos de configuracion.
+[31m|[m[31m/[m  
 *   [33md6e7fae[m Merge branch 'carga-inicial' into develop
-[1;35m|[m[1;36m\[m  
-[1;35m|[m * [33m3be6d37[m Se actualizó el .gitignore
-[1;35m|[m * [33m752f1e1[m Commit para la carga inicial en el repo del Ministerio
-[1;35m|[m[1;35m/[m  
+[33m|[m[34m\[m  
+[33m|[m * [33m3be6d37[m Se actualizó el .gitignore
+[33m|[m * [33m752f1e1[m Commit para la carga inicial en el repo del Ministerio
+[33m|[m[33m/[m  
 * [33m969cefa[m Desarrollo
 *   [33m1366f8a[m Merge branch 'carga-inicial' into develop
-[31m|[m[32m\[m  
-[31m|[m * [33m2490ec3[m Actualización previa al migrado al repo del ministerio
-* [32m|[m   [33m0c8b7b0[m Merge branch 'develop' of http://vmgit/Bonobo.Git.Server/gestionTerritorial into develop
-[32m|[m[34m\[m [32m\[m  
-[32m|[m [34m|[m[32m/[m  
-[32m|[m[32m/[m[34m|[m   
-[32m|[m * [33m3f0bd54[m Desarrollo
-[32m|[m * [33m19037c6[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m Primer commit
+[35m|[m[36m\[m  
+[35m|[m * [33m2490ec3[m Actualización previa al migrado al repo del ministerio
+* [36m|[m   [33m0c8b7b0[m Merge branch 'develop' of http://vmgit/Bonobo.Git.Server/gestionTerritorial into develop
+[36m|[m[1;32m\[m [36m\[m  
+[36m|[m [1;32m|[m[36m/[m  
+[36m|[m[36m/[m[1;32m|[m   
+[36m|[m * [33m3f0bd54[m Desarrollo
+[36m|[m * [33m19037c6[m Primer commit
 * [33mc9f6690[m Se asocia Región con Provicnias
 * [33mc7e9985[m Se asocia Región con Provicnias
 * [33m96fb206[m Se asocia Región con Provicnias
@@ -82,11 +93,11 @@
 * [33mea7ecb9[m Se agrega metodo getPorProvincia y recibe como parametro un entero y devuelve un LIST de Departamentos
 * [33m5b2175f[m De todo un poco NO ANDA Centro Poblado NEW
 *   [33m270b608[m Merge branch 'develop' of https://github.com/rincostante/gestionTerritorial into develop
-[35m|[m[36m\[m  
-[35m|[m * [33m34cd678[m Centro Poblado y Tipos de Centro Poblados
-* [36m|[m [33me58a26a[m De todo un poco NO ANDA Centro Poblado NEW
-* [36m|[m [33m681118c[m De todo un poco NO ANDA Centro Poblado NEW
-[36m|[m[36m/[m  
+[1;33m|[m[1;34m\[m  
+[1;33m|[m * [33m34cd678[m Centro Poblado y Tipos de Centro Poblados
+* [1;34m|[m [33me58a26a[m De todo un poco NO ANDA Centro Poblado NEW
+* [1;34m|[m [33m681118c[m De todo un poco NO ANDA Centro Poblado NEW
+[1;34m|[m[1;34m/[m  
 * [33mc4462f4[m De todo
 * [33m809e26d[m Centro Poblado y Tipos de Centro Poblados
 * [33m87b4279[m Centro Poblado y Tipos de Centro Poblados
@@ -104,18 +115,18 @@
 * [33m723ca8e[m Se modifico MbEspRegion + list + view - Nuevos metodos habilitar y desabilitar
 * [33m6e34710[m Se modifico el MbDepartamento
 *   [33m35332a2[m Merge branch 'develop' of https://github.com/rincostante/gestionTerritorial into develop
-[1;31m|[m[1;32m\[m  
-[1;31m|[m * [33mca76154[m Edu 2
-* [1;32m|[m [33m6a8b01c[m Luis !!! Hoy otra vez
-[1;32m|[m[1;32m/[m  
+[1;35m|[m[1;36m\[m  
+[1;35m|[m * [33mca76154[m Edu 2
+* [1;36m|[m [33m6a8b01c[m Luis !!! Hoy otra vez
+[1;36m|[m[1;36m/[m  
 * [33mde08b15[m Edu
 * [33m2ac427d[m Luis !!! Hoy
 *   [33m4c4681a[m Merge branch 'develop' of https://github.com/rincostante/gestionTerritorial into develop
-[1;33m|[m[1;34m\[m  
-[1;33m|[m * [33m632c392[m Se modificó el Bundle
-* [1;34m|[m [33m7d09389[m MOdificaciones de Luis 23/2 baja logica
-* [1;34m|[m [33md4e6afa[m MOdificaciones de Luis 23/2 baja logica
-[1;34m|[m[1;34m/[m  
+[31m|[m[32m\[m  
+[31m|[m * [33m632c392[m Se modificó el Bundle
+* [32m|[m [33m7d09389[m MOdificaciones de Luis 23/2 baja logica
+* [32m|[m [33md4e6afa[m MOdificaciones de Luis 23/2 baja logica
+[32m|[m[32m/[m  
 * [33m7b843e1[m Se modificó el Facade de Provincia y su Mb correcion de metodos y dependencias
 * [33m3dcc4f1[m Se modificó el Facade de EspRegion para validar Habilitadas y el MbRegion
 * [33m19a1886[m MOdificaciones de Luis 19/02 Vistas List todas la entidades excepto Centro Poblado
@@ -132,14 +143,14 @@
 * [33mc755408[m MOdificaciones de Ruben al 11 de febrero
 * [33m66ccb09[m Se modificaron los MB para que implementen Serializable
 *   [33m47af621[m Merge branch 'develop' of https://github.com/rincostante/gestionTerritorial into develop
-[1;35m|[m[1;36m\[m  
-[1;35m|[m * [33m24cb6b1[m Agragados Filtros a a las entidades
-* [1;36m|[m   [33m0f74bd7[m Merge origin/develop into develop
-[31m|[m[1;36m\[m [1;36m\[m  
-[31m|[m [1;36m|[m[1;36m/[m  
-[31m|[m * [33m8f4184d[m Prueb de subir un archivo solo!!!!
-* [32m|[m [33m4e84fd2[m Se agrego la entidad CentroPobladoTipo se refactoreo Localidad por CentroPoblado
-[32m|[m[32m/[m  
+[33m|[m[34m\[m  
+[33m|[m * [33m24cb6b1[m Agragados Filtros a a las entidades
+* [34m|[m   [33m0f74bd7[m Merge origin/develop into develop
+[35m|[m[34m\[m [34m\[m  
+[35m|[m [34m|[m[34m/[m  
+[35m|[m * [33m8f4184d[m Prueb de subir un archivo solo!!!!
+* [36m|[m [33m4e84fd2[m Se agrego la entidad CentroPobladoTipo se refactoreo Localidad por CentroPoblado
+[36m|[m[36m/[m  
 * [33mef47b6b[m Agrego tipoCP
 * [33m974ce71[m Se agrego la entidad CentroPobladoTipo se refactoreo Localidad por CentroPoblado
 * [33md62f9d7[m Commit1
@@ -155,10 +166,10 @@
 * [33mc08211b[m Commit1
 * [33mce25c8e[m Commit1
 *   [33m76ffc61[m Merge origin/develop into develop
-[33m|[m[34m\[m  
-[33m|[m * [33m9a9f761[m Update README.md
-* [34m|[m [33me457c6e[m Se eliminó la infraestructura de Arquillian para los test con el glassfish incrustado, se actualizaron todos los facades y el POM. También se pasó la versión de PromeFaces a 5.0
-[34m|[m[34m/[m  
+[1;31m|[m[1;32m\[m  
+[1;31m|[m * [33m9a9f761[m Update README.md
+* [1;32m|[m [33me457c6e[m Se eliminó la infraestructura de Arquillian para los test con el glassfish incrustado, se actualizaron todos los facades y el POM. También se pasó la versión de PromeFaces a 5.0
+[1;32m|[m[1;32m/[m  
 * [33m168fc6d[m Se eliminó la infraestructura de Arquillian para los test con el glassfish incrustado, se actualizaron todos los facades y el POM. También se pasó la versión de PromeFaces a 5.0
 * [33md297d91[m Se agregaron las entidades Departamento, Localidad, Municipio, Provincia
 * [33me9d6a7a[m Se agregaron las entidades Departamento, Localidad, Municipio, Provincia
@@ -166,19 +177,19 @@
 * [33m660e6d0[m Se agregaron los facades de las entidades, se actualizaron las anotaciones para JavaDoc y se agregaron métodos genéricos en el AbstractFacade
 * [33mf73691b[m Se completaron las relaciones y se agrego la ManyToMany
 *   [33m35979d9[m Merge branch 'develop' of https://github.com/rincostante/gestionTerritorial into develop
-[35m|[m[36m\[m  
-[35m|[m * [33mede7120[m Se agregaron las entidades Departamento, Localidad, Municipio, Provincia
-* [36m|[m [33m650f771[m Commit1
-[36m|[m[36m/[m  
+[1;33m|[m[1;34m\[m  
+[1;33m|[m * [33mede7120[m Se agregaron las entidades Departamento, Localidad, Municipio, Provincia
+* [1;34m|[m [33m650f771[m Commit1
+[1;34m|[m[1;34m/[m  
 * [33meb19299[m Update README.md
 * [33mf699ae4[m Se agregó la infraestructura para test con Arquillian
 * [33m487102e[m Se agregaron las entidades Departamento, Localidad, Municipio, Provincia
 *   [33m3b1fced[m Merge origin/develop into develop
-[1;31m|[m[1;32m\[m  
-[1;31m|[m *   [33m4603ea2[m Merge branch 'develop' of https://github.com/rincostante/gestionTerritorial into develop
-[1;31m|[m [1;33m|[m[1;34m\[m  
-[1;31m|[m * [1;34m|[m [33m9174434[m Initial commit
-[1;31m|[m  [1;34m/[m  
-* [1;34m|[m [33m0dae336[m Se agregaron las entidades EspecificidadDeRegion, Region, AdminEntidad
-[1;34m|[m[1;34m/[m  
+[1;35m|[m[1;36m\[m  
+[1;35m|[m *   [33m4603ea2[m Merge branch 'develop' of https://github.com/rincostante/gestionTerritorial into develop
+[1;35m|[m [31m|[m[32m\[m  
+[1;35m|[m * [32m|[m [33m9174434[m Initial commit
+[1;35m|[m  [32m/[m  
+* [32m|[m [33m0dae336[m Se agregaron las entidades EspecificidadDeRegion, Region, AdminEntidad
+[32m|[m[32m/[m  
 * [33mf14399b[m primer commit
