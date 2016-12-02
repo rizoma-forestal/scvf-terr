@@ -102,7 +102,8 @@ public class EspecificidadDeRegionFacade extends AbstractFacade<EspecificidadDeR
         em = getEntityManager();        
         List<EspecificidadDeRegion> result;
         String queryString = "SELECT edr FROM EspecificidadDeRegion edr " 
-                + "WHERE edr.adminentidad.habilitado = true";                   
+                + "WHERE edr.adminentidad.habilitado = true "
+                + "ORDER BY edr.nombre";                   
         Query q = em.createQuery(queryString);
         result = q.getResultList();
         return result;

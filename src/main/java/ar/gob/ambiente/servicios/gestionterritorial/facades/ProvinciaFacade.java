@@ -117,7 +117,8 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
         String queryString = "SELECT pro FROM Provincia pro "
                 + "INNER JOIN pro.regiones reg "
                 + "WHERE reg.id = :idRegion "
-                + "AND pro.adminentidad.habilitado = true"; 
+                + "AND pro.adminentidad.habilitado = true "
+                + "ORDER BY pro.nombre"; 
         Query q = em.createQuery(queryString)
                 .setParameter("idRegion", idRegion);
         return q.getResultList();

@@ -151,7 +151,8 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         List<Departamento> result;
         String queryString = "SELECT dpto FROM Departamento dpto " 
                 + "WHERE dpto.provincia = :objParam "
-                + "AND dpto.adminentidad.habilitado = true";
+                + "AND dpto.adminentidad.habilitado = true "
+                + "ORDER BY dpto.nombre";
 
         Query q = em.createQuery(queryString)
                 .setParameter("objParam", prov);        
@@ -164,7 +165,8 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         em = getEntityManager();     
         String queryString = "SELECT dpto FROM Departamento dpto "
                 + "WHERE dpto.provincia.id = :idProv "
-                + "AND dpto.adminentidad.habilitado = true";
+                + "AND dpto.adminentidad.habilitado = true "
+                + "ORDER BY dpto.nombre";
         Query q = em.createQuery(queryString)
                 .setParameter("idProv", idProv);  
         return q.getResultList();
