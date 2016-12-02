@@ -129,7 +129,8 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         em = getEntityManager();
         String queryString = "SELECT cp FROM CentroPoblado cp "
                 + "WHERE cp.departamento.id = :idDepto "
-                + "AND cp.adminentidad.habilitado = true";
+                + "AND cp.adminentidad.habilitado = true "
+                + "ORDER BY cp.nombre";
         Query q = em.createQuery(queryString)
                 .setParameter("idDepto", idDepto);
         return q.getResultList();         
@@ -140,7 +141,8 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         String queryString = "SELECT cp FROM CentroPoblado cp "
                 + "WHERE cp.departamento.id = :idDepto "
                 + "AND cp.centroPobladoTipo.id = :idTipo "
-                + "AND cp.adminentidad.habilitado = true";
+                + "AND cp.adminentidad.habilitado = true "
+                + "ORDER BY cp.nombre";
         Query q = em.createQuery(queryString)
                 .setParameter("idDepto", idDepto)
                 .setParameter("idTipo", idTipo);
@@ -152,7 +154,8 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         String queryString = "SELECT cp FROM CentroPoblado cp "
                 + "WHERE cp.departamento.provincia.id = :idProv "
                 + "AND cp.centroPobladoTipo.id = :idTipo "
-                + "AND cp.adminentidad.habilitado = true";
+                + "AND cp.adminentidad.habilitado = true "
+                + "ORDER BY cp.nombre";
         Query q = em.createQuery(queryString)
                 .setParameter("idProv", idProv)
                 .setParameter("idTipo", idTipo);
@@ -167,7 +170,8 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
                 + "INNER JOIN prov.regiones reg "
                 + "WHERE reg.id = :idRegion "
                 + "AND cp.centroPobladoTipo.id = :idTipo "
-                + "AND cp.adminentidad.habilitado = true ";    
+                + "AND cp.adminentidad.habilitado = true "
+                + "ORDER BY cp.nombre";    
         Query q = em.createQuery(queryString)
                 .setParameter("idRegion", idRegion)
                 .setParameter("idTipo", idTipo);

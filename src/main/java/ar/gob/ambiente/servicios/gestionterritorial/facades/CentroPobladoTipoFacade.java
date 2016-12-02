@@ -106,7 +106,8 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
         em = getEntityManager();        
         List<CentroPobladoTipo> result;
         String queryString = "SELECT cpt FROM CentroPobladoTipo cpt " 
-                + "WHERE cpt.adminentidad.habilitado = true";                   
+                + "WHERE cpt.adminentidad.habilitado = true "
+                + "ORDER BY cpt.nombre";                   
         Query q = em.createQuery(queryString);
         result = q.getResultList();
         return result;
