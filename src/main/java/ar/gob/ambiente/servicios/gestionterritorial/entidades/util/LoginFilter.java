@@ -149,7 +149,7 @@ public class LoginFilter implements Filter {
             res.addCookie(cookieUrl);
             
             // redirecciona para la autenticación del usuario
-            res.sendRedirect(ResourceBundle.getBundle("/Bundle").getString("RutaAutenticacion") + "/faces/login.xhtml");
+            res.sendRedirect(ResourceBundle.getBundle("/Config").getString("RutaAutenticacion") + "/faces/login.xhtml");
             return; 
         }        
 

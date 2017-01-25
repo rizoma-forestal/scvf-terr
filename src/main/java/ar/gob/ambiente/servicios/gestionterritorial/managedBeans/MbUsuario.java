@@ -79,8 +79,10 @@ public class MbUsuario implements Serializable{
         iniciado = false;
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         login = (MbLogin)ctx.getSessionMap().get("mbLogin");
-        usLogeado = login.getUsLogeado();    
-        lstApp = verAplicaciones();
+        if(login != null){
+            usLogeado = login.getUsLogeado();    
+            lstApp = verAplicaciones();
+        }
     }
     
     /**

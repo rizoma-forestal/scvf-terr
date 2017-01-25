@@ -31,21 +31,21 @@
                 <h:form>
                     <p:menubar>
                         <p:menuitem value="Inicio" 
-                                    url="#{bundle.Servidor}#{bundle.RutaAplicacion}" />
+                                    url="#{config.Servidor}#{bundle.RutaAplicacion}" />
                         <p:submenu label="Administración">
-                            <p:menuitem value="Especificidad de Región" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizEspRegion}/list.xhtml"/>
-                            <p:menuitem value="Región" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizRegion}/list.xhtml"/>
-                            <p:menuitem value="Provincia" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizProvincia}/list.xhtml"/>
-                            <p:menuitem value="Departamento" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizDepartamento}/list.xhtml"/>
-                            <p:menuitem value="Municipio" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizMunicipio}/list.xhtml"/>
-                            <p:menuitem value="Centro Poblado" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizCentroPoblado}/list.xhtml"/>
-                            <p:menuitem value="Tipo Centro Poblado" url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizTipoCentroPoblado}/list.xhtml" /> 
+                            <p:menuitem value="Especificidad de Región" url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizEspRegion}/list.xhtml"/>
+                            <p:menuitem value="Región" url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizRegion}/list.xhtml"/>
+                            <p:menuitem value="Provincia" url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizProvincia}/list.xhtml"/>
+                            <p:menuitem value="Departamento" url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizDepartamento}/list.xhtml"/>
+                            <p:menuitem value="Municipio" url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizMunicipio}/list.xhtml"/>
+                            <p:menuitem value="Centro Poblado" url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizCentroPoblado}/list.xhtml"/>
+                            <p:menuitem value="Tipo Centro Poblado" url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizTipoCentroPoblado}/list.xhtml" /> 
                         </p:submenu>   
                         <p:submenu label="Seguridad" rendered="#{mbLogin.ambito == 'Seguridad'}">
                             <p:menuitem value="Usuarios" 
-                                        url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizUsuario}/list.xhtml"/>
+                                        url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizUsuario}/list.xhtml"/>
                             <p:menuitem value="Roles" 
-                                        url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizRol}/list.xhtml"/>                             
+                                        url="#{config.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizRol}/list.xhtml"/>                             
                                                                         
                         </p:submenu> 
                         <f:facet name="options">
