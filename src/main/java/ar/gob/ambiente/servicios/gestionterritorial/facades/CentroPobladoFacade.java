@@ -22,7 +22,7 @@ import javax.persistence.Query;
 
 @Stateless
 public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
-    @PersistenceContext(unitName = "ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "gestionTerritorial-PU")
     private EntityManager em;
 
     @Override

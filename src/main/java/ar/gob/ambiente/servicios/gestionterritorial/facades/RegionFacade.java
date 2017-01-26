@@ -21,7 +21,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class RegionFacade extends AbstractFacade<Region> {
-    @PersistenceContext(unitName = "ar.gob.ambiente.servicios_gestionTerritorial_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "gestionTerritorial-PU")
     private EntityManager em;
 
 
