@@ -203,6 +203,8 @@ public class LoginFilter implements Filter {
         return true;
       if (urlStr.indexOf("/centrospobladoswebservice/") != -1)
         return true;
+      if (urlStr.indexOf("/rest/") != -1)
+        return true;  
       return false;
     }     
 
