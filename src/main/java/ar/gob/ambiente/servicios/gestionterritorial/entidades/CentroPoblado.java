@@ -35,7 +35,7 @@ public class CentroPoblado implements Serializable {
     private Long id;
     private String nombre;
     
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne/*(fetch=FetchType.LAZY)*/
     @JoinColumn(name="centropobladotipo_id")
     private CentroPobladoTipo centroPobladoTipo;
     
