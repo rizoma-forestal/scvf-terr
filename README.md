@@ -4,16 +4,15 @@ gestionTerritorial
 Descripción de la aplicación:
 -----------------------------
 
-Esta aplicación gestiona la información correspondiente a la organización territorial de nuestro país. Contiene una API de servicios web para ser consumidos tanto por apliaciones internas como externas, de manera de proveer un registro único de Provincias, departamientos, localidades, municipios y regiones temáticas.
-
-Se preve proximamente desacoplear el backend en un módulo EJB que proporcione la API de servicios web y una fachada que ofresca los mismos métodos para consumo mediante JNDI.
+Esta aplicación gestiona la información correspondiente a la organización territorial de nuestro país. Contiene una API de servicios web para ser consumidos tanto por apliaciones internas como externas, de manera de proveer un registro único de Provincias, departamientos, localidades, municipios y regiones temáticas. Se implementó una nueva API de servicios REST creada especialmente para consumir su información por SACVeFor y SIIF
 
 La acreditación de esta aplicación es gestionada mediante el servicio brindado por gestionAplicaciones.
 
 Disitingue dos roles de usuarios, el administrador que gestiona los contenidos y el seguridad, que gestiona usuarios y roles. Para asignar usuarios a la aplicación, previamente deben ser vinculados mediante gestionAplicaciones.	
 
-Para más datos se recomienda acceder a la documentación de la aplicación en `docs\Gestion Territorial`
 
+Primera versión con servicios WSDL sobre glassFish
+==================================================
 
 Ambiente:
 ---------
