@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.entidades;
 
@@ -28,37 +23,49 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author epassarelli
+ * Enditad que encapsula la información relativa a las Regiones según usos o características específicas.
+ * Cada Región pudede avarcar una o más Provincias de modo total o parcial.
+ * Se omite la documentación de los métodos get y set.
+ * No disponible para la API rest
+ * @author rincostante
  */
 @XmlRootElement(name = "region")
 @Entity
 @Table(name = "region")
 public class Region implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    /**
+     * Variable privada: Identificador único
+     */  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
         
     /**
-     * Campo de texto que indica el nombre de la REgion. 
-     */    
+     * Variable privada: Nombre de la Región
+     */   
     @Column (nullable=false, length=200, unique=true)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 200)
     private String nombre;
     
+    /**
+     * Variable privada: de tipo EspecificidadDeRegion que indica el uso o característica específica de la región
+     */
     @ManyToOne 
     @JoinColumn(name="especificidadderegion_id")
     private EspecificidadDeRegion especificidadderegion;
     
+    /**
+     * Variable privada de tipo AdminEntidad: representa la entidad administrativa de la Región
+     */      
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad;    
-   
 
     /**
-     * Campo de tipo Array que contiene el conjunto de las provincias que contienen esta region
+     * Variable privada: contiene el conjunto de las provincias vinculadas a esta Región
      */
     @ManyToMany
     @JoinTable(
@@ -74,90 +81,61 @@ public class Region implements Serializable {
     public Region(){
         provincias = new ArrayList();
     }
-    /**
-     * @return 
-     */
+
     public EspecificidadDeRegion getEspecificidadderegion() {
         return especificidadderegion;
     }
-    /**
-     *
-     */
+
     public void setEspecificidadderegion(EspecificidadDeRegion especificidadderegion) {
         this.especificidadderegion = especificidadderegion;
     }
 
-
     /**
-     *
-     * @return
-     */
+     * Método para obtener las Provincias vinculadas a la Región.
+     * @return List<Provincia> Listado de Provincias de la Región en cuestión
+     */     
     @XmlTransient
     public List<Provincia> getProvincias() {
         return provincias;
     }
 
-    /**
-     *
-     * @param provincias
-     */
     public void setProvincias(List<Provincia> provincias) {
         this.provincias = provincias;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     *
-     * @param nombre
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /**
-     *
-     * @return
-     */
+     * Método que devuelve la entidad administrativa de la Región
+     * @return AdminEntidad entidad administrativa de la Región
+     */  
     @XmlTransient
     public AdminEntidad getAdminentidad() {
         return adminentidad;
     }
 
-    /**
-     *
-     * @param adminentidad
-     */
     public void setAdminentidad(AdminEntidad adminentidad) {
         this.adminentidad = adminentidad;
     }
 
-    /**
-     *
-     * @return
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     *
-     * @return
-     */
+     * Método que crea un hash con a partir de la id de la entidad
+     * @return int Un entero con el hash
+     */      
     @Override
     public int hashCode() {
         int hash = 0;
@@ -166,10 +144,10 @@ public class Region implements Serializable {
     }
 
     /**
-     *
-     * @param object
-     * @return
-     */
+     * Método que compara una instancia de esta entidad con otra según su id
+     * @param object La instancia de entidad a comparar con la presente
+     * @return boolean Verdadero si son iguales, falso si son distintas
+     */ 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -184,9 +162,9 @@ public class Region implements Serializable {
     }
 
     /**
-     *
-     * @return
-     */
+     * Método que devuelve un String con el id de la entidad
+     * @return String id de la entidad en formato String
+     */        
     @Override
     public String toString() {
         return "ar.gob.ambiente.servicios.gestionterritorial.entidades.Region[ id=" + id + " ]";

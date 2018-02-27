@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.servicios;
 
@@ -30,35 +25,67 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 /**
- *
+ * EJB que actúa como interface de servicios de acceso a datos expuesta para ser consumida por el web service CentrosPobladosWebService
  * @author Administrador
+ * @deprecated Esta clase forma parte de la anterior implementación de API de servicios SOAP, reemplazada por la API Rest
  */
 @Stateless
 @LocalBean
 public class CentrosPobServicio {
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de CentroPoblado
+     */
     @EJB
     private CentroPobladoFacade centroPobladoFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Departamento
+     */
     @EJB
     private DepartamentoFacade departamentoFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Municipio
+     */
     @EJB
     private MunicipioFacade municipioFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Region
+     */
     @EJB
     private RegionFacade regionFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Provincia
+     */
     @EJB
     private ProvinciaFacade provinciaFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de CentroPobladoTipo
+     */
     @EJB
     private CentroPobladoTipoFacade centroPobladoTipoFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de EspecificidadDeRegion
+     */
     @EJB
     private EspecificidadDeRegionFacade espRegFacade;
+    
+    /**
+     * Variable privada para el logeo en el servidor
+     */
     private static final Logger logger = Logger.getLogger(CentroPoblado.class.getName());
     
+    /**
+     * Método que obtiene las localidades por Departamento mediente el método getCentrosXDepto(Long idDepto)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idDepto Long id del Departamento
+     * @return List<CentroPoblado> Listado de las localidades correspondientes
+     */
     public List<CentroPoblado> getCentrosPorDepto(Long idDepto) {
         List<CentroPoblado> lstCentros = new ArrayList();
         Date date;
@@ -73,6 +100,13 @@ public class CentrosPobServicio {
         return lstCentros;
     }
 
+    /**
+     * Método que obtiene las localidades por Departamento y Tipo mediente el método getCentrosXDeptoTipo(Long idDepto, Long idTipo)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idDepto Long id del Departamento
+     * @param idTipo Long id del Tipo del Centro poblado
+     * @return List<CentroPoblado> Listado de las localidades correspondientes
+     */
     public List<CentroPoblado> getCentrosPorDeptoYTipo(Long idDepto, Long idTipo) {
         List<CentroPoblado> lstCentros = new ArrayList();
         Date date;
@@ -87,6 +121,13 @@ public class CentrosPobServicio {
         return lstCentros;
     }
     
+    /**
+     * Método que obtiene las localidades por Provincia y Tipo mediente el método getCentrosXProvTipo(Long idProv, Long idTipo);
+     * Inscribe en el log del server el resultado de la operación
+     * @param idProv Long id de la Provincia
+     * @param idTipo Long id del Tipo del Centro poblado
+     * @return List<CentroPoblado> Listado de las localidades correspondientes
+     */
     public List<CentroPoblado> getCentrosPorProvYTipo(Long idProv, Long idTipo) {
         List<CentroPoblado> lstCentros = new ArrayList();
         Date date;
@@ -101,6 +142,13 @@ public class CentrosPobServicio {
         return lstCentros;
     }
     
+    /**
+     * Método que obtiene las localidades por Región y Tipo mediente el método getCentrosXRegionTipo(Long idRegion, Long idTipo)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idRegion Long id de la Región
+     * @param idTipo Long id del Tipo del Centro poblado
+     * @return List<CentroPoblado> Listado de las localidades correspondientes
+     */
     public List<CentroPoblado> getCentrosPorRegionYTipo(Long idRegion, Long idTipo) {
         List<CentroPoblado> lstCentros = new ArrayList();
         Date date;
@@ -115,6 +163,12 @@ public class CentrosPobServicio {
         return lstCentros;
     }
     
+    /**
+     * Método que obtiene las localidades por Provincia el método getCentrosXRegionTipo(Long idRegion, Long idTipo)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idProv Long id de la Provincia
+     * @return List<CentroPoblado> Listado de las localidades correspondientes
+     */
     public List<Departamento> getDeptosPorProvincia(Long idProv){
         List<Departamento> lstDeptos = new ArrayList();
         Date date;
@@ -129,6 +183,12 @@ public class CentrosPobServicio {
         return lstDeptos;
     }
     
+    /**
+     * Método que obtiene los Municipios por Provincia mediante el método getMunicipioXIdProv(Long idProv)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idProv Long id de la Provincia
+     * @return List<Municipio> Listado de los Municipios correspondientes
+     */
     public List<Municipio> getMunicipiosPorProvincia(Long idProv){
         List<Municipio> lstMunicipios = new ArrayList();
         Date date;
@@ -143,6 +203,12 @@ public class CentrosPobServicio {
         return lstMunicipios;
     }
     
+    /**
+     * Método que obtiene los Municipios por id mediante el método find(Long idMunicipio)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idMunicipio Long id del Municipio
+     * @return Municipio Municipio correspondiente
+     */    
     public Municipio getMunicipioPorId(Long idMunicipio){
         Municipio result;
         Date date;
@@ -157,6 +223,12 @@ public class CentrosPobServicio {
         }
     }
     
+    /**
+     * Método que obtiene las Regiones por Provincia mediante el método getRegionesXidProv(Long idProv)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idProv Long id de la Provincia
+     * @return List<Region> Listado de las Regiones correspondientes
+     */    
     public List<Region> getRegionesPorProvincia(Long idProv){
         List<Region> lstRegiones = new ArrayList();
         Date date;
@@ -171,6 +243,12 @@ public class CentrosPobServicio {
         return lstRegiones;
     }
     
+    /**
+     * Método que obtiene las Regiones por Especificidade mediante el método getRegionesXidEspecif(Long idEspecif)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idEspecif Long id de la Especificidad
+     * @return List<Region> Listado de las Regiones correspondientes
+     */        
     public List<Region> getRegionesPorEspecif(Long idEspecif){
         List<Region> lstRegiones = new ArrayList();
         Date date;
@@ -184,7 +262,13 @@ public class CentrosPobServicio {
         }      
         return lstRegiones;
     }
-    
+
+    /**
+     * Método que obtiene las Provincias por Región mediante el método getProvXIdRegion(Long idRegion)
+     * Inscribe en el log del server el resultado de la operación
+     * @param idRegion Long id de la Región
+     * @return List<Provincia> Listado de las Provincias correspondientes
+     */      
     public List<Provincia> getProvinciasPorRegion(Long idRegion){
         List<Provincia> lstProvincias = new ArrayList();
         Date date;
@@ -199,6 +283,11 @@ public class CentrosPobServicio {
         return lstProvincias;
     }    
     
+    /**
+     * Método que obtiene las Provincias disponibles mediante el método getActivos()
+     * Inscribe en el log del server el resultado de la operación
+     * @return List<Provincia> Listado de las Provincias correspondientes
+     */      
     public List<Provincia> getProvincias(){
         List<Provincia> lstProvincias = new ArrayList();
         Date date;
@@ -213,6 +302,11 @@ public class CentrosPobServicio {
         return lstProvincias;
     }
     
+    /**
+     * Método que obtiene los tipos de Centros poblados disponibles mediante el método getActivos()
+     * Inscribe en el log del server el resultado de la operación
+     * @return List<CentroPobladoTipo> Listado de los Centros poblados correspondientes
+     */ 
     public List<CentroPobladoTipo> getTiposCentros(){
         List<CentroPobladoTipo> lstTipoCentro = new ArrayList();
         Date date;
@@ -227,6 +321,11 @@ public class CentrosPobServicio {
         return lstTipoCentro;
     }    
     
+    /**
+     * Método que obtiene los tipos de Especificidad de región disponibles mediante el método getActivos()
+     * Inscribe en el log del server el resultado de la operación
+     * @return List<EspecificidadDeRegion> Listado de las Especificidades correspondientes
+     */     
     public List<EspecificidadDeRegion> getEspecifRegion(){
         List<EspecificidadDeRegion> lstEpecificidades = new ArrayList();
         Date date;
@@ -241,6 +340,11 @@ public class CentrosPobServicio {
         return lstEpecificidades;
     }     
     
+    /**
+     * Método que obtiene un Centro poblado por id mediante el método find(Long id)
+     * Inscribe en el log del server el resultado de la operación
+     * @return CentroPoblado Centro poblado correspondiente
+     */       
     public CentroPoblado getCentroPoblado(Long id) {
         CentroPoblado centro;
         Date date;
@@ -256,12 +360,6 @@ public class CentrosPobServicio {
         }
     }    
     
-    /**
-     * Método para consumir en migraciones
-     * @param nombreCentro
-     * @param nombreDepto
-     * @return 
-     */
     public CentroPoblado getCentroPobByNombreYNomDep(String nombreCentro, String nombreDepto){
         CentroPoblado centro;
         Date date;

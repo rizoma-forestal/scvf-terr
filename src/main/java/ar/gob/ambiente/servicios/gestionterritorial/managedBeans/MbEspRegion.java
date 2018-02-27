@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
@@ -31,30 +26,63 @@ import javax.servlet.http.HttpSession;
 
 
 /**
- *
- * @author epassarelli
+ * Bean de respaldo para la gestión de EspecificidadDeRegion
+ * @author rincostante
  */
 public class MbEspRegion implements Serializable{
     
+    /**
+     * Variable privada: EspecificidadDeRegion Entidad que se gestiona mediante el bean
+     */ 
     private EspecificidadDeRegion current;
+    
+    /**
+     * Variable privada: DataModel data model para el listado de Entidades
+     */
     private DataModel items = null;
+    
+    /**
+     * Variable privada: List<EspecificidadDeRegion> listado para el filtrado de la tabla
+     */
     private List<EspecificidadDeRegion> listFilter;
 
-    
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de EspecificidadDeRegion
+     */
     @EJB
     private EspecificidadDeRegionFacade espDeRegionFacade;
+    
+    /**
+     * Variable privada: boolean que indica si se inició el bean
+     */
     private boolean iniciado;
+    
+    /**
+     * Variable privada: Entero que indica el tipo de actualización
+     * 0=updateNormal | 1=deshabiliar | 2=habilitar 
+     */
     private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar 
+    
+    /**
+     * Variable privada: MbLogin bean de gestión de la sesión del usuario
+     */
     private MbLogin login;
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
     private Usuario usLogeado;
     
-    /*
-     * Creates a new instance of MbEspRegion
+    /**
+     * Constructor
      */
     public MbEspRegion() {
          
     }   
 
+    /**
+     * Método que se ejecuta luego de instanciada la clase e inicializa los datos del usuario
+     */    
     @PostConstruct
     public void init(){
         iniciado = false;
@@ -106,7 +134,8 @@ public class MbEspRegion implements Serializable{
     }
 
     /**
-     * @return La entidad gestionada
+     * Método que setea la entidad a gestionar
+     * @return EspecificidadDeRegion La entidad gestionada
      */
     public EspecificidadDeRegion getSelected() {
         if (current == null) {
@@ -116,9 +145,9 @@ public class MbEspRegion implements Serializable{
     }   
     
     /**
-     * @return el listado de entidades a mostrar en el list
+     * Método que setea el listado de EspecificidadDeRegion
+     * @return DataModel listado de EspecificidadDeRegion
      */
-   
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(getFacade().findAll());
@@ -131,7 +160,8 @@ public class MbEspRegion implements Serializable{
      ** Métodos de inicialización **
      *******************************/
     /**
-     * @return acción para el listado de entidades
+     * Método para inicializar el listado de los EspecificidadDeRegion
+     * @return String nombre de la vista a mostrar
      */
     public String prepareList() {
         recreateModel();
@@ -139,14 +169,16 @@ public class MbEspRegion implements Serializable{
     }
 
     /**
-     * @return acción para el detalle de la entidad
+     * Método para inicializar la vista detalle
+     * @return String nombre de la vista a mostrar
      */
     public String prepareView() {
         return "view";
     }
 
-    /** (Probablemente haya que embeberlo con el listado para una misma vista)
-     * @return acción para el formulario de nuevo
+    /**
+     * Método para inicializar la vista de creación de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareCreate() {
         current = new EspecificidadDeRegion();
@@ -154,12 +186,17 @@ public class MbEspRegion implements Serializable{
     }
 
     /**
-     * @return acción para la edición de la entidad
+     * Método para inicializar la vista de actualización de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareEdit() {
         return "edit";
     }
     
+    /**
+     * Método para inicializar la aplicación
+     * @return String ruta a la vista de inicio
+     */        
     public String prepareInicio(){
         recreateModel();
         return "/faces/index";
@@ -167,27 +204,27 @@ public class MbEspRegion implements Serializable{
     
     /**
      * Método para preparar la búsqueda
-     * @return la ruta a la vista que muestra los resultados de la consulta en forma de listado
+     * @return String la ruta a la vista que muestra los resultados de la consulta en forma de listado
      */
     public String prepareSelect(){
-        //items = null;
         return "list";
     }
 
     /**
-     * 
-     * @return 
-     */
+     * Método que prepara la habilitación de una EspecificidadDeRegion
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     */     
     public void habilitar() {
         update = 2;
         update();        
         recreateModel();
     }       
 
-    /**
-     * Método que deshabilita la entidad
-     * @return 
-     */
+     /**
+     * Método que prepara la deshabilitación de una EspecificidadDeRegion.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     * @return String nombre de la vista detalle
+     */ 
     public String deshabilitar() {
        if (getFacade().tieneDependencias(current.getId())){
           update = 1;
@@ -204,9 +241,9 @@ public class MbEspRegion implements Serializable{
     
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
-     * @param arg0: vista jsf que llama al validador
-     * @param arg1: objeto de la vista que hace el llamado
-     * @param arg2: contenido del campo de texto a validar 
+     * @param arg0 FacesContext vista jsf que llama al validador
+     * @param arg1 UIComponent objeto de la vista que hace el llamado
+     * @param arg2 Object contenido del campo de texto a validar 
      */
     public void validarInsert(FacesContext arg0, UIComponent arg1, Object arg2){
         validarExistente(arg2);
@@ -214,9 +251,9 @@ public class MbEspRegion implements Serializable{
     
     /**
      * Método para validar que no exista una entidad con este nombre, siempre que dicho nombre no sea el que tenía originalmente
-     * @param arg0: vista jsf que llama al validador
-     * @param arg1: objeto de la vista que hace el llamado
-     * @param arg2: contenido del campo de texto a validar 
+     * @param arg0 FacesContext vista jsf que llama al validador
+     * @param arg1 UIComponent objeto de la vista que hace el llamado
+     * @param arg2 Object contenido del campo de texto a validar 
      * @throws ValidatorException 
      */
     public void validarUpdate(FacesContext arg0, UIComponent arg1, Object arg2){
@@ -225,6 +262,11 @@ public class MbEspRegion implements Serializable{
         }
     }
     
+    /**
+     * Método para validar que no exista la entidad que se quiere insertar
+     * @param arg2 Object contenido del campo de texto a validar 
+     * @throws ValidatorException 
+     */    
     private void validarExistente(Object arg2) throws ValidatorException{
         if(!getFacade().existe((String)arg2)){
             throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateEspRegionExistente")));
@@ -232,9 +274,8 @@ public class MbEspRegion implements Serializable{
     }
     
     /**
-     * Restea la entidad
+     * Método que estea la entidad
      */
-   
     private void recreateModel() {
         items = null;
     }
@@ -244,7 +285,9 @@ public class MbEspRegion implements Serializable{
     ** Métodos de operación **
     **************************/
     /**
-     * @return 
+     * Método que inserta una nueva EspecificidadDeRegion en la base de datos, previamente genera una entidad de administración
+     * con los datos necesarios y luego se la asigna a la persona
+     * @return String mensaje que notifica la inserción
      */
     public String create() {
         // Creación de la entidad de administración y asignación
@@ -264,8 +307,11 @@ public class MbEspRegion implements Serializable{
         }
     }
 
-        /**
-     * @return mensaje que notifica la actualización
+    /**
+     * Método para que implementa la actualización de una EspecificidadDeRegion, sea para la edición, habilitación o deshabilitación:
+     * Actualiza la entidad administrativa según corresponda, procede según el valor de "update",
+     * ejecuta el método edit() del facade y devuelve el nombre de la vista detalle o null.
+     * @return String nombre de la vista detalle o null
      */
     public String update() {
         Date date = new Date(System.currentTimeMillis());
@@ -301,13 +347,14 @@ public class MbEspRegion implements Serializable{
     }
 
 
-    /**************************
-    **    Métodos de selección     **
+    /*************************
+    ** Métodos de selección **
     **************************/
 
     /**
-     * @param id equivalente al id de la entidad persistida
-     * @return la entidad correspondiente
+     * Método que recupera una EspecificidadDeRegion según su id
+     * @param id Long id de la entidad persistida
+     * @return EspecificidadDeRegion la entidad correspondiente
      */
     public EspecificidadDeRegion getEspecificidadDeRegion(java.lang.Long id){
         return espDeRegionFacade.find(id);
@@ -317,7 +364,8 @@ public class MbEspRegion implements Serializable{
     ** Métodos privados **
     **********************/
     /**
-     * @return el Facade
+     * Método privado que devuelve el facade para el acceso a datos de las EspecificidadDeRegion
+     * @return EJB EspecificidadDeRegionFacade Acceso a datos
      */
     private EspecificidadDeRegionFacade getFacade() {
         return espDeRegionFacade;

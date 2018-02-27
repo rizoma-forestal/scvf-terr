@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
@@ -36,41 +31,99 @@ import javax.servlet.http.HttpSession;
 
 
 /**
- *
- * @author epassarelli
+ * Bean de respaldo para la gestión de CentroPoblado (Localidad)
+ * @author rincostante
  */
 
 public class MbCentroPoblado implements Serializable {
 
+    /**
+     * Variable privada: CentroPoblado Entidad que se gestiona mediante el bean
+     */    
     private CentroPoblado current;
+    
+    /**
+     * Variable privada: DataModel data model para el listado de Entidades
+     */
     private DataModel items = null;
 
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Departamento
+     */
     @EJB
     private DepartamentoFacade departamentoFacade;
 
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de CentroPobladoTipo
+     */
     @EJB
     private CentroPobladoTipoFacade centroPobladoTipoFacade;
    
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Provincia
+     */
     @EJB
     private ProvinciaFacade provFacade;
            
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de CentroPoblado
+     */
     @EJB
     private CentroPobladoFacade centroPobladoFacade;
+    
+    /**
+     * Variable privada: Listado de los Departamentos disponibles para su selección y asignación a un Centro polbado
+     */
     private List<Departamento> listaDepartamentos; 
+    
+    /**
+     * Variable privada: Listado de Tipos de centros poblados para asignar a un Centro polbado
+     */
     private List<CentroPobladoTipo> listaTiposCP;
-    private List<Provincia> listaProvincias; 
+    
+    /**
+     * Variable privada: Listado de Provincias disponibles para su selección
+     */
+    private List<Provincia> listaProvincias;
+    
+    /**
+     * Variable privada: boolean que indica si se inició el bean
+     */
     private boolean iniciado;
-    private Provincia selectProvincia; 
+    
+    /**
+     * Variable privada: Provincia se setea con la Provincia seleccinoada
+     */
     private Provincia provSelected;
-    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar 
+    
+    /**
+     * Variable privada: Entero que indica el tipo de actualización
+     * 0=updateNormal | 1=deshabiliar | 2=habilitar 
+     */
+    private int update;
+    
+    /**
+     * Variable privada: MbLogin bean de gestión de la sesión del usuario
+     */
     private MbLogin login;
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
     private Usuario usLogeado;    
+    
+    /**
+     * Variable privada: List<CentroPoblado> listado de Centros poblados registrados
+     */
     private List<CentroPoblado> listado;
+    
+    /**
+     * Variable privada: List<CentroPoblado> listado para el filtrado de la tabla
+     */
     private List<CentroPoblado> listadoFilter;
-    private List<String> listaNombres;
 
     /**
-     * Creates a new instance of MbCentroPoblado
+     * Constructor
      */
     public MbCentroPoblado() {
     }
@@ -156,7 +209,6 @@ public class MbCentroPoblado implements Serializable {
         this.listaTiposCP = listaTiposCP;
     }
 
-
     public List<Provincia> getListaProvincias() {
         return listaProvincias;
     }
@@ -165,16 +217,9 @@ public class MbCentroPoblado implements Serializable {
         this.listaProvincias = listaProvincias;
     }
 
-    public Provincia getSelectProvincia() {
-        return selectProvincia;
-    }
-
-    public void setSelectProvincia(Provincia selectProvincia) {
-        this.selectProvincia = selectProvincia;
-    } 
-    
     /**
-     * @return La entidad gestionada
+     * Método que setea la entidad a gestionar
+     * @return CentroPoblado La entidad gestionada
      */
     public CentroPoblado getSelected() {
         if (current == null) {
@@ -183,28 +228,23 @@ public class MbCentroPoblado implements Serializable {
         return current;
     }
 
+    /**
+     * Método que setea el listado de Localidades
+     * @return DataModel listado de localidades
+     */
     public DataModel getItems() {
         if (items == null) {
-            //items = getPagination().createPageDataModel();
             items = new ListDataModel(getFacade().findAll());
         }
         return items;
     }    
-    
-    public List<String> getListaNombres() {
-        return listaNombres;
-    }
 
-    public void setListaNombres(List<String> listaNombres) {
-        this.listaNombres = listaNombres;
-    }
-    
     /*******************************
      ** Métodos de inicialización **
      *******************************/
     /**
-     * Método para inicializar el listado de los Participantes autorizados
-     * @return acción para el listado de entidades
+     * Método para inicializar el listado de los Centros poblados
+     * @return String nombre de la vista a mostrar
      */
     public String prepareList() {
         recreateModel();
@@ -212,14 +252,17 @@ public class MbCentroPoblado implements Serializable {
     }     
     
     /**
-     * @return acción para el detalle de la entidad
+     * Método para inicializar la vista detalle
+     * @return String nombre de la vista a mostrar
      */
     public String prepareView() {
         return "view";
     }    
     
     /**
-     * @return acción para el formulario de nuevo
+     * Método para inicializar la vista de creación de una entidad 
+     * y poblado de los listados correspondientes a los combos
+     * @return String nombre de la vista a mostrar
      */
     public String prepareCreate() {
         listaProvincias = provFacade.getActivos();
@@ -230,7 +273,8 @@ public class MbCentroPoblado implements Serializable {
     }    
     
     /**
-     * @return acción para la edición de la entidad
+     * Método para inicializar la vista de actualización de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareEdit() {
         //cargo los list para los combos
@@ -240,6 +284,10 @@ public class MbCentroPoblado implements Serializable {
         return "edit";
     }    
     
+    /**
+     * Método para inicializar la aplicación
+     * @return String ruta a la vista de inicio
+     */
     public String prepareInicio(){
         recreateModel();
         return "/faces/index";
@@ -252,7 +300,7 @@ public class MbCentroPoblado implements Serializable {
     /**
      * Método que inserta un nuevo Centro Poblado en la base de datos, previamente genera una entidad de administración
      * con los datos necesarios y luego se la asigna a la persona
-     * @return mensaje que notifica la inserción
+     * @return String mensaje que notifica la inserción
      */
     public String create() {
         // Creación de la entidad de administración y asignación
@@ -278,7 +326,10 @@ public class MbCentroPoblado implements Serializable {
     }
     
     /**
-     * @return mensaje que notifica la actualización
+     * Método para que implementa la actualización de un Centro poblado, sea para la edición, habilitación o deshabilitación:
+     * Actualiza la entidad administrativa según corresponda, procede según el valor de "update",
+     * ejecuta el método edit() del facade y devuelve el nombre de la vista detalle o null.
+     * @return String nombre de la vista detalle o null
      */
     public String update() {
         Date date = new Date(System.currentTimeMillis());
@@ -334,20 +385,20 @@ public class MbCentroPoblado implements Serializable {
         }
     }
     
-        public void habilitar() {
-            update = 2;
-            update();        
-            recreateModel();
-        }
-    
-        
-    /*************************
-    ** Métodos de selección **
-    **************************/
-   
+    /**
+     * Método que prepara la habilitación de un Centro Poblado.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     */
+    public void habilitar() {
+        update = 2;
+        update();        
+        recreateModel();
+    }
+
      /**
-      * 
-     */    
+     * Método que prepara la deshabilitación de una Especie.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     */   
     public void deshabilitar() {
         update = 1;
         update();        
@@ -355,8 +406,9 @@ public class MbCentroPoblado implements Serializable {
     } 
     
     /**
-     * @param id equivalente al id de la entidad persistida
-     * @return la entidad correspondiente
+     * Método que recupera un Centro poblado según su id
+     * @param id Long id de la entidad persistida
+     * @return CentroPoblado la entidad correspondiente
      */
     public CentroPoblado getCentroPoblado(java.lang.Long id) {
         return getFacade().find(id);
@@ -364,8 +416,8 @@ public class MbCentroPoblado implements Serializable {
    
 
     /**
-     * Método que deshabilita la entidad
-     * @param event
+     * Método que setea la Provincia seleccionada y obtiene los Departamentos vinculados a ella
+     * @param event ValueChangeEvent evento de cambio de item seleccionado por el usuario
      */    
     public void provinciaChangeListener(ValueChangeEvent event){
         provSelected = (Provincia)event.getNewValue();
@@ -377,14 +429,15 @@ public class MbCentroPoblado implements Serializable {
     ** Métodos privados **
     **********************/
     /**
-     * @return el Facade
+     * Método privado que devuelve el facade para el acceso a datos de los Centros Poblados
+     * @return EJB CentroPobladoFacade Acceso a datos
      */
     private CentroPobladoFacade getFacade() {
         return centroPobladoFacade;
     }    
     
     /**
-     * Restea la entidad
+     * Método que restea el listado
      */
     private void recreateModel() {
         items = null;

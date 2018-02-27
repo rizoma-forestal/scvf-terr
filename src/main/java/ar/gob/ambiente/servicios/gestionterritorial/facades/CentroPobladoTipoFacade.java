@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
@@ -14,29 +9,40 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author epassarelli
+ * Clase que implementa la abstracta para el acceso a datos de la entidad CetroPobladoTipo.
+ * @author rincostante
  */
 
 @Stateless
 public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> {
+    
+    /**
+     * Variable privada: EntityManager al que se le indica la unidad de persistencia mediante la cual accederá a la base de datos
+     */
     @PersistenceContext(unitName = "gestionTerritorial-PU")
     private EntityManager em;
     
+    /**
+     * Método que implementa el abstracto para la obtención del EntityManager
+     * @return EntityManager para acceder a datos
+     */  
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * Constructor
+     */
     public CentroPobladoTipoFacade() {
         super(CentroPobladoTipo.class);
     }
 
     /**
-     * Método que devuelve todas las CentroPobladoes que contienen la cadena recibida como parámetro 
- dentro de alguno de sus campos string, en este caso el nombre.
-     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
-     * @return: El conjunto de resultados provenientes de la búsqueda. 
+     * Método que devuelve todas los Tipos de Centro Poblado que contienen la cadena recibida como parámetro 
+     * dentro de alguno de sus campos string, en este caso el nombre.
+     * @param stringParam String cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @return List<CentroPobladoTipo> El conjunto de resultados provenientes de la búsqueda. 
      */      
     public List<CentroPobladoTipo> getXString(String stringParam){
         em = getEntityManager();
@@ -55,8 +61,8 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
 
     /**
      * Metodo que verifica si ya existe la entidad.
-     * @param aBuscar: es la cadena que buscara para ver si ya existe en la BDD
-     * @return: devuelve True o False
+     * @param aBuscar String es la cadena que buscara para ver si ya existe en la BDD
+     * @return boolean devuelve True o False según el caso
      */
     public boolean existe(String aBuscar){
         em = getEntityManager();
@@ -71,8 +77,8 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
     }  
    /**
      * Método que verifica si la entidad tiene dependencia (Hijos) en estado HABILITADO
-     * @param id: ID de la entidad
-     * @return: True o False
+     * @param id Long ID de la entidad
+     * @return boolean True o False según el caso
      */
     public boolean noTieneDependencias(Long id){
         em = getEntityManager();        
@@ -86,8 +92,8 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
 
      
     /**
-     * Metodo para el autocompletado de la búsqueda por nombre
-     * @return 
+     * Método que obtiene todas los nombres de los tipos de centros poblados registrados
+     * @return List<String> listado de los nombres de todos los tipos de centros poblados
      */
     public List<String> getNombres(){
         em = getEntityManager();
@@ -99,8 +105,8 @@ public class CentroPobladoTipoFacade  extends AbstractFacade<CentroPobladoTipo> 
 
     
    /**
-     * Método que devuelve un LIST con las entidades HABILITADAS
-     * @return: True o False
+     * Método que devuelve los tipos de centros poblados habilitados
+     * @return List<CentroPobladoTipo> listado de los tipos de centros poblados requeridos
      */
     public List<CentroPobladoTipo> getActivos(){
         em = getEntityManager();        

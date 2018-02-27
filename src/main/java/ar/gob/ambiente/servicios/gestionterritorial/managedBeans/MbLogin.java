@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
@@ -25,27 +20,71 @@ import javax.servlet.http.HttpSession;
 import org.omnifaces.util.Faces;
 
 /**
- *
+ * Bean de respaldo para la gestión de la sesión del usuario
  * @author rincostante
  */
 public class MbLogin implements Serializable{
     
     private static final long serialVersionUID = -2152389656664659476L;
+    
+    /**
+     * Variable privada: String nombre del usuario (login)
+     */
     private String nombre;
+    
+    /**
+     * Variable privada: String contraseña del usuario
+     */
     private String clave;
-    private boolean logeado = false;   
+    
+    /**
+     * Variable privada: boolean indica el estado de logeado del usuario
+     */
+    private boolean logeado = false;  
+    
+    /**
+     * Variable privada: String indica el rol del usuario
+     */
     private String ambito;
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
     private Usuario usLogeado;
+    
+    /**
+     * Variable privada: String para guardar la contraseña existente del usuario
+     */
     private String claveAnterior_1;
+    
+    /**
+     * Variable privada: String para guardar la contraseña existente repetida del usuario
+     */
     private String claveAnterior_2;
+    
+    /**
+     * Variable privada: String para guardar la contraseña nueva del usuario
+     */
     private String claveNueva;
+    
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Usuarios
+     */
     @EJB
     private UsuarioFacade usuarioFacade;
+    
+    /**
+     * Variable privada: List<String> listado de Beans de respaldo activos
+     */
     private List<String> listMbActivos;
+    
+    /**
+     * Variable privada: boolean que indica si se inició el bean
+     */
     private boolean iniciado;
     
     /**
-     * Creates a new instance of MbLogin
+     * Constructor
      */
     public MbLogin() {
     }
@@ -58,7 +97,8 @@ public class MbLogin implements Serializable{
         iniciado = false;
         listMbActivos = new ArrayList();
     }
-/**
+    
+    /**
      * Método que borra de la memoria los MB innecesarios al cargar el listado 
      * @throws java.io.IOException
      */
@@ -99,7 +139,8 @@ public class MbLogin implements Serializable{
                 Logger.getLogger(MbLogin.class.getName()).log(Level.SEVERE, null, ex);
             }    
         }
-    }      
+    }     
+    
     public List<String> getListMbActivos() {
         return listMbActivos;
     }
@@ -172,6 +213,9 @@ public class MbLogin implements Serializable{
         this.ambito = rol;
     }
     
+    /**
+     * Método que cierra la sesión del usuario
+     */    
     public void logout(){
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();

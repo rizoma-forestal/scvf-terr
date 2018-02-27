@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
@@ -32,42 +27,87 @@ import javax.servlet.http.HttpSession;
 
 
 /**
- *
- * @author epassarelli
+ * Bean de respaldo para la gestión de Departamento
+ * @author rincostante
  */
 public class MbDepartamento implements Serializable {
 
+    /**
+     * Variable privada: Departamento Entidad que se gestiona mediante el bean
+     */   
     private Departamento current;
+    
+    /**
+     * Variable privada: DataModel data model para el listado de Entidades
+     */
     private DataModel items = null;
+    
+    /**
+     * Variable privada: List<Departamento> listado para el filtrado de la tabla
+     */
     private List<Departamento> listFilter;
+    
+    /**
+     * Variable privada: List<CentroPoblado> listado para el filtrado de la tabla de Centros poblados
+     */
     private List<CentroPoblado> listCentroPobFilter;
     
-    
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Provincia
+     */
     @EJB
     private ProvinciaFacade pciaFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Departamento
+     */
     @EJB
-    private DepartamentoFacade deptoFacade;   
-    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
+    private DepartamentoFacade deptoFacade; 
+    
+    /**
+     * Variable privada: Entero que indica el tipo de actualización
+     * 0=updateNormal | 1=deshabiliar | 2=habilitar 
+     */
+    private int update;
+    
+    /**
+     * Variable privada: List<Provincia> listado de las Provincias disponibles para su selección
+     */
     private List<Provincia> listProvincias;
+    
+    /**
+     * Variable privada: MbLogin bean de gestión de la sesión del usuario
+     */
     private MbLogin login;
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
     private Usuario usLogeado;
+    
+    /**
+     * Variable privada: boolean que indica si se inició el bean
+     */
     private boolean iniciado;
     
     /**
-     * Creates a new instance of MbDepartamento
+     * Constructor
      */
     public MbDepartamento() {
     }
-
-   @PostConstruct
-   public void init(){
+    
+    /**
+     * Método que se ejecuta luego de instanciada la clase e inicializa los datos del usuario
+     */
+    @PostConstruct
+    public void init(){
         iniciado = false;
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         login = (MbLogin)ctx.getSessionMap().get("mbLogin");
         if(login != null)usLogeado = login.getUsLogeado();
     }
-       /**
+       
+    /**
      * Método que borra de la memoria los MB innecesarios al cargar el listado 
      */
     public void iniciar(){
@@ -125,7 +165,8 @@ public class MbDepartamento implements Serializable {
      ** Métodos para la navegación **
      ********************************/
     /**
-     * @return La entidad gestionada
+     * Método que setea la entidad a gestionar
+     * @return Departamento La entidad gestionada
      */
     public Departamento getSelected() {
         if (current == null) {
@@ -135,7 +176,8 @@ public class MbDepartamento implements Serializable {
     }   
     
     /**
-     * @return el listado de entidades a mostrar en el list
+     * Método que setea el listado de Departamentos
+     * @return DataModel listado de Departamentos
      */
     public DataModel getItems() {
         if (items == null) {
@@ -149,7 +191,8 @@ public class MbDepartamento implements Serializable {
      ** Métodos de inicialización **
      *******************************/
     /**
-     * @return acción para el listado de entidades a mostrar en el list
+     * Método para inicializar el listado de los Departamentos
+     * @return String nombre de la vista a mostrar
      */
     public String prepareList() {
         recreateModel();
@@ -157,14 +200,16 @@ public class MbDepartamento implements Serializable {
     }
 
     /**
-     * @return acción para el detalle de la entidad
+     * Método para inicializar la vista detalle
+     * @return String nombre de la vista a mostrar
      */
     public String prepareView() {
         return "view";
     }
 
-    /** (Probablemente haya que embeberlo con el listado para una misma vista)
-     * @return acción para el formulario de nuevo
+    /**
+     * Método para inicializar la vista de creación de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareCreate() {
         listProvincias = pciaFacade.getActivos();
@@ -173,13 +218,18 @@ public class MbDepartamento implements Serializable {
     }
 
     /**
-     * @return acción para la edición de la entidad
+     * Método para inicializar la vista de actualización de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareEdit() {
         listProvincias = pciaFacade.getActivos();
         return "edit";
     }
     
+    /**
+     * Método para inicializar la aplicación
+     * @return String ruta a la vista de inicio
+     */        
     public String prepareInicio(){
         recreateModel();
         return "/faces/index";
@@ -187,14 +237,15 @@ public class MbDepartamento implements Serializable {
     
     /**
      * Método para preparar la búsqueda
-     * @return la ruta a la vista que muestra los resultados de la consulta en forma de listado
+     * @return String la ruta a la vista que muestra los resultados de la consulta en forma de listado
      */
     public String prepareSelect(){
         return "list";
     }
     
     /**
-     * 
+     * Método que prepara la habilitación de un Deparatamento.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
      */       
     public void habilitar() {
         update = 2;
@@ -202,9 +253,11 @@ public class MbDepartamento implements Serializable {
         recreateModel();
     }  
 
-    /**
-     * 
-     */    
+     /**
+     * Método que prepara la deshabilitación de un Departamento.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     * @return String nombre de la vista detalle
+     */   
     public String deshabilitar() {
         if (getFacade().tieneDependencias(current.getId())){
             update = 1;
@@ -220,7 +273,7 @@ public class MbDepartamento implements Serializable {
     
     
     /**
-     * Restea la entidad
+     * Método que restea la entidad
      */
     private void recreateModel() {
         items = null;
@@ -230,7 +283,9 @@ public class MbDepartamento implements Serializable {
     ** Métodos de operación **
     **************************/
     /**
-     * @return 
+     * Método que inserta un nuevo Departamento en la base de datos, previamente genera una entidad de administración
+     * con los datos necesarios y luego se la asigna a la persona
+     * @return String mensaje que notifica la inserción
      */
     public String create() {
         // Creación de la entidad de administración y asignación
@@ -256,7 +311,10 @@ public class MbDepartamento implements Serializable {
     }
 
     /**
-     * @return mensaje que notifica la actualización
+     * Método para que implementa la actualización de un Departamento, sea para la edición, habilitación o deshabilitación:
+     * Actualiza la entidad administrativa según corresponda, procede según el valor de "update",
+     * ejecuta el método edit() del facade y devuelve el nombre de la vista detalle o null.
+     * @return String nombre de la vista detalle o null
      */
     public String update() {
         Date date = new Date(System.currentTimeMillis());
@@ -318,8 +376,9 @@ public class MbDepartamento implements Serializable {
     **************************/
 
     /**
-     * @param id equivalente al id de la entidad persistida
-     * @return la entidad correspondiente
+     * Método que recupera un Departamento según su id
+     * @param id Long id de la entidad persistida
+     * @return Departamento la entidad correspondiente
      */
     public Departamento getDepartamento(java.lang.Long id) {
         return deptoFacade.find(id);
@@ -329,7 +388,8 @@ public class MbDepartamento implements Serializable {
     ** Métodos privados **
     **********************/
     /**
-     * @return el Facade
+     * Método privado que devuelve el facade para el acceso a datos de los Departamentos
+     * @return EJB DepartamentoFacade Acceso a datos
      */
     private DepartamentoFacade getFacade() {
         return deptoFacade;

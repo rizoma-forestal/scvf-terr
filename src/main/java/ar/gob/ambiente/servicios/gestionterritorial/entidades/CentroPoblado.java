@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.entidades;
 
@@ -21,30 +16,45 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author epassarelli
- * Esta es una prueba de subir un archivo solito al GIT
+ * Enditad que encapsula la información relativa a los Centros poblados (Localidades).
+ * Se omite la documentación de los métodos get y set.
+ * @author rincostante
  */
 @XmlRootElement(name = "centropoblado")
 @Entity
 @Table(name = "centropoblado")
 public class CentroPoblado implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    /**
+     * Variable privada: Identificador único
+     */  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    /**
+     * Variable privada: Nombre del Centro poblado
+     */    
     private String nombre;
     
+    /**
+     * Variable privada: Tipo de Centro poblado (Localida, Ciudad, Paraje, etc)
+     */
     @ManyToOne/*(fetch=FetchType.LAZY)*/
     @JoinColumn(name="centropobladotipo_id")
     private CentroPobladoTipo centroPobladoTipo;
     
-   
+    /**
+     * Variable privada: Departamento al que pertenece el Centro poblado
+     */
     @ManyToOne
     @JoinColumn(name="departamento_id")
     private Departamento departamento;    
 
-    
+    /**
+     * Variable privada de tipo AdminEntidad: representa la entidad administrativa del Centro poblado
+     */    
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="adminentidad_id")
     private AdminEntidad adminentidad; 
@@ -81,6 +91,11 @@ public class CentroPoblado implements Serializable {
         this.departamento = departamento;
     }
 
+    /**
+     * Método que devuelve la entidad administrativa del Centro poblado
+     * No disponible para la API rest
+     * @return AdminEntidad entidad administrativa del Centro poblado
+     */
     @XmlTransient
     public AdminEntidad getAdminentidad() {
         return adminentidad;
@@ -90,8 +105,10 @@ public class CentroPoblado implements Serializable {
         this.adminentidad = adminentidad;
     }
 
-    
-    
+    /**
+     * Método que crea un hash con a partir de la id de la entidad
+     * @return int Un entero con el hash
+     */  
     @Override
     public int hashCode() {
         int hash = 0;
@@ -99,6 +116,11 @@ public class CentroPoblado implements Serializable {
         return hash;
     }
 
+    /**
+     * Método que compara una instancia de esta entidad con otra según su id
+     * @param object La instancia de entidad a comparar con la presente
+     * @return boolean Verdadero si son iguales, falso si son distintas
+     */        
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -112,6 +134,10 @@ public class CentroPoblado implements Serializable {
         return true;
     }
 
+    /**
+     * Método que devuelve un String con el id de la entidad
+     * @return String id de la entidad en formato String
+     */        
     @Override
     public String toString() {
         return "ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPoblado[ id=" + id + " ]";
