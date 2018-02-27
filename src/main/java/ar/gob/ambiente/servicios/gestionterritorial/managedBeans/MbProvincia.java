@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
@@ -32,33 +27,73 @@ import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author epassarelli
+ * Bean de respaldo para la gestión de Provincia
+ * @author rincostante
  */
 public class MbProvincia implements Serializable{
 
+    /**
+     * Variable privada: Provincia Entidad que se gestiona mediante el bean
+     */
     private Provincia current;
+    
+    /**
+     * Variable privada: DataModel data model para el listado de Entidades
+     */
     private DataModel items = null;
+    
+    /**
+     * Variable privada: List<Provincia> listado para el filtrado de la tabla
+     */
     private List<Provincia> listFilter;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Region
+     */
     @EJB
     private RegionFacade regionFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Provincia
+     */
     @EJB
     private ProvinciaFacade provinciaFacade;
+    
+    /**
+     * Variable privada: List<Region> listado de Regiones a vincular con la Provincia
+     */
     private List<Region> listaRegiones;
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
     private Usuario usLogeado;
+    
+    /**
+     * Variable privada: boolean que indica si se inició el bean
+     */
     private boolean iniciado;  
-    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
+    
+    /**
+     * Variable privada: Entero que indica el tipo de actualización
+     * 0=updateNormal | 1=deshabiliar | 2=habilitar 
+     */
+    private int update;
+    
+    /**
+     * Variable privada: MbLogin bean de gestión de la sesión del usuario
+     */
     private MbLogin login;
     
     /**
-     * Creates a new instance of MbProvincia
+     * Constructor
      */
     public MbProvincia() {
     }
 
-
+    /**
+     * Método que se ejecuta luego de instanciada la clase e inicializa los datos del usuario
+     */
     @PostConstruct
     public void init(){
         iniciado = false;
@@ -102,14 +137,23 @@ public class MbProvincia implements Serializable{
         this.current = current;
     }   
     
+    public List<Region> getListaRegiones() {
+        return listaRegiones;
+    }
+
+    public void setListaRegiones(List<Region> listaRegiones) {
+        this.listaRegiones = listaRegiones;
+    }    
+    
     
     /********************************
      ** Métodos para la navegación **
      ********************************/  
     
     /**
-     * @return el listado de entidades a mostrar en el list
-     */
+     * Método que setea el listado de Provincias
+     * @return DataModel listado de Provincias
+     */ 
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(getFacade().findAll());
@@ -123,7 +167,8 @@ public class MbProvincia implements Serializable{
      ** Métodos de inicialización **
      *******************************/
     /**
-     * @return acción para el listado de entidades
+     * Método para inicializar el listado de las Provincias
+     * @return String nombre de la vista a mostrar
      */
     public String prepareList() {
         recreateModel();
@@ -131,14 +176,16 @@ public class MbProvincia implements Serializable{
     }
 
     /**
-     * @return acción para el detalle de la entidad
+     * Método para inicializar la vista detalle
+     * @return String nombre de la vista a mostrar
      */
     public String prepareView() {
         return "view";
     }
 
-    /** (Probablemente haya que embeberlo con el listado para una misma vista)
-     * @return acción para el formulario de nuevo
+    /**
+     * Método para inicializar la vista de creación de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareCreate() {
         listaRegiones =regionFacade.getHabilitadas();
@@ -147,12 +194,17 @@ public class MbProvincia implements Serializable{
     }
 
     /**
-     * @return acción para la edición de la entidad
+     * Método para inicializar la vista de actualización de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareEdit() {
         return "edit";
     }
     
+    /**
+     * Método para inicializar la aplicación
+     * @return String ruta a la vista de inicio
+     */             
     public String prepareInicio(){
         recreateModel();
         return "/faces/index";
@@ -160,9 +212,9 @@ public class MbProvincia implements Serializable{
         
     /**
      * Método para validar que no exista ya una entidad con este nombre al momento de crearla
-     * @param arg0: vista jsf que llama al validador
-     * @param arg1: objeto de la vista que hace el llamado
-     * @param arg2: contenido del campo de texto a validar 
+     * @param arg0 FacesContext vista jsf que llama al validador
+     * @param arg1 UIComponent objeto de la vista que hace el llamado
+     * @param arg2 Object contenido del campo de texto a validar 
      */
     public void validarInsert(FacesContext arg0, UIComponent arg1, Object arg2){
         validarExistente(arg2);
@@ -170,9 +222,9 @@ public class MbProvincia implements Serializable{
     
     /**
      * Método para validar que no exista una entidad con este nombre, siempre que dicho nombre no sea el que tenía originalmente
-     * @param arg0: vista jsf que llama al validador
-     * @param arg1: objeto de la vista que hace el llamado
-     * @param arg2: contenido del campo de texto a validar 
+     * @param arg0 FacesContext vista jsf que llama al validador
+     * @param arg1 UIComponent objeto de la vista que hace el llamado
+     * @param arg2 Object contenido del campo de texto a validar 
      * @throws ValidatorException 
      */
     public void validarUpdate(FacesContext arg0, UIComponent arg1, Object arg2){
@@ -181,6 +233,11 @@ public class MbProvincia implements Serializable{
         }
     }
     
+    /**
+     * Método para validar que no exista la entidad que se quiere insertar
+     * @param arg2 Object contenido del campo de texto a validar 
+     * @throws ValidatorException 
+     */        
     private void validarExistente(Object arg2) throws ValidatorException{
         if(!getFacade().existe((String)arg2)){
             throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateProvinciaNombreExistente")));
@@ -188,7 +245,7 @@ public class MbProvincia implements Serializable{
     }
     
     /**
-     * Restea la entidad
+     * Método que restea la entidad
      */
     private void recreateModel() {
         items = null;
@@ -198,7 +255,9 @@ public class MbProvincia implements Serializable{
     ** Métodos de operación **
     **************************/
     /**
-     * @return 
+     * Método que inserta una nueva Provincia en la base de datos, previamente genera una entidad de administración
+     * con los datos necesarios y luego se la asigna a la persona
+     * @return String mensaje que notifica la inserción
      */
     public String create() {
         // Creación de la entidad de administración y asignación
@@ -219,7 +278,10 @@ public class MbProvincia implements Serializable{
     }
 
     /**
-     * @return mensaje que notifica la actualización
+     * Método para que implementa la actualización de una Provincia, sea para la edición, habilitación o deshabilitación:
+     * Actualiza la entidad administrativa según corresponda, procede según el valor de "update",
+     * ejecuta el método edit() del facade y devuelve el nombre de la vista detalle o null.
+     * @return String nombre de la vista detalle o null
      */
     public String update() {
         Date date = new Date(System.currentTimeMillis());
@@ -260,15 +322,17 @@ public class MbProvincia implements Serializable{
     **************************/
 
     /**
-     * @param id equivalente al id de la entidad persistida
-     * @return la entidad correspondiente
+     * Método que recupera un Provincia según su id
+     * @param id Long id de la entidad persistida
+     * @return Provincia la entidad correspondiente
      */
     public Provincia getProvincia(java.lang.Long id) {
         return provinciaFacade.find(id);
     }    
     
     /**
-     * @return La entidad gestionada
+     * Método que setea la entidad a gestionar
+     * @return Provincia La entidad gestionada
      */
     public Provincia getSelected() {
         if (current == null) {
@@ -281,18 +345,11 @@ public class MbProvincia implements Serializable{
     ** Métodos privados **
     **********************/
     /**
-     * @return el Facade
+     * Método privado que devuelve el facade para el acceso a datos de las Provincias
+     * @return EJB ProvinciaFacade Acceso a datos
      */
     private ProvinciaFacade getFacade() {
         return provinciaFacade;
-    }
-
-    public List<Region> getListaRegiones() {
-        return listaRegiones;
-    }
-
-    public void setListaRegiones(List<Region> listaRegiones) {
-        this.listaRegiones = listaRegiones;
     }
   
     

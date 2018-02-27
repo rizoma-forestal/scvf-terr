@@ -29,6 +29,8 @@ public class ApplicationConfig extends Application {
         resources.add(ar.gob.ambiente.servicios.gestionterritorial.rest.CentroPobladoTipoFacadeREST.class);
         resources.add(ar.gob.ambiente.servicios.gestionterritorial.rest.DepartamentoFacadeREST.class);
         resources.add(ar.gob.ambiente.servicios.gestionterritorial.rest.ProvinciaFacadeREST.class);
+        resources.add(ar.gob.ambiente.servicios.gestionterritorial.rest.RestSecurityFilter.class);
+        resources.add(ar.gob.ambiente.servicios.gestionterritorial.rest.UsuarioResource.class);
     }
     
 }

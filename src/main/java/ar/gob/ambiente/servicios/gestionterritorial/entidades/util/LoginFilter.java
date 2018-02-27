@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.entidades.util;
 
-import ar.gob.ambiente.servicios.gestionterritorial.managedBeans.MbLogin;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -23,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Filtro para gestionar la autorización de acceso de los usuarios.
+ * Se concentra principalmente en el método doFilter()
  * @author rincostante
  */
 public class LoginFilter implements Filter {
@@ -97,13 +92,17 @@ public class LoginFilter implements Filter {
     }
 
     /**
+     * Método público que procesa el request. Si la url no está protegida (validado mediante noProteger(urlStr))
+     * da curso a la petición, en caso contrario, consulta mediante una cookie si el usuario ya está logeado,
+     * si lo está, da curso a la petición, si no lo está, se redirecciona a la aplicación de logeo, previo guardado de
+     * la url requerida en ua cookie. Una vez validado el usuario en la aplicación de logeo, la petición vuelve a ser
+     * interceptada por el filtro y dirigida a su destino requerido originalmente.
+     * @param request Request que se está procesando
+     * @param response Response que surge como resultado del procesamiento
+     * @param chain FilterChain con el que se hará el procesamiento
      *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param chain The filter chain we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet error occurs
+     * @exception IOException is hay un input/output error
+     * @exception ServletException si ocurre un error de servlet
      */
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
@@ -187,7 +186,12 @@ public class LoginFilter implements Filter {
         }
         */
     }
-    
+   
+    /**
+     * Método privado consumido por doFilter() para validar la protección o nó de la ruta de acceso requerida
+     * @param urlStr String ruta de acceso requerido
+     * @return boolean Verdadero si no necesita protección y falso si la requiere
+     */
     private boolean noProteger(String urlStr) {
 
     /*

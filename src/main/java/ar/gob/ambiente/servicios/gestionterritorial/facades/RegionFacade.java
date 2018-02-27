@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
-
 
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.EspecificidadDeRegion;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.Region;
@@ -16,28 +10,38 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase que implementa la abstracta para el acceso a datos de la entidad Región.
  * @author rincostante
  */
 @Stateless
 public class RegionFacade extends AbstractFacade<Region> {
+    
+    /**
+     * Variable privada: EntityManager al que se le indica la unidad de persistencia mediante la cual accederá a la base de datos
+     */
     @PersistenceContext(unitName = "gestionTerritorial-PU")
     private EntityManager em;
 
-
+    /**
+     * Método que implementa el abstracto para la obtención del EntityManager
+     * @return EntityManager para acceder a datos
+     */ 
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * Constructor
+     */
     public RegionFacade() {
         super(Region.class);
     }
  
    /**
      * Método que verifica si la Region puede ser eliminada
-     * @param id: Id de la region que se desea verificar
-     * @return
+     * @param id Long Id de la region que se desea verificar
+     * @return boolean True o False según corresponda
      */
     public boolean getUtilizado(Long id){
         em = getEntityManager();
@@ -49,10 +53,10 @@ public class RegionFacade extends AbstractFacade<Region> {
         return q.getResultList().isEmpty();
     } 
     /**
-     * Método para validad que no exista una Actividad Planificada con este nombre ya ingresado
-     * @param nombre
-     * @param espReg
-     * @return 
+     * Método para validad que no exista una Región según el nombre y la especificidad
+     * @param nombre String nombre de la Región
+     * @param espReg EspecificidadDeRegion Especificidad de la Región
+     * @return boolean True o False según corresponda
      */
     public boolean noExiste(String nombre, EspecificidadDeRegion espReg){
         em = getEntityManager();
@@ -66,9 +70,9 @@ public class RegionFacade extends AbstractFacade<Region> {
     }    
     /**
      * Método que obtiene una Region existente según los datos recibidos como parámetro
-     * @param nombre
-     * @param espReg
-     * @return 
+     * @param nombre String nombre de la Región
+     * @param espReg EspecificidadDeRegion Especificidad de la Región
+     * @return Region Región que cumple con los datos requeridos
      */
     public Region getExistente(String nombre, EspecificidadDeRegion espReg){
         List<Region> lProv;
@@ -87,8 +91,8 @@ public class RegionFacade extends AbstractFacade<Region> {
     }     
     
     /**
-     * Método que devuelve todas los Actividades Planificadas habilitadas y vigentes
-     * @return 
+     * Método que devuelve todas las Regiones habilitadas y vigentes
+     * @return List<Region> listado de las Regiones correspondientes
      */
     public List<Region> getHabilitadas(){
         em = getEntityManager();
@@ -99,8 +103,8 @@ public class RegionFacade extends AbstractFacade<Region> {
     }
 
     /**
-     * Método que devuelve todas los Actividades Planificadas deshabilitadas
-     * @return 
+     * Método que devuelve todas las Regiones deshabilitadas
+     * @return List<Region> listado de las Regiones correspondientes
      */
     public List<Region> getDeshabilitadas(){
         em = getEntityManager();
@@ -110,6 +114,11 @@ public class RegionFacade extends AbstractFacade<Region> {
         return q.getResultList();
     }  
  
+    /**
+     * Método que devuelve las Regiones vinculadas a una Provincia según su id
+     * @param idProv Long id de la Provincia
+     * @return List<Region> listado de las Regiones correspondientes
+     */
     public List<Region> getRegionesXidProv(Long idProv){
         em = getEntityManager();
         String queryString = "SELECT reg FROM Region reg "
@@ -122,6 +131,11 @@ public class RegionFacade extends AbstractFacade<Region> {
         return q.getResultList();
     }
     
+    /**
+     * Método que devuelve las Regiones de a una Especificidad según su id
+     * @param idEspecif Long id de la Especificidad de la Región
+     * @return List<Region> listado de las Regiones correspondientes
+     */
     public List<Region> getRegionesXidEspecif(Long idEspecif){
         em = getEntityManager();
         String queryString = "SELECT reg FROM Region reg "

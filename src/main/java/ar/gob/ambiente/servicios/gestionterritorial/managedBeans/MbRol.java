@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
@@ -28,33 +23,70 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
+
 /**
- *
+ * Bean de respaldo para la gestión de los Roles
  * @author rodriguezn
  */
 public class MbRol implements Serializable{
     
+    /**
+     * Variable privada: Rol Entidad que se gestiona mediante el bean
+     */
     private Rol current;
-    private DataModel items = null;
-    private List<Rol> listFilter;
-    private List<Usuario> listUsFilter;
-    
-    @EJB
-    private RolFacade rolFacade;
-
-    private String selectParam;
-    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
-    private MbLogin login;
-    private Usuario usLogeado;
-    private boolean iniciado;
-    
     
     /**
-     * Creates a new instance of MbRol
+     * Variable privada: DataModel Listado de Roles para poblar la tabla con todos los registrados
+     */
+    private DataModel items = null;
+    
+    /**
+     * Variable privada: List<Rol> para el filtrado de la tabla
+     */
+    private List<Rol> listFilter;
+    
+    /**
+     * Variable privada: List<Usuario> para el filtrado de la tabla de usuarios de un mismo Rol
+     */
+    private List<Usuario> listUsFilter;
+    
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Rol
+     */
+    @EJB
+    private RolFacade rolFacade;
+    private String selectParam;
+    
+    /**
+     * Variable privada: Entero que indica el tipo de actualización que se hará:
+     * 0=updateNormal | 1=deshabiliar | 2=habilitar
+     */
+    private int update;
+    
+    /**
+     * Variable privada: MbLogin bean de gestión de la sesión del usuario
+     */
+    private MbLogin login;
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
+    private Usuario usLogeado;
+    
+    /**
+     * Variable privada: boolean que indica si se inició el bean
+     */
+    private boolean iniciado;
+    
+    /**
+     * Constructor
      */
     public MbRol(){
     }
     
+    /**
+     * Método que se ejecuta luego de instanciada la clase e inicializa los datos del usuario
+     */       
     @PostConstruct
     public void init(){
         iniciado = false;
@@ -112,7 +144,8 @@ public class MbRol implements Serializable{
      ** Métodos para la navegación **
      ********************************/
     /**
-     * @return La entidad gestionada
+     * Método que instancia a la entidad Rol
+     * @return Rol entidad a gestionar
      */
     public Rol getSelected() {
         if (current == null) {
@@ -122,8 +155,9 @@ public class MbRol implements Serializable{
     }   
     
     /**
-     * @return el listado de entidades a mostrar en el list
-     */
+     * Método que instancia los Items que componen el listado
+     * @return DataModel Items que componen el listado
+     */   
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(getFacade().findAll());
@@ -136,7 +170,9 @@ public class MbRol implements Serializable{
      ** Métodos de inicialización **
      *******************************/
     /**
-     * @return acción para el listado de entidades
+     * Redireccionamiento a la vista con el listado
+     * previo reseteo del listado
+     * @return String nombre de la vista
      */
     public String prepareList() {
         recreateModel();
@@ -144,14 +180,16 @@ public class MbRol implements Serializable{
     }
 
     /**
-     * @return acción para el detalle de la entidad
+     * Redireccionamiento a la vista detalle
+     * @return String nombre de la vista
      */
     public String prepareView() {
         return "view";
     }
 
-    /** (Probablemente haya que embeberlo con el listado para una misma vista)
-     * @return acción para el formulario de nuevo
+    /**
+     * Redireccionamiento a la vista new para crear un Rol
+     * @return String nombre de la vista
      */
     public String prepareCreate() {
         current = new Rol();
@@ -159,26 +197,36 @@ public class MbRol implements Serializable{
     }
 
     /**
-     * @return acción para la edición de la entidad
+     * Redireccionamiento a la vista edit para editar un Rol
+     * @return String nombre de la vista para la edición
      */
     public String prepareEdit() {
         return "edit";
     }
-    
+
+    /**
+     * Método que redirecciona a la página principal
+     * @return String nombre de la página principal
+     */    
     public String prepareInicio(){
         recreateModel();
         return "/faces/index";
     }
     
     /**
-     */    
+     * Método que prepara la habilitación de un Rol.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     */  
     public void habilitar() {
         update = 2;
         update();        
         recreateModel();
     }  
+
      /**
-     */    
+     * Método que prepara la deshabilitación de un Rol.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     */        
     public void deshabilitar() {
         if (getFacade().tieneDependencias(current.getId())){
             update = 1;
@@ -201,9 +249,9 @@ public class MbRol implements Serializable{
     
     /**
      * Método para validar que no exista una entidad con este nombre, siempre que dicho nombre no sea el que tenía originalmente
-     * @param arg0: vista jsf que llama al validador
-     * @param arg1: objeto de la vista que hace el llamado
-     * @param arg2: contenido del campo de texto a validar 
+     * @param arg0 FacesContext vista jsf que llama al validador
+     * @param arg1 UIComponent objeto de la vista que hace el llamado
+     * @param arg2 Object contenido del campo de texto a validar 
      * @throws ValidatorException 
      */
     public void validarUpdate(FacesContext arg0, UIComponent arg1, Object arg2){
@@ -212,7 +260,11 @@ public class MbRol implements Serializable{
         }
     }
         
-    
+    /**
+     * Método privado que valida que un Rol no exista ya según sus datos únicos
+     * @param Object arg2
+     * @throws ValidatorException 
+     */
     private void validarExistente(Object arg2) throws ValidatorException{
         if(!getFacade().existe((String)arg2)){
             throw new ValidatorException(new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("CreateRolExistente")));
@@ -220,7 +272,7 @@ public class MbRol implements Serializable{
     }
     
     /**
-     * Restea la entidad
+     * Método que restea la entidad
      */
     private void recreateModel() {
         items = null;
@@ -234,7 +286,11 @@ public class MbRol implements Serializable{
     ** Métodos de operación **
     **************************/
     /**
-     * @return 
+     * Método para que implementa la creación de un Rol:
+     * Instancia la entidad administrativa, valida que no exista un Rol con los mismos datos únicos,
+     * y si todo es correcto ejecuta el método create() del facade y devuelve el nombre de la vista detalle.
+     * En caso contrario devuelve null
+     * @return String nombre de la vista detalle o null
      */
     public String create() {
         // Creación de la entidad de administración y asignación
@@ -255,7 +311,10 @@ public class MbRol implements Serializable{
     }
 
     /**
-     * @return mensaje que notifica la actualización
+     * Método para que implementa la actualización de un Rol, sea para la edición, habilitación o deshabilitación:
+     * Actualiza la entidad administrativa según corresponda, procede según el valor de "update",
+     * ejecuta el método edit() del facade y devuelve el nombre de la vista detalle o null.
+     * @return String nombre de la vista detalle o null
      */
     public String update() {
         Date date = new Date(System.currentTimeMillis());
@@ -295,8 +354,9 @@ public class MbRol implements Serializable{
     **************************/
 
     /**
-     * @param id equivalente al id de la entidad persistida
-     * @return la entidad correspondiente
+     * Método que obtiene un Rol según su id
+     * @param id Long id de la Rol a buscar
+     * @return Rol la entidad correspondiente
      */
     public Rol getRol(java.lang.Long id) {
         return rolFacade.find(id);
@@ -306,7 +366,8 @@ public class MbRol implements Serializable{
     ** Métodos privados **
     **********************/
     /**
-     * @return el Facade
+     * Método privado que devuelve el facade para el acceso a datos del Rol 
+     * @return EJB RolFacade Acceso a datos
      */
     private RolFacade getFacade() {
         return rolFacade;
