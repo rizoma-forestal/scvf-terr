@@ -36,7 +36,6 @@ public class ProvinciaFacadeREST {
      * @apiVersion 1.0.0
      * @apiName GetProvincia
      * @apiGroup Provincias
-     *
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
      * 
      * @apiHeaderExample {json} Ejemplo de header:
