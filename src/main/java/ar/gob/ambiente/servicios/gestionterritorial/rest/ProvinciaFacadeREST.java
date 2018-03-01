@@ -145,7 +145,7 @@ public class ProvinciaFacadeREST {
      * @apiDescription Método para obtener los Departamentos asociados a una Provincia existente según el id remitido.
      * Obtiene los departamentos mediante el método local getDeptosXIdProv(Long id)
      * 
-     * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.Genero} Genero Listado de los Departamentos registrados vinculados a la Provincia cuyo id se recibió.
+     * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.Departamento} Departamento Listado de los Departamentos registrados vinculados a la Provincia cuyo id se recibió.
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -170,12 +170,12 @@ public class ProvinciaFacadeREST {
      *       ]
      *     }
      *
-     * @apiError GenerosNotFound No existen departamentos registrados vinculados a la id de la provincia.
+     * @apiError DeptosNotFound No existen departamentos registrados vinculados a la id de la provincia.
      *
      * @apiErrorExample Error-Response:
      *     HTTP/1.1 400 Not Found
      *     {
-     *       "error": "No hay géneros registrados vinculados al id de la provincia recibido."
+     *       "error": "No hay departamentos registrados vinculados al id de la provincia recibida."
      *     }
      */        
     @GET
