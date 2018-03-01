@@ -32,24 +32,20 @@ public class DepartamentoFacadeREST {
     /**
      * @api {get} /departamentos/:id Ver un Departamento
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/departamentos/16
+     *     curl -X GET -d /gestionTerritorial/rest/departamentos/16 -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetDepartamento
      * @apiGroup Departamentos
-     *
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     * 
+     * @apiParam {Long} id Identificador único del Departamento
      * @apiDescription Método para obtener un Departamento existente según el id remitido.
      * Obtiene el departamento mediante el método local find(Long id)
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.Departamento} Departamento Detalle del departamento registrado.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *       {
@@ -62,10 +58,8 @@ public class DepartamentoFacadeREST {
      *              }
      *       }
      *     }
-     *
      * @apiError DepartamentoNotFound No existe departamento registrado con ese id.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay departamento registrado con el id recibido"
@@ -82,24 +76,20 @@ public class DepartamentoFacadeREST {
     /**
      * @api {get} /departamentos/:id/centrospoblados Ver las Localidades de un Departamento
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/departamentos/1290/centrospoblados
+     *     curl -X GET -d /gestionTerritorial/rest/departamentos/1290/centrospoblados -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetCentosPoblados
      * @apiGroup Departamentos
-     *
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     * 
+     * @apiParam {Long} id Identificador único del Departamento
      * @apiDescription Método para obtener las Localidades asociadas a un Departamento existente según el id remitido.
      * Obtiene las localidades mediante el método local getCentrosXDepto(Long id)
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.CentroPoblado} CentroPoblado Listado de las Localidades registradas vinculadas al Departamento cuyo id se recibió.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *      {
      *          "centrospoblados": [
@@ -143,10 +133,8 @@ public class DepartamentoFacadeREST {
      *              }
      *          ]
      *      }
-     * 
      * @apiError CentroPobladoNotFound No existen localidades registradas vinculadas a la id del departamento.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay localidades registradas vinculadas al id del departamento recibido."
@@ -163,24 +151,19 @@ public class DepartamentoFacadeREST {
     /**
      * @api {get} /departamentos Ver todos los Departamentos
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/departamentos
+     *     curl -X GET -d /gestionTerritorial/rest/departamentos -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetDepartamentos
      * @apiGroup Departamentos
-     *
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     * 
      * @apiDescription Método para obtener un listado de los Departamentos existentes.
      * Obtiene los departamentos mediante el método local findAll()
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.Departamento} Departamento Listado con todos los Departamentos registrados.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *       "departamentos": [
@@ -202,10 +185,8 @@ public class DepartamentoFacadeREST {
      *          }
      *       ]
      *     }
-     *
      * @apiError DepartamentosNotFound No existen departamentos registrados.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay Departamentos registrados"

@@ -32,23 +32,20 @@ public class ProvinciaFacadeREST {
     /**
      * @api {get} /provincias/:id Ver una Provincia
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/provincias/2
+     *     curl -X GET -d /gestionTerritorial/rest/provincias/2 -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetProvincia
      * @apiGroup Provincias
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     * 
+     * @apiParam {Long} id Identificador único de la Provincia
      * @apiDescription Método para obtener una Provincia existente según el id remitido.
      * Obtiene la provincia mediante el método local find(Long id)
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.Provincia} Provincia Detalle de la provincia registrada.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *       {
@@ -56,10 +53,8 @@ public class ProvinciaFacadeREST {
      *          "nombre": "BUENOS AIRES"
      *       }
      *     }
-     *
      * @apiError ProvinciaNotFound No existe provincia registrada con ese id.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay provincia registrada con el id recibido"
@@ -76,24 +71,19 @@ public class ProvinciaFacadeREST {
     /**
      * @api {get} /provincias Ver todas las Provincias
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/provincias
+     *     curl -X GET -d /gestionTerritorial/rest/provincias -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetProvincias
      * @apiGroup Provincias
-     *
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     * 
      * @apiDescription Método para obtener un listado de las Provincias existentes.
      * Obtiene las provincias mediante el método local findAll()
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.Provincia} Provincias Listado con todas las Provincias registradas.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *       "provincias": [
@@ -103,10 +93,8 @@ public class ProvinciaFacadeREST {
      *          "nombre": "CATAMARCA"}
      *          ]
      *     }
-     *
      * @apiError ProvinciasNotFound No existen provincias registradas.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay Provincias registradas"
@@ -129,24 +117,20 @@ public class ProvinciaFacadeREST {
     /**
      * @api {get} /provincias/:id/generos Ver los Departamentos de una Provincia
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/provincias/2/departamentos
+     *     curl -i -H "authorization: xXyYvWzZ" -X GET -d /gestionTerritorial/rest/provincias/2/departamentos
      * @apiVersion 1.0.0
      * @apiName GetDepartamentos
      * @apiGroup Provincias
-     *
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     * 
+     * @apiParam {Long} id Identificador único de la Provincia
      * @apiDescription Método para obtener los Departamentos asociados a una Provincia existente según el id remitido.
      * Obtiene los departamentos mediante el método local getDeptosXIdProv(Long id)
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.Departamento} Departamento Listado de los Departamentos registrados vinculados a la Provincia cuyo id se recibió.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *       "departamentos": [
@@ -168,10 +152,8 @@ public class ProvinciaFacadeREST {
      *          }
      *       ]
      *     }
-     *
      * @apiError DeptosNotFound No existen departamentos registrados vinculados a la id de la provincia.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay departamentos registrados vinculados al id de la provincia recibida."

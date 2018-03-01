@@ -28,24 +28,20 @@ public class CentroPobladoFacadeREST {
     /**
      * @api {get} /centrospoblados/:id Ver una Localidad
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/centrospoblados/1293
+     *     curl -X GET -d /gestionTerritorial/rest/centrospoblados/1293 -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetCentroPoblado
      * @apiGroup Centros poblados
-     * 
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     *
+     * @apiParam {Long} id Identificador único de la Localidad
      * @apiDescription Método para obtener una Localidad existente según el id remitido.
      * Obtiene la localidad mediante el método local find(Long id)
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.CentroPoblado} CentroPoblado  Detalle de la localidad registrada.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *          {
@@ -68,10 +64,8 @@ public class CentroPobladoFacadeREST {
      *                  }
      *          }
      *     }
-     *
      * @apiError CentroPobladoNotFound No existe localidad registrada con ese id.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay localidad registrada con el id recibido"
@@ -88,24 +82,19 @@ public class CentroPobladoFacadeREST {
     /**
      * @api {get} /svf_especies Ver todas las Localidades
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/centrospoblados
+     *     curl -X GET -d /gestionTerritorial/rest/centrospoblados -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetCentrosPoblados
      * @apiGroup Centros poblados
-     *
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     * 
      * @apiDescription Método para obtener un listado de las Localidades existentes.
      * Obtiene las localidades mediante el método local findAll()
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.CentroPoblado} CentroPoblado Listado con todos las Localidades registradas.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *          "localidades": [
@@ -149,10 +138,8 @@ public class CentroPobladoFacadeREST {
      *             }
      *          ]
      *     }
-     *
      * @apiError EspeciesNotFound No existen localidades registradas.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay Localidades registradas"

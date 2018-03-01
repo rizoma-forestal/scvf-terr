@@ -28,33 +28,27 @@ public class CentroPobladoTipoFacadeREST {
     /**
      * @api {get} /tipooscentrospoblados/:id Ver un Tipo de centro poblado
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/tipooscentrospoblados/7
+     *     curl -X GET -d /gestionTerritorial/rest/tipooscentrospoblados/7 -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetCentroPobladoTipo
      * @apiGroup Tipos de Centros poblados
-     * 
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     *
+     * @apiParam {Long} id Identificador único del Tipo de Centro poblado
      * @apiDescription Método para obtener un Tipo de centro poblado existente según el id remitido.
      * Obtiene el tipo de centro poblado mediante el método local find(Long id)
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.CentroPobladoTipo} CentroPobladoTipo  Detalle del tipo de centro poblado registrado.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *          "id": "7",
      *          "nombre": "CASERIO"
      *     }
-     *
      * @apiError CentroPobladoTipoNotFound No existe tipo de centro poblado registrado con ese id.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay tipo de centro poblado registrado con el id recibido"
@@ -71,24 +65,19 @@ public class CentroPobladoTipoFacadeREST {
     /**
      * @api {get} /tipooscentrospoblados Ver todas los Tipos de centros poblados
      * @apiExample {curl} Ejemplo de uso:
-     *     curl -i -H "Content-Type: application/json" -X GET -d /gestionTerritorial/rest/tipooscentrospoblados
+     *     curl -X GET -d /gestionTerritorial/rest/tipooscentrospoblados -H "authorization: xXyYvWzZ"
      * @apiVersion 1.0.0
      * @apiName GetCentroPobladoTipos
      * @apiGroup Tipos de Centros poblados
-     *
      * @apiHeader {String} Authorization Token recibido al autenticar el usuario
-     * 
      * @apiHeaderExample {json} Ejemplo de header:
      *     {
-     *       "Authorization": "ssNjyzTYUqNUefxw4NOAtWGrpimMD96VXRxRlseoHewGxqqhnIw"
+     *       "Authorization": "xXyYvWzZ"
      *     } 
-     * 
      * @apiDescription Método para obtener un listado de todos los Tipos de Centros Poblados existentes.
      * Obtiene las los tipos de centros poblados mediante el método local findAll()
-     * 
      * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.CentroPobladoTipo} CentroPobladoTipo Listado con todos los Tipos de Centros poblados registradas.
-     *
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Respuesta exitosa:
      *     HTTP/1.1 200 OK
      *     {
      *          "tipooscentrospoblados": [
@@ -102,10 +91,8 @@ public class CentroPobladoTipoFacadeREST {
      *              }
      *          ]
      *     }
-     *
      * @apiError CentroPobladoTipoNotFound No existen tipos de centros poblados registrados.
-     *
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Respuesta de error:
      *     HTTP/1.1 400 Not Found
      *     {
      *       "error": "No hay Tipos de centros poblados registrados"
