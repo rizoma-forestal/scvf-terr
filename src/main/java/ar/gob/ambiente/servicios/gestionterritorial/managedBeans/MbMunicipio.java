@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
@@ -33,42 +28,96 @@ import javax.faces.model.ListDataModel;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author epassarelli
+ * Bean de respaldo para la gestión de Municipio
+ * @author rincostante
  */
 public class MbMunicipio implements Serializable {
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Provincia
+     */
     @EJB
     private ProvinciaFacade pciaFacade;
 
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Departamento
+     */
     @EJB
     private DepartamentoFacade dptoFacade;    
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Municipio
+     */
     @EJB
     private MunicipioFacade muniFacade;
-   
-    private Municipio current;
-    private DataModel items = null;    
-    private List<Provincia> listaProvincias;  
-    private List<Departamento> comboDepartamentos;
-    private Provincia selectProvincia;
-    private boolean iniciado;
-    private List<Municipio> listado;
-    private List<Municipio> listadoFilter;
-    private MbLogin login;
-    private Usuario usLogeado;
-    private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar 
-    
-    
     
     /**
-     * Creates a new instance of MbMunicipio
+     * Variable privada: Municipio Entidad que se gestiona mediante el bean
+     */ 
+    private Municipio current;
+    
+    /**
+     * Variable privada: DataModel data model para el listado de Entidades
+     */
+    private DataModel items = null; 
+    
+    /**
+     * Variable privada: List<Provincia> listado para el filtrado de la tabla de Provincias
+     */
+    private List<Provincia> listaProvincias;  
+    
+    /**
+     * Variable privada: List<Departamento> listado para el filtrado de la tabla de Departamentos
+     */ 
+    private List<Departamento> comboDepartamentos;
+    
+    /**
+     * Variable privada: Provincia setea la Provincia seleccinonada para vincular al Municipio
+     */
+    private Provincia selectProvincia;
+    
+    /**
+     * Variable privada: boolean que indica si se inició el bean
+     */
+    private boolean iniciado;
+    
+    /**
+     * Variable privada: List<Municipio> listado de los Municipios existentes
+     */
+    private List<Municipio> listado;
+    
+    /**
+     * Variable privada: List<Municipio> listado para el filtrado de la tabla
+     */
+    private List<Municipio> listadoFilter;
+    
+    /**
+     * Variable privada: MbLogin bean de gestión de la sesión del usuario
+     */
+    private MbLogin login;
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
+    private Usuario usLogeado;
+    
+    /**
+     * Variable privada: Entero que indica el tipo de actualización
+     * 0=updateNormal | 1=deshabiliar | 2=habilitar 
+     */
+    private int update;
+    
+    /**
+     * Constructor
      */
     public MbMunicipio() {
     }
 
-   @PostConstruct
-   public void init(){
+    /**
+     * Método que se ejecuta luego de instanciada la clase e inicializa los datos del usuario
+     */
+    @PostConstruct
+    public void init(){
         iniciado = false;
         update = 0;
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
@@ -80,7 +129,8 @@ public class MbMunicipio implements Serializable {
      ** Métodos para la navegación **
      ********************************/
     /**
-     * @return La entidad gestionada
+     * Método que setea la entidad a gestionar
+     * @return Municipio La entidad gestionada
      */
     public Municipio getSelected() {
         if (current == null) {
@@ -97,6 +147,10 @@ public class MbMunicipio implements Serializable {
         this.listadoFilter = listadoFilter;
     }
     
+    /**
+     * Método que setea el listado de Municipios
+     * @return DataModel listado de Municipios
+     */    
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(getFacade().findAll());
@@ -160,7 +214,8 @@ public class MbMunicipio implements Serializable {
      ** Métodos de inicialización **
      *******************************/
     /**
-     * @return acción para el listado de entidades
+     * Método para inicializar el listado de los Municipios
+     * @return String nombre de la vista a mostrar
      */
     public String prepareList() {
         recreateModel();
@@ -169,14 +224,16 @@ public class MbMunicipio implements Serializable {
     }
 
     /**
-     * @return acción para el detalle de la entidad
+     * Método para inicializar la vista detalle
+     * @return String nombre de la vista a mostrar
      */
     public String prepareView() {
         return "view";
     }
 
-    /** (Probablemente haya que embeberlo con el listado para una misma vista)
-     * @return acción para el formulario de nuevo
+    /**
+     * Método para inicializar la vista de creación de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareCreate() {
         listaProvincias = pciaFacade.getActivos();
@@ -185,13 +242,18 @@ public class MbMunicipio implements Serializable {
     }
 
     /**
-     * @return acción para la edición de la entidad
+     * Método para inicializar la vista de actualización de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareEdit() {
         listaProvincias = pciaFacade.getActivos();
         return "edit";
     }
     
+    /**
+     * Método para inicializar la aplicación
+     * @return String ruta a la vista de inicio
+     */          
     public String prepareInicio(){
         recreateModel();
         return "/faces/index";
@@ -199,7 +261,7 @@ public class MbMunicipio implements Serializable {
 
     
     /**
-     * Restea la entidad
+     * Método que restea la entidad
      */
     private void recreateModel() {
         items = null;
@@ -209,7 +271,9 @@ public class MbMunicipio implements Serializable {
     ** Métodos de operación **
     **************************/
     /**
-     * @return 
+     * Método que inserta un nuevo Municipio en la base de datos, previamente genera una entidad de administración
+     * con los datos necesarios y luego se la asigna a la persona
+     * @return String mensaje que notifica la inserción
      */
     public String create() {
         // Creación de la entidad de administración y asignación
@@ -242,10 +306,11 @@ public class MbMunicipio implements Serializable {
         this.listado = listado;
     }
 
-         /**
-     * Método que actualiza un nuevo Centro Poblado en la base de datos.
-     * Previamente actualiza los datos de administración
-     * @return mensaje que notifica la actualización
+    /**
+     * Método para que implementa la actualización de un Municipio, sea para la edición, habilitación o deshabilitación:
+     * Actualiza la entidad administrativa según corresponda, procede según el valor de "update",
+     * ejecuta el método edit() del facade y devuelve el nombre de la vista detalle o null.
+     * @return String nombre de la vista detalle o null
      */
     public String update() {
         Date date = new Date(System.currentTimeMillis());
@@ -304,25 +369,28 @@ public class MbMunicipio implements Serializable {
     }
     
     /**
-     * @param event
-     * Metodo que recibe como parametro una provincia y carga los Departamentos relacionados a la misma
-     * Combo Dependiente
-     */
-    
+     * Método que setea la Provincia seleccionada y obtiene los Departamentos vinculados a ella
+     * @param event ValueChangeEvent evento de cambio de item seleccionado por el usuario
+     */    
     public void departamentoChangeListener(ValueChangeEvent event) {      
         selectProvincia = (Provincia)event.getNewValue();      
         comboDepartamentos = dptoFacade.getPorProvincia(selectProvincia);      
     }    
     
+    /**
+     * Método que prepara la habilitación de un Municipio.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     */        
     public void habilitar() {
         update = 2;
         update();        
         recreateModel();
     }  
     
-    /**
-     * 
-     */    
+     /**
+     * Método que prepara la deshabilitación de un Municipio.
+     * Setea el tipo de actualización, la ejecuta y resetea el listado
+     */   
     public void deshabilitar() {
         update = 1;
         update();        
@@ -334,8 +402,9 @@ public class MbMunicipio implements Serializable {
     **************************/
 
     /**
-     * @param id equivalente al id de la entidad persistida
-     * @return la entidad correspondiente
+     * Método que recupera un Municipio según su id
+     * @param id Long id de la entidad persistida
+     * @return Municipio la entidad correspondiente
      */
     public Municipio getMunicipio(java.lang.Long id) {
         return muniFacade.find(id);
@@ -345,7 +414,8 @@ public class MbMunicipio implements Serializable {
     ** Métodos privados **
     **********************/
     /**
-     * @return el Facade
+     * Método privado que devuelve el facade para el acceso a datos de los Municipios
+     * @return EJB MunicipioFacade Acceso a datos
      */
     private MunicipioFacade getFacade() {
         return muniFacade;

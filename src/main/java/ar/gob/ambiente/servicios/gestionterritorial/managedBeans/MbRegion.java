@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.managedBeans;
 
@@ -36,48 +31,114 @@ import org.primefaces.context.RequestContext;
 
 
 /**
- *
- * @author epassarelli
+ * Bean de respaldo para la gestión de Región
+ * @author rincostante
  */
 public class MbRegion implements Serializable{
 
+    /**
+     * Variable privada: Region Entidad que se gestiona mediante el bean
+     */
     private Region current;
+    
+    /**
+     * Variable privada: List<Provincia> listado de Provincias vinculadas con la Región
+     */
     private List<Provincia> provVinc;
+    
+    /**
+     * Variable privada: List<Provincia> listado para el filtrado de la tabla de Provincias
+     */
     private List<Provincia> provVincFilter;
+    
+    /**
+     * Variable privada: List<Provincia> listado para la selección de Provincias disponibles
+     */
     private List<Provincia> provDisp;
+    
+    /**
+     * Variable privada: List<Provincia> listado para la el filtrado de la table de selección de Provincias disponibles
+     */
     private List<Provincia> provDispFilter;
+    
+    /**
+     * Variable privada: List<Provincia> listado de Provincias para vincular a la región
+     */
     private List<Provincia> provincias;
+    
+    /**
+     * Variable privada: List<Provincia> listado para filtrar el listado de Provincias a vincular
+     */
     private List<Provincia> provinciasFilter;
+    
+    /**
+     * Variable privada: List<Provincia> listado de Provincias
+     */
     private List<Provincia> listProvincias;
+    
+    /**
+     * Variable privada: boolean indica si se asigna una Provincia a una Región
+     */
     private boolean asignaProvincia; 
+    
+    /**
+     * Variable privada: List<Region> listado de las Regiones existentes
+     */
     private List<Region> listRegion;  
 
-
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Region
+     */
     @EJB
     private RegionFacade regionFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de Provincia
+     */
     @EJB
     private ProvinciaFacade provFacade;
     
+    /**
+     * Variable privada: EJB inyectado para el acceso a datos de EspecificidadDeRegion
+     */
     @EJB
     private EspecificidadDeRegionFacade espRegionFacade;
-
+    
+    /**
+     * Variable privada: Region se setea con la Región seleccionada
+     */
     private Region regionSelected;
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
     private Usuario usLogeado;
-    private List<EspecificidadDeRegion> listaEspecificidadDeRegion;   
+    
+    /**
+     * Variable privada: List<EspecificidadDeRegion> listado de las Especificidades de Región disponibles
+     */
+    private List<EspecificidadDeRegion> listaEspecificidadDeRegion;
+    
+    /**
+     * Variable privada: MbLogin bean de gestión de la sesión del usuario
+     */
     private MbLogin login;   
+    
+    /**
+     * Variable privada: Usuario usuario logeado
+     */
     private boolean iniciado;
-    //private int update; // 0=updateNormal | 1=deshabiliar | 2=habilitar
-
-
 
 
     /**
-     * Creates a new instance of MbRegion
+     * Constructor
      */
     public MbRegion() {
     }
 
+    /**
+     * Método que se ejecuta luego de instanciada la clase e inicializa los datos del usuario
+     */    
     @PostConstruct
     public void init(){
         iniciado = false;
@@ -194,7 +255,8 @@ public class MbRegion implements Serializable{
      ** Métodos para el datamodel **
      ********************************/
     /**
-     * @return La entidad gestionada
+     * Método que setea la entidad a gestionar
+     * @return Region La entidad gestionada
      */
     public Region getSelected() {
         if (current == null) {
@@ -208,8 +270,8 @@ public class MbRegion implements Serializable{
      ** Métodos de inicialización **
      *******************************/
     /**
-     * Método para inicializar el listado de los Actividades Planificadass habilitadas
-     * @return acción para el listado de entidades
+     * Método para inicializar el listado de las Regiones
+     * @return String nombre de la vista a mostrar
      */
     public String prepareList() {
         iniciado = true;
@@ -224,10 +286,6 @@ public class MbRegion implements Serializable{
         return "list";
     } 
     
-     /**
-     * 
-     * @return 
-     */
     public String prepareListaDes() {
         recreateModel();
         asignaProvincia = false;
@@ -241,7 +299,8 @@ public class MbRegion implements Serializable{
     }     
     
     /**
-     * @return acción para el detalle de la entidad
+     * Método para inicializar la vista detalle
+     * @return String nombre de la vista a mostrar
      */
     public String prepareView() {
         asignaProvincia = false;
@@ -250,9 +309,6 @@ public class MbRegion implements Serializable{
         return "view";
     }
     
-    /**
-     * @return acción para el detalle de la entidad
-     */
     public String prepareViewDes() {
         asignaProvincia = false;
         current = regionSelected;
@@ -260,8 +316,9 @@ public class MbRegion implements Serializable{
         return "viewDes";
     }
 
-    /** (Probablemente haya que embeberlo con el listado para una misma vista)
-     * @return acción para el formulario de nuevo
+    /**
+     * Método para inicializar la vista de creación de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareCreate() {
         // cargo los list para el combo de Especificidad De Region
@@ -275,7 +332,8 @@ public class MbRegion implements Serializable{
     }
 
     /**
-     * @return acción para la edición de la entidad
+     * Método para inicializar la vista de actualización de una entidad
+     * @return String nombre de la vista a mostrar
      */
     public String prepareEdit() {
         //cargo los list para los combos
@@ -288,18 +346,18 @@ public class MbRegion implements Serializable{
     }
     
     /**
-     *
-     * @return
-     */
+     * Método para inicializar la aplicación
+     * @return String ruta a la vista de inicio
+     */      
     public String prepareInicio(){
         recreateModel();
         return "/faces/index";
     }
     
     /**
-     * Método que verifica que la Actividad Planificada que se quiere eliminar no esté siento utilizada por otra entidad
-     * @return 
-     */
+     * Método para inicializar la deshabilitación de una Región
+     * @return String ruta a la vista detalle
+     */      
     public String prepareDestroy(){
         current = regionSelected;
         boolean libre = getFacade().getUtilizado(current.getId());
@@ -317,9 +375,9 @@ public class MbRegion implements Serializable{
     }  
     
     /**
-     * 
-     * @return 
-     */
+     * Método para inicializar la habilitación de una Región
+     * @return String ruta a la vista detalle
+     */ 
     public String prepareHabilitar(){
         current = regionSelected;
         try{
@@ -420,10 +478,7 @@ public class MbRegion implements Serializable{
             return null;
         }
     }
-    
-    /**
-     * @return mensaje que notifica el borrado
-     */    
+
     public String destroy() {
         current = regionSelected;
         performDestroy();
@@ -436,17 +491,14 @@ public class MbRegion implements Serializable{
     **************************/
 
     /**
-     * @param id equivalente al id de la entidad persistida
-     * @return la entidad correspondiente
+     * Método que recupera un Región según su id
+     * @param id Long id de la entidad persistida
+     * @return Region la entidad correspondiente
      */
     public Region getRegion(java.lang.Long id) {
         return getFacade().find(id);
     }  
     
-    /**
-     * Método para revocar la sesión del MB
-     * @return 
-     */
     public String cleanUp(){
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true);
@@ -455,9 +507,8 @@ public class MbRegion implements Serializable{
         return "inicio";
     }  
     
-    
     /**
-     * 
+     * Método que lista las provincias disponibles
      */
     public void verProvincias(){
         provincias = current.getProvincias();
@@ -466,6 +517,10 @@ public class MbRegion implements Serializable{
         RequestContext.getCurrentInstance().openDialog("", options, null);
     }       
 
+    /**
+     * Método que asigna una provincia a la Región
+     * @param prov Provincia Provincia a asignar
+     */
     public void asignarProvincia(Provincia prov){
         provVinc.add(prov);
         provDisp.remove(prov);
@@ -476,7 +531,11 @@ public class MbRegion implements Serializable{
             provDispFilter = null;
         }
     }
-    
+
+    /**
+     * Método que desvincula una provincia a la Región
+     * @param prov Provincia Provincia a desvincular
+     */    
     public void quitarProvincia(Provincia prov){
         provVinc.remove(prov);
         provDisp.add(prov);
@@ -513,14 +572,15 @@ public class MbRegion implements Serializable{
     ** Métodos privados **
     **********************/
     /**
-     * @return el Facade
+     * Método privado que devuelve el facade para el acceso a datos de las Provincias
+     * @return EJB RegionFacade Acceso a datos
      */
     private RegionFacade getFacade() {
         return regionFacade;
     }    
     
     /**
-     * Restea la entidad
+     * Método que restea la entidad
      */
     private void recreateModel() {
         listRegion.clear();
@@ -556,9 +616,6 @@ public class MbRegion implements Serializable{
         }
     }             
     
-    /**
-     * 
-     */
     private List<Provincia> cargarProvinciasDisponibles(){
         List<Provincia> provs = provFacade.getActivos();
         List<Provincia> provsSelect = new ArrayList();
@@ -578,13 +635,6 @@ public class MbRegion implements Serializable{
     @FacesConverter(forClass = Region.class)
     public static class RegionControllerConverter implements Converter {
 
-        /**
-         *
-         * @param facesContext
-         * @param component
-         * @param value
-         * @return
-         */
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
@@ -614,13 +664,6 @@ public class MbRegion implements Serializable{
             return sb.toString();
         }
 
-        /**
-         *
-         * @param facesContext
-         * @param component
-         * @param object
-         * @return
-         */
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {

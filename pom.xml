@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ar.gob.ambiente.servicios</groupId>
-    <artifactId>gestionTerritorial</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <artifactId>scvf-terr</artifactId>
+    <version>1.1.0</version>
     <packaging>war</packaging>
-    <name>gestionTerritorial</name>
+    <name>sacvefor-territorial</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jboss.bom>10.0.0.Final</version.jboss.bom>
@@ -20,7 +20,7 @@
                 <version>${version.jboss.bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
+            </dependency>        
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -76,7 +76,12 @@
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
             <version>2.1-RC1</version>
-        </dependency>         
+        </dependency>   
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+        </dependency>          
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>

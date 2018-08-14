@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package ar.gob.ambiente.servicios.gestionterritorial.facades;
 
@@ -16,29 +11,40 @@ import javax.persistence.Query;
 
 
 /**
- *
- * @author epassarelli
+ * Clase que implementa la abstracta para el acceso a datos de la entidad CetroPoblado (Localidad).
+ * @author rincostante
  */
 
 @Stateless
 public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
+    
+    /**
+     * Variable privada: EntityManager al que se le indica la unidad de persistencia mediante la cual accederá a la base de datos
+     */
     @PersistenceContext(unitName = "gestionTerritorial-PU")
     private EntityManager em;
 
+    /**
+     * Método que implementa el abstracto para la obtención del EntityManager
+     * @return EntityManager para acceder a datos
+     */    
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * Constructor
+     */
     public CentroPobladoFacade() {
         super(CentroPoblado.class);
     }
     
     /**
-     * Método que devuelve todas las Especies que contienen la cadena recibida como parámetro 
+     * Método que devuelve todas las Localidades que contienen la cadena recibida como parámetro 
      * dentro de alguno de sus campos string, en este caso el nombre.
-     * @param stringParam: cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
-     * @return: El conjunto de resultados provenientes de la búsqueda. 
+     * @param stringParam String cadena que buscará en todos los campos de tipo varchar de la tabla correspondiente
+     * @return List<CentroPoblado> El conjunto de resultados provenientes de la búsqueda. 
      */      
     public List<CentroPoblado> getXString(String stringParam){
         em = getEntityManager();
@@ -55,6 +61,10 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         return result;
     }
      
+    /**
+     * Método que obtiene todas los nombres de las localidades registradas
+     * @return List<String> listado de los nombres de todas las localidades
+     */
     public List<String> getNombre(){
         em = getEntityManager();
         String queryString = "SELECT cp.nombre FROM CentroPoblado cp";
@@ -64,9 +74,9 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
 
     /**
      * Metodo que verifica si ya existe la entidad.
-     * @param nombre
-     * @param depto
-     * @return: devuelve True o False
+     * @param nombre String nombre de la Localidad
+     * @param depto Departamento Departamento al cual pertenece la Localidad
+     * @return boolean devuelve True o False sgún la Localidad existe o no
      */
     public boolean noExiste(String nombre, Departamento depto){
         em = getEntityManager();
@@ -80,10 +90,10 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
     }  
 
     /**
-     * Método que obtiene un Centro Poblado existente según los datos recibidos como parámetro
-     * @param nombre
-     * @param depto
-     * @return 
+     * Método que obtiene una Localidad existente según los datos recibidos como parámetro
+     * @param nombre String nombre de la Localidad
+     * @param depto Departamento Departamento al cual pertenece la Localidad
+     * @return CentroPoblado Localidad existente
      */
     public CentroPoblado getExistente(String nombre, Departamento depto){
         List<CentroPoblado> lCp;
@@ -102,12 +112,6 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         }
     }    
     
-    /**
-     * Método creado pera las migraciones
-     * @param nomCentro
-     * @param nomDepto
-     * @return 
-     */
     public CentroPoblado getByNomCentroYNomDepto(String nomCentro, String nomDepto){
         List<CentroPoblado> lCp;
         em = getEntityManager();
@@ -125,6 +129,11 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         }
     }
     
+    /**
+     * Método que obtiene todas las Localidades pertenecientes al Departamento del cual se recibe su id
+     * @param idDepto Long identificador del Departamento
+     * @return List<CentroPoblado> listado de las Localidades pertenecientes al Departamento en cuestión
+     */
     public List<CentroPoblado> getCentrosXDepto(Long idDepto){
         em = getEntityManager();
         String queryString = "SELECT cp FROM CentroPoblado cp "
@@ -136,6 +145,12 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         return q.getResultList();         
     }    
     
+    /**
+     * Método que devuelve todas las Localidades de un determinado tipo pertenecientes a un Departamento
+     * @param idDepto Long identificador del Departamento
+     * @param idTipo Long identificador del Tipo de Centrpo poblado
+     * @return List<CentroPoblado> listado de las Localidades que cumplen con lo requerido
+     */
     public List<CentroPoblado> getCentrosXDeptoTipo(Long idDepto, Long idTipo){
         em = getEntityManager();
         String queryString = "SELECT cp FROM CentroPoblado cp "
@@ -149,6 +164,12 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         return q.getResultList();         
     }
     
+    /**
+     * Método que devuelve todas las Localidades de un determinado tipo pertenecientes a una Provincia
+     * @param idProv Long identificador de la Provincia
+     * @param idTipo Long identificador del tipo de Centro Poblado
+     * @return List<CentroPoblado> listado de las Localidades que cumplen con lo requerido
+     */
     public List<CentroPoblado> getCentrosXProvTipo(Long idProv, Long idTipo){
         em = getEntityManager();
         String queryString = "SELECT cp FROM CentroPoblado cp "
@@ -162,6 +183,12 @@ public class CentroPobladoFacade extends AbstractFacade<CentroPoblado> {
         return q.getResultList();     
     }
     
+    /**
+     * Método que devuelve todas las Localidades de un determinado tipo pertenecientes a una Región
+     * @param idRegion Long identificador de la Región
+     * @param idTipo Long identificador del Tipo de Centro Poblado
+     * @return List<CentroPoblado> listado de las Localidades que cumplen con lo requerido
+     */
     public List<CentroPoblado> getCentrosXRegionTipo(Long idRegion, Long idTipo){
         em = getEntityManager();
         String queryString = "SELECT cp FROM CentroPoblado cp "
