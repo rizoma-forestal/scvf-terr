@@ -12,7 +12,7 @@
                     <p:growl id="messages" />
                     <h:panelGrid columns="2">
                         <p:outputLabel value="#{bundle.CreateCentroPobladoLabel_Provincia}" for="prov" />
-                        <p:selectOneMenu id="prov" value="#{mbCentroPoblado.selectProvincia}" required="true"  requiredMessage="#{bundle.CreateDepartamentoProvinciaRequiredMessage}" valueChangeListener="#{mbCentroPoblado.provinciaChangeListener}">
+                        <p:selectOneMenu id="prov" value="#{mbCentroPoblado.provSelected}" required="true"  requiredMessage="#{bundle.CreateDepartamentoProvinciaRequiredMessage}" valueChangeListener="#{mbCentroPoblado.provinciaChangeListener}">
                             <f:selectItem itemLabel="Seleccione la Provincia" itemValue="" noSelectionOption="true" />
                             <f:selectItems value="#{mbCentroPoblado.listaProvincias}" var="prov" itemLabel="#{prov.nombre}" itemValue="#{prov}"/>
                             <p:ajax event="change" update="depto"/>
