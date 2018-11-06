@@ -3,7 +3,9 @@ package ar.gob.ambiente.servicios.gestionterritorial.rest;
 
 import ar.gob.ambiente.servicios.gestionterritorial.annotation.Secured;
 import ar.gob.ambiente.servicios.gestionterritorial.entidades.CentroPoblado;
+import ar.gob.ambiente.servicios.gestionterritorial.entidades.Departamento;
 import ar.gob.ambiente.servicios.gestionterritorial.facades.CentroPobladoFacade;
+import ar.gob.ambiente.servicios.gestionterritorial.facades.DepartamentoFacade;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -11,6 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -23,7 +26,9 @@ import javax.ws.rs.core.MediaType;
 public class CentroPobladoFacadeREST {
 
     @EJB
-    private CentroPobladoFacade centroFacade;   
+    private CentroPobladoFacade centroFacade; 
+    @EJB
+    private DepartamentoFacade deptoFacade;
 
     /**
      * @api {get} /centrospoblados/:id Ver una Localidad
@@ -151,6 +156,63 @@ public class CentroPobladoFacadeREST {
     public List<CentroPoblado> findAll() {
         return centroFacade.findAll();
     }
+    
+    /**
+     * @api {get} /centrospoblados/query?nombre=:nombre&id_depto=172 Ver una Loclidad según su nombre y el id del Departamento al que pertenece.
+     * @apiExample {curl} Ejemplo de uso:
+     *     curl -X GET -d [PATH_SERVER]/:gestionTerritorial/rest/centrospoblados/query?nombre=TACUARI&id_depto=172 -H "authorization: xXyYvWzZ"
+     * @apiVersion 1.0.0
+     * @apiName GetLocalidadesQuery
+     * @apiGroup Localidades
+     * @apiHeader {String} Authorization Token recibido al autenticar el usuario
+     * @apiHeaderExample {json} Ejemplo de header:
+     *     {
+     *       "Authorization": "xXyYvWzZ"
+     *     }
+     * @apiParam {String} nombre de la Localidad solicitada
+     * @apiParam {String} id del Departamento al que pertenece
+     * @apiDescription Método para obtener una Localidad según su nombre y el id del Departamento al que pertenece.
+     * Obtiene la Localidad con el método local getExistente(String nombre, Departamento depto), (en mayúsculas el nombre)
+     * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.CentroPoblado} Provincia provincia obtenida.
+     * @apiSuccessExample Respuesta exitosa:
+     *     HTTP/1.1 200 OK
+     *              {
+     *                  "id":"1137",
+     *                  "nombre":"TACUARI",
+     *                  "centropobladotipo":{
+     *                              "id":"9",
+     *                              "nombre":"PARAJE"
+     *                          }
+     *                  "departamento":{
+     *                      "id":"172",
+     *                      "nombre":"BERMEJO",
+     *                          "provincia":{
+     *                                  "id":"6",
+     *                                  "nombre":"CHACO"
+     *                              }
+     *              }
+     * @apiError LocalidadNotFound No existe Localidad registrada con ese nombre para el Departamento solicitado.
+     * @apiErrorExample Respuesta de error:
+     *     HTTP/1.1 400 Not Found
+     *     {
+     *       "error": "No hay Localidad registrada con con ese nombre para el Departamento solicitado"
+     *     }
+     */         
+    @GET
+    @Path("/query")
+    @Secured
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public CentroPoblado findByQuery(@QueryParam("nombre") String nombre,
+            @QueryParam("id_depto") String id_depto){
+        CentroPoblado result = new CentroPoblado();
+        // obtengo el Departamento a partir del id recibido
+        Departamento depto = deptoFacade.find(Long.valueOf(id_depto));
+        if(depto != null){
+            result = centroFacade.getExistente(nombre, depto);
+        }
+        return result;
+    }
+
 
     @GET
     @Path("{from}/{to}")

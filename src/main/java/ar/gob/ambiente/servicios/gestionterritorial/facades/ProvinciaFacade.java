@@ -72,6 +72,22 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> {
                 .setParameter("stringParam", aBuscar);
         return q.getResultList().isEmpty();
     }
+    
+    /**
+     * Método que obtiene una Provincia según su nombre.
+     * Implementado para la API REST solicitado por el registro remoto de guías del CGL
+     * @param nombre Nombre de la Provincia a buscar
+     * @return Provincia Provincia solicitada
+     */
+    public Provincia getExistente(String nombre){
+        em = getEntityManager();
+        String queryString = "SELECT prov FROM Provincia prov "
+                + "WHERE prov.nombre = :nombre "
+                + "AND prov.adminentidad.habilitado = true";
+        Query q = em.createQuery(queryString)
+                .setParameter("nombre", nombre);
+        return (Provincia)q.getSingleResult();
+    }
     /**
      * Método que verifica si la entidad tiene dependencia (Hijos)
      * @param id Long ID de la entidad

@@ -13,6 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -165,7 +166,46 @@ public class ProvinciaFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Departamento> findByProvincia(@PathParam("id") Long id) {
         return deptoFacade.getDeptosXIdProv(id);
-    }        
+    } 
+    
+    /**
+     * @api {get} /provincias/query?nombre=:nombre Ver una Provincia según su nombre.
+     * @apiExample {curl} Ejemplo de uso:
+     *     curl -X GET -d [PATH_SERVER]/:gestionTerritorial/rest/provincias/query?nombre=CHACO -H "authorization: xXyYvWzZ"
+     * @apiVersion 1.0.0
+     * @apiName GetProvinciasQuery
+     * @apiGroup Provincias
+     * @apiHeader {String} Authorization Token recibido al autenticar el usuario
+     * @apiHeaderExample {json} Ejemplo de header:
+     *     {
+     *       "Authorization": "xXyYvWzZ"
+     *     }
+     * @apiParam {String} nombre de la Provincia solicitada
+     * @apiDescription Método para obtener una Provincia según su nombre.
+     * Obtiene la Provincia con el método local getExistente(String nombre), en mayúsculas
+     * @apiSuccess {ar.gob.ambiente.sacvefor.servicios.territorial.Provincia} Provincia provincia obtenida.
+     * @apiSuccessExample Respuesta exitosa:
+     *     HTTP/1.1 200 OK
+     *              {
+     *                  "id":"6",
+     *                  "nombre":"CHACO"
+     *              }
+     * @apiError ProvinciaNotFound No existe Provincia registrada con ese nombre.
+     * @apiErrorExample Respuesta de error:
+     *     HTTP/1.1 400 Not Found
+     *     {
+     *       "error": "No hay Provincia registrada con con ese nombre"
+     *     }
+     */             
+    @GET
+    @Path("/query")
+    @Secured
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Provincia findByQuery(@QueryParam("nombre") String nombre){
+        // obtengo la provincia a partir del nombre
+        return provinciaFacade.getExistente(nombre.toUpperCase());
+    }
+
 
     @GET
     @Path("count")
